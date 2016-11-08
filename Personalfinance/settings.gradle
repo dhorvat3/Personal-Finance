@@ -1,1 +1,1 @@
-include ':app', ':userInterface'
+include ':app', ':userInterface', ':database'
