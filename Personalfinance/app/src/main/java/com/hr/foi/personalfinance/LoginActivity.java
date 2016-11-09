@@ -25,16 +25,13 @@ import helper.MockData;
 
 public class LoginActivity extends AppCompatActivity {
     private Button loginButton;
-    private EditText korime;
-    private EditText lozinka;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         setContentView(R.layout.login_layout);
 
         loginButton = (Button) findViewById(R.id.login);
-        korime = (EditText) findViewById(R.id.korime);
-        lozinka = (EditText) findViewById(R.id.lozinka);
+
 
         super.onCreate(savedInstanceState);
 
@@ -48,20 +45,8 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
-                if(SQLite.select().from(User.class).queryList().isEmpty()){
-                    MockData.writeAll();
-                }
-                List<User> users = SQLite.select().from(User.class).queryList();
-                for (User user : users){
-                   if (korime.getText().toString().equals(user.getKorime()) && lozinka.getText().toString().equals(user.getLozinka())){
-                       Toast.makeText(getApplicationContext(), "Uspjesno!", Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                        startActivity(intent);
-                    }
-                   else {
-                       Toast.makeText(getApplicationContext(), "Krivo!", Toast.LENGTH_SHORT).show();
-                    }
-               }
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                startActivity(intent);
 
             }
         });
