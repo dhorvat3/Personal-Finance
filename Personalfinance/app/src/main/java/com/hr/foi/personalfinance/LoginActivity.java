@@ -16,6 +16,8 @@ import com.raizlabs.android.dbflow.sql.language.SQLite;
 
 import java.util.List;
 
+import entities.DataBuilder;
+import entities.DataInterface;
 import entities.User;
 import helper.MockData;
 
@@ -23,15 +25,16 @@ import helper.MockData;
  * Created by dagy on 06.11.16..
  */
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity implements DataInterface{
     private Button loginButton;
+    private EditText korime, lozinka;
+    private DataBuilder dataBulder = new DataBuilder(this);
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         setContentView(R.layout.login_layout);
 
         loginButton = (Button) findViewById(R.id.login);
-
 
         super.onCreate(savedInstanceState);
 
@@ -45,10 +48,24 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                startActivity(intent);
+                korime = (EditText) findViewById(R.id.korime);
+                lozinka = (EditText) findViewById(R.id.lozinka);
 
+                dataBulder.login(korime.getText().toString(), lozinka.getText().toString());
             }
         });
+    }
+
+    @Override
+    public void buildData(Object data) {
+        User user = (User) data;
+        if (user.getId()!=0){
+            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+            startActivity(intent);
+            Toast.makeText(getApplicationContext(), "Sucessfull login.", Toast.LENGTH_SHORT).show();
+        }
+        else {
+            Toast.makeText(getApplicationContext(), "Wrong credentials!", Toast.LENGTH_SHORT).show();
+        }
     }
 }
