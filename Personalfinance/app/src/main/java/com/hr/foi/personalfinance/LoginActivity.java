@@ -59,7 +59,7 @@ public class LoginActivity extends AppCompatActivity implements DataInterface{
     @Override
     public void buildData(Object data) {
         pojo.User user = (pojo.User) data;
-        if (user.getId()!= null){
+        if (user != null){
             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
             startActivity(intent);
             Toast.makeText(getApplicationContext(), "Sucessfull login.", Toast.LENGTH_SHORT).show();

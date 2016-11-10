@@ -25,7 +25,12 @@ public class DataBuilder {
         retrofitCall.enqueue(new Callback<pojo.User>() {
             @Override
             public void onResponse(Response<pojo.User> response, Retrofit retrofit) {
-                call.buildData(response.body());
+                if(response.body() != null) {
+                    data = response.body();
+                } else {
+                    data = null;
+                }
+                call.buildData(data);
             }
 
             @Override
