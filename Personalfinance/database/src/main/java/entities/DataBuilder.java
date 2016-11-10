@@ -1,5 +1,8 @@
 package entities;
 
+import pojo.*;
+import pojo.User;
+import retrofit.Call;
 import retrofit.Callback;
 import retrofit.Response;
 import retrofit.Retrofit;
@@ -17,11 +20,25 @@ public class DataBuilder {
         call = caller;
     }
 
-    public void login(final String user, String pass){
-        apiMethods.login(user, pass, new Callback<User>() {
+    public void login(String user){
+        Call<pojo.User> retrofitCall = apiMethods.login(user);
+        retrofitCall.enqueue(new Callback<pojo.User>() {
             @Override
-            public void onResponse(Response<User> response, Retrofit retrofit) {
+            public void onResponse(Response<pojo.User> response, Retrofit retrofit) {
+                call.buildData(response.body());
+            }
 
+            @Override
+            public void onFailure(Throwable t) {
+                data = null;
+                call.buildData(data);
+            }
+        });
+
+        /*apiMethods.login(user, new Callback<pojo.User>() {
+            @Override
+            public void onResponse(Response<pojo.User> response, Retrofit retrofit) {
+                call.buildData(response.body());
             }
 
             @Override
@@ -30,6 +47,6 @@ public class DataBuilder {
                 call.buildData(data);
 
             }
-        });
+        });*/
     }
 }

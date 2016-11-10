@@ -1,6 +1,9 @@
 package entities;
 
+import pojo.*;
+import retrofit.Call;
 import retrofit.Callback;
+import retrofit.GsonConverterFactory;
 import retrofit.Retrofit;
 import retrofit.http.GET;
 import retrofit.http.Query;
@@ -10,9 +13,13 @@ import retrofit.http.Query;
  */
 
 public interface ApiMethods {
-    @GET("/login.php")
-    void login(@Query("username") String username, @Query("password") String password, Callback<User> callback);
+    @GET("/user_by_name.php/")
+    //void login(@Query("username") String username,  Callback<pojo.User> callback);
+    Call<pojo.User> login(@Query("username") String username);
 
-    Retrofit retrofit = new Retrofit.Builder().baseUrl("http://cortex.foi.hr/mtl/courses/air/").build();
+    Retrofit retrofit = new Retrofit.Builder()
+            .baseUrl("http://finance2015.3eeweb.com/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build();
 
 }

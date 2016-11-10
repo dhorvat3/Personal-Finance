@@ -51,15 +51,15 @@ public class LoginActivity extends AppCompatActivity implements DataInterface{
                 korime = (EditText) findViewById(R.id.korime);
                 lozinka = (EditText) findViewById(R.id.lozinka);
 
-                dataBulder.login(korime.getText().toString(), lozinka.getText().toString());
+                dataBulder.login(korime.getText().toString());
             }
         });
     }
 
     @Override
     public void buildData(Object data) {
-        User user = (User) data;
-        if (user.getId()!=0){
+        pojo.User user = (pojo.User) data;
+        if (user.getId()!= null){
             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
             startActivity(intent);
             Toast.makeText(getApplicationContext(), "Sucessfull login.", Toast.LENGTH_SHORT).show();
