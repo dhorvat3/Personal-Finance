@@ -10,6 +10,7 @@ import android.os.Bundle;
 import com.hr.foi.personalfinance.fragments.Flow;
 import com.hr.foi.personalfinance.fragments.Income_Expense;
 import com.hr.foi.personalfinance.fragments.Profile;
+import com.hr.foi.personalfinance.fragments.Statistics;
 import com.hr.foi.userinterface.MainMenu;
 
 public class MainActivity extends Activity {
@@ -23,7 +24,8 @@ public class MainActivity extends Activity {
 
         menu.initFrag(Flow.newInstance(getString(R.string.frag_flow)),
                 Profile.newInstance(getString(R.string.frag_profile)),
-                Income_Expense.newInstance("Prihodi/Rashodi"));
+                Income_Expense.newInstance("Prihodi/Rashodi"),
+                Statistics.newInstance("Statistika"));
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);

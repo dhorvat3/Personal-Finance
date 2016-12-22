@@ -29,4 +29,7 @@ dependencies {
 
     compile project(':userInterface')
     compile project(':database')
+
+    // statistics
+    compile 'com.jjoe64:graphview:4.2.1'
 }
