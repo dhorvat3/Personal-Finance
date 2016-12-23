@@ -18,7 +18,8 @@
             <com.jjoe64.graphview.GraphView
                 android:layout_width="match_parent"
                 android:layout_height="200dip"
-                android:layout_margin="5dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
                 android:id="@+id/lineGraphPrihodi">
 
             </com.jjoe64.graphview.GraphView>
@@ -26,7 +27,7 @@
             <com.jjoe64.graphview.GraphView
                 android:layout_width="match_parent"
                 android:layout_height="200dip"
-                android:layout_margin="5dp"
+                android:layout_marginBottom="20dp"
                 android:id="@+id/lineGraphRashodi">
 
             </com.jjoe64.graphview.GraphView>
@@ -34,7 +35,7 @@
             <com.jjoe64.graphview.GraphView
                 android:layout_width="match_parent"
                 android:layout_height="200dip"
-                android:layout_margin="5dp"
+                android:layout_marginBottom="20dp"
                 android:id="@+id/lineGraph2">
 
             </com.jjoe64.graphview.GraphView>
@@ -42,7 +43,7 @@
             <com.jjoe64.graphview.GraphView
                 android:layout_width="match_parent"
                 android:layout_height="200dip"
-                android:layout_margin="5dp"
+                android:layout_marginBottom="30dp"
                 android:id="@+id/barChart">
 
             </com.jjoe64.graphview.GraphView>
