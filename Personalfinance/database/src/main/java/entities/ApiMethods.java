@@ -5,7 +5,9 @@ import retrofit.Call;
 import retrofit.Callback;
 import retrofit.GsonConverterFactory;
 import retrofit.Retrofit;
+import retrofit.http.Body;
 import retrofit.http.GET;
+import retrofit.http.POST;
 import retrofit.http.Query;
 
 /**
@@ -16,6 +18,9 @@ public interface ApiMethods {
     @GET("/user_by_name.php/")
     //void login(@Query("username") String username,  Callback<pojo.User> callback);
     Call<pojo.User> login(@Query("username") String username);
+
+    @POST("/new_user.php")
+    Call<pojo.Response> newUser(@Body pojo.User user);
 
     Retrofit retrofit = new Retrofit.Builder()
             .baseUrl("http://finance2015.3eeweb.com/")

@@ -26,7 +26,7 @@ import helper.MockData;
  */
 
 public class LoginActivity extends AppCompatActivity implements DataInterface{
-    private Button loginButton;
+    private Button loginButton, registerButton;
     private EditText korime, lozinka;
     private DataBuilder dataBulder = new DataBuilder(this);
 
@@ -35,6 +35,7 @@ public class LoginActivity extends AppCompatActivity implements DataInterface{
         setContentView(R.layout.login_layout);
 
         loginButton = (Button) findViewById(R.id.login);
+        registerButton = (Button) findViewById(R.id.register);
 
         super.onCreate(savedInstanceState);
 
@@ -52,6 +53,13 @@ public class LoginActivity extends AppCompatActivity implements DataInterface{
                 lozinka = (EditText) findViewById(R.id.lozinka);
 
                 dataBulder.login(korime.getText().toString());
+            }
+        });
+        registerButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), RegisterActivity.class);
+                startActivity(intent);
             }
         });
     }

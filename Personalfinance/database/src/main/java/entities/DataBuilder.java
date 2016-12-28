@@ -39,19 +39,20 @@ public class DataBuilder {
                 call.buildData(data);
             }
         });
+    }
 
-        /*apiMethods.login(user, new Callback<pojo.User>() {
+    public void newUser(pojo.User user){
+        Call<pojo.Response> retrofitCall = apiMethods.newUser(user);
+        retrofitCall.enqueue(new Callback<pojo.Response>() {
             @Override
-            public void onResponse(Response<pojo.User> response, Retrofit retrofit) {
+            public void onResponse(Response<pojo.Response> response, Retrofit retrofit) {
                 call.buildData(response.body());
             }
 
             @Override
             public void onFailure(Throwable t) {
-                data = null;
-                call.buildData(data);
-
+                call.buildData(null);
             }
-        });*/
+        });
     }
 }
