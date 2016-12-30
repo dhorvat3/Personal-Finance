@@ -1,11 +1,79 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:text="Profil"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-</LinearLayout>
+        <ImageView
+            android:id="@+id/profile_cover_image"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/profile_cover_image" />
+
+        <ImageView
+            android:id="@+id/profile_image"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_below="@+id/profile_cover_image"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="-90dp"
+            android:background="@drawable/profile_image"
+            android:elevation="5dp"
+            android:padding="20dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/profile_placeholder" />
+
+        <RelativeLayout
+            android:id="@+id/profile_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/profile_cover_image"
+            android:background="@null"
+            android:layout_marginTop="-45dp">
+
+            <ImageButton
+                android:id="@+id/profile_edit"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginRight="16dp"
+                android:layout_alignParentRight="true"
+                android:src="@android:drawable/ic_menu_edit"
+                android:tint="@color/profileEditIcon"
+                android:background="@null"
+                android:elevation="5dp"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/profile_details"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/profile_cover_image"
+            android:paddingTop="40dp">
+
+            <TextView
+                android:id="@+id/profile_full_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:text="Ime Prezime" />
+
+            <TextView
+                android:id="@+id/profile_email"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/profile_full_name"
+                android:layout_centerHorizontal="true"
+                android:textSize="14sp"
+                android:text="ime.prezime@primjer.hr" />
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+</ScrollView>

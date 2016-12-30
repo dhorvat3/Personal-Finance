@@ -5,5 +5,5 @@
     <color name="colorAccent">#FF4081</color>
     <color name="actionbar_color">#0665D6</color>
     <color name="drawer_arrow_second_color">#303f9f</color>
-    <color name="navDrawer_background">#850665D6</color>
+    <color name="navDrawer_background">#eeeeee</color>
 </resources>

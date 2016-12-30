@@ -67,7 +67,7 @@ public class MainMenu extends BaseFragment {
 
             public void onDrawerOpened(View drawerView){
                 super.onDrawerOpened(drawerView);
-                getActivity().getActionBar().setTitle("ui");
+                //getActivity().getActionBar().setTitle("ui");
                 getActivity().invalidateOptionsMenu();
             }
         };

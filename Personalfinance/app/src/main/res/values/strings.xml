@@ -3,5 +3,5 @@
 
     <!-- Fragment name strings -->
     <string name="frag_flow">Flow</string>
-    <string name="frag_profile">Profile</string>
+    <string name="frag_profile">Moj profil</string>
 </resources>
