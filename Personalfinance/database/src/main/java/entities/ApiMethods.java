@@ -23,7 +23,7 @@ public interface ApiMethods {
     Call<pojo.Response> newUser(@Body pojo.User user);
 
     Retrofit retrofit = new Retrofit.Builder()
-            .baseUrl("http://finance2015.3eeweb.com/")
+            .baseUrl("http://finance2016.000webhostapp.com")
             .addConverterFactory(GsonConverterFactory.create())
             .build();
 
