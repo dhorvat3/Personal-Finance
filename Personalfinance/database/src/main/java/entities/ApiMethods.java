@@ -25,8 +25,11 @@ public interface ApiMethods {
     @GET("/category_by_user.php/")
     Call<pojo.Category> getCategories(@Query("id") Integer userId);
 
+    @POST("/new_category.php")
+    Call<pojo.Category> newCategory(@Body pojo.Category category);
+
     Retrofit retrofit = new Retrofit.Builder()
-            .baseUrl("http://finance2015.3eeweb.com/")
+            .baseUrl("http://finance2016.000webhostapp.com")
             .addConverterFactory(GsonConverterFactory.create())
             .build();
 

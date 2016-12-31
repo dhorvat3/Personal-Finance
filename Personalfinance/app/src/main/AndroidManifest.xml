@@ -24,7 +24,6 @@
             android:name=".RegisterActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait" />
-        <activity android:name=".RecyclerView"></activity>
     </application>
 
 </manifest>

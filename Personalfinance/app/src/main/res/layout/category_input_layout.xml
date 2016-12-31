@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:text="Naziv"
+        android:ems="10"
+        android:id="@+id/category_name"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        tools:ignore="HardcodedText,ObsoleteLayoutParam" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:text="Opis"
+        android:ems="10"
+        android:id="@+id/category_description"
+        android:layout_below="@+id/category_name"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        tools:ignore="HardcodedText,ObsoleteLayoutParam" />
+
+    <Button
+        android:text="Ok"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/category_ok"
+        tools:ignore="HardcodedText" />
+
+    <Button
+        android:text="Cancel"
+        android:layout_weight="0.00"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/category_cancel"
+        tools:ignore="HardcodedText,InefficientWeight" />
+
+</LinearLayout>

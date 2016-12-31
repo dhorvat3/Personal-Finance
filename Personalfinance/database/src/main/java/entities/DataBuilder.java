@@ -57,7 +57,7 @@ public class DataBuilder {
     }
 
     public void getCategories(Integer userId){
-        Call<pojo.Category> retrofitCall = apiMethods.getCategories(userId);
+        Call<pojo.Category> retrofitCall = apiMethods.getCategories(1);
         retrofitCall.enqueue((new Callback<pojo.Category>() {
             @Override
             public void onResponse(Response<pojo.Category> response, Retrofit retrofit) {
@@ -75,5 +75,20 @@ public class DataBuilder {
                 call.buildData(data);
             }
         }));
+    }
+
+    public void newCategory(pojo.Category category){
+        Call<pojo.Category> retrofitCall = apiMethods.newCategory(category);
+        retrofitCall.enqueue(new Callback<pojo.Category>() {
+            @Override
+            public void onResponse(Response<pojo.Category> response, Retrofit retrofit) {
+                call.buildData(response.body());
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                call.buildData(null);
+            }
+        });
     }
 }
