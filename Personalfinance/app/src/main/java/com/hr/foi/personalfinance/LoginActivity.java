@@ -1,10 +1,12 @@
 package com.hr.foi.personalfinance;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.icu.text.SymbolTable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -68,12 +70,23 @@ public class LoginActivity extends AppCompatActivity implements DataInterface{
     public void buildData(Object data) {
         pojo.User user = (pojo.User) data;
         if (user != null){
+            //put user id in shared preferences
+            SharedPreferences prefs = this.getPreferences(MODE_PRIVATE);
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.putString("user-id", user.getId());
+            editor.commit();
+
+            //Print to log user id from preferences
+            String id = prefs.getString("user-id", "Ne radi!");
+            Log.w("user-id-prefs" ,id);
+
+            //start new activity
             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
             startActivity(intent);
-            Toast.makeText(getApplicationContext(), "Sucessfull login.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "Uspješna prijava.", Toast.LENGTH_SHORT).show();
         }
         else {
-            Toast.makeText(getApplicationContext(), "Wrong credentials!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "Neuspješna prijava.", Toast.LENGTH_SHORT).show();
         }
     }
 }
