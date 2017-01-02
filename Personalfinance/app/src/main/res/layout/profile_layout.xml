@@ -4,6 +4,7 @@
     android:layout_height="match_parent">
 
     <RelativeLayout
+        android:id="@+id/profile_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -28,7 +29,6 @@
             android:src="@drawable/profile_placeholder" />
 
         <RelativeLayout
-            android:id="@+id/profile_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/profile_cover_image"
@@ -44,7 +44,7 @@
                 android:src="@android:drawable/ic_menu_edit"
                 android:tint="@color/profileEditIcon"
                 android:background="@null"
-                android:elevation="5dp"/>
+                android:elevation="5dp" />
 
         </RelativeLayout>
 

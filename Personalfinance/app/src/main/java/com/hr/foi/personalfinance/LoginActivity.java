@@ -71,13 +71,18 @@ public class LoginActivity extends AppCompatActivity implements DataInterface{
         pojo.User user = (pojo.User) data;
         if (user != null){
             //put user id in shared preferences
-            SharedPreferences prefs = this.getPreferences(MODE_PRIVATE);
+            // SharedPreferences prefs = this.getPreferences(MODE_PRIVATE);
+            SharedPreferences prefs = this.getSharedPreferences("login", 0);
             SharedPreferences.Editor editor = prefs.edit();
-            editor.putString("user-id", user.getId());
+            editor.putString("id", user.getId());
+            editor.putString("username", user.getUsername());
+            editor.putString("name", user.getName());
+            editor.putString("surname", user.getSurname());
+            editor.putString("email", user.getEmail());
             editor.commit();
 
             //Print to log user id from preferences
-            String id = prefs.getString("user-id", "Ne radi!");
+            String id = prefs.getString("id", "Ne radi!");
             Log.w("user-id-prefs" ,id);
 
             //start new activity

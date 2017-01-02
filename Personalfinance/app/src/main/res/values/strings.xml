@@ -4,4 +4,7 @@
     <!-- Fragment name strings -->
     <string name="frag_flow">Flow</string>
     <string name="frag_profile">Moj profil</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
