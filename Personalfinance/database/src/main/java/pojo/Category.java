@@ -11,10 +11,10 @@ public class Category {
     @SerializedName("id")
     @Expose
     private String id;
-    @SerializedName("title")
+    @SerializedName("category_title")
     @Expose
     private String title;
-    @SerializedName("description")
+    @SerializedName("category_description")
     @Expose
     private String description;
     @SerializedName("user_id")

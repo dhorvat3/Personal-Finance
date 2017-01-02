@@ -8,25 +8,25 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="textPersonName"
-        android:text="Naziv"
         android:ems="10"
         android:id="@+id/category_name"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        tools:ignore="HardcodedText,ObsoleteLayoutParam" />
+        tools:ignore="HardcodedText,ObsoleteLayoutParam"
+        android:hint="Naziv..." />
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:text="Opis"
+        android:inputType="textMultiLine"
         android:ems="10"
         android:id="@+id/category_description"
         android:layout_below="@+id/category_name"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        tools:ignore="HardcodedText,ObsoleteLayoutParam" />
+        tools:ignore="HardcodedText,ObsoleteLayoutParam"
+        android:hint="Opis..." />
 
     <Button
         android:text="Ok"
@@ -42,5 +42,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/category_cancel"
         tools:ignore="HardcodedText,InefficientWeight" />
+
+
 
 </LinearLayout>

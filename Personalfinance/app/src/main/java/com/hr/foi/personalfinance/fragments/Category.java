@@ -15,7 +15,10 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ExpandableListView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.hr.foi.personalfinance.MainActivity;
 import com.hr.foi.personalfinance.R;
@@ -25,6 +28,7 @@ import com.squareup.okhttp.Response;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import entities.DataBuilder;
@@ -35,8 +39,11 @@ import entities.DataInterface;
  */
 
 public class Category extends BaseFragment implements FragmentInterface, DataInterface{
-    private DataBuilder dataBuilder = new DataBuilder(this);
     private ListView listView;
+    private EditText name;
+    private  EditText description;
+    private DataBuilder dataBuilder = new DataBuilder(this);
+    private pojo.Category category;
 
     public static final Category newInstance(String name){
         Category f = new Category();
@@ -62,13 +69,31 @@ public class Category extends BaseFragment implements FragmentInterface, DataInt
                 dialog.show();
 
                 Button cancel = (Button) dialog.findViewById(R.id.category_cancel);
+                Button submit = (Button) dialog.findViewById(R.id.category_ok);
                 cancel.setOnClickListener(new View.OnClickListener(){
-
                     @Override
                     public void onClick(View v) {
                         dialog.cancel();
                     }
                 });
+                submit.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        name = (EditText) dialog.findViewById(R.id.category_name);
+                        description = (EditText) dialog.findViewById(R.id.category_description);
+
+                        category = new pojo.Category();
+
+                        category.setUserId("2");
+                        category.setTitle(name.getText().toString());
+                        category.setDescription(description.getText().toString());
+                        dataBuilder.newCategory(category);
+                        name.setText("");
+                        description.setText("");
+                    }
+                });
+
             }
         });
 
@@ -78,20 +103,20 @@ public class Category extends BaseFragment implements FragmentInterface, DataInt
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState){
         super.onViewCreated(view, savedInstanceState);
 
-        dataBuilder.getCategories(1);
+
+
+        //dataBuilder.getCategories(1);
     }
 
     @Override
     public void buildData(Object data) {
-        pojo.Category category = (pojo.Category) data;
-        if (category != null){
-            listView = (ListView) getActivity().findViewById(R.id.kategorije);
-            String[] items = {"prvi", "drugi", "treci", "prvi", "drugi", "treci", "prvi", "drugi", "treci", "prvi", "drugi", "treci",};
+        /*pojo.Category category = (pojo.Category) data;
+        if (category != null) {
+           listView = (ListView) getActivity().findViewById(R.id.kategorije);
+            String[] items = {"prvi", "drugi", "treci", "prvi", "drugi", "treci", "prvi", "drugi", "treci", "prvi", "drugi", "treci"};
             ArrayList arrayList = new ArrayList(Arrays.asList(((pojo.Category) data).getTitle()));
-            ArrayAdapter adapter = new ArrayAdapter(getActivity(),android.R.layout.simple_list_item_1, arrayList);
+            ArrayAdapter adapter = new ArrayAdapter(getActivity(), android.R.layout.simple_list_item_1, items);
             listView.setAdapter(adapter);
-
-        }
+        }*/
     }
-
 }

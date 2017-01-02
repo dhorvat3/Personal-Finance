@@ -25,7 +25,7 @@ public interface ApiMethods {
     @GET("/category_by_user.php/")
     Call<pojo.Category> getCategories(@Query("id") Integer userId);
 
-    @POST("/new_category.php")
+    @POST("/add_category.php")
     Call<pojo.Category> newCategory(@Body pojo.Category category);
 
     Retrofit retrofit = new Retrofit.Builder()
