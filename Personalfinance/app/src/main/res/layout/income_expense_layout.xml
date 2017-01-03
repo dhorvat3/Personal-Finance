@@ -2,84 +2,12 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent">
 
-    <RadioButton
-        android:text="Prihod"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginLeft="55dp"
-        android:layout_marginStart="55dp"
-        android:layout_marginTop="18dp"
-        android:id="@+id/prihod" />
-
-    <RadioButton
-        android:text="Rashod"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="81dp"
-        android:layout_marginStart="81dp"
-        android:id="@+id/rashod"
-        android:layout_alignBaseline="@+id/prihod"
-        android:layout_alignBottom="@+id/prihod"
-        android:layout_toRightOf="@+id/prihod"
-        android:layout_toEndOf="@+id/prihod" />
-
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="textMultiLine"
-        android:ems="10"
-        android:layout_below="@+id/prihod"
-        android:layout_alignRight="@+id/rashod"
-        android:layout_alignEnd="@+id/rashod"
-        android:layout_marginTop="21dp"
-        android:id="@+id/napomena"
-        android:text="Napomena" />
-
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="date"
-        android:ems="10"
-        android:id="@+id/datum"
-        android:text="Datum"
-        android:layout_below="@+id/napomena"
-        android:layout_alignLeft="@+id/napomena"
-        android:layout_alignStart="@+id/napomena" />
-
-    <Spinner
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/datum"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginLeft="23dp"
-        android:layout_marginStart="23dp"
-        android:layout_marginTop="11dp"
-        android:id="@+id/kategorija" />
-
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="numberDecimal"
-        android:ems="10"
-        android:layout_marginTop="12dp"
-        android:id="@+id/iznos"
-        android:layout_below="@+id/kategorija"
-        android:layout_alignLeft="@+id/datum"
-        android:layout_alignStart="@+id/datum"
-        android:text="Iznos" />
-
     <Button
-        android:text="OK"
+        android:text="Dodaj"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/iznos"
-        android:layout_alignLeft="@+id/rashod"
-        android:layout_alignStart="@+id/rashod"
-        android:layout_marginTop="99dp"
-        android:id="@+id/ok" />
-
+        android:id="@+id/AddIncomeExpense"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"/>
 </RelativeLayout>

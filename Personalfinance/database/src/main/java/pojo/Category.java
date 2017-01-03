@@ -3,76 +3,30 @@ package pojo;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
- * Created by Filip on 29.12.2016..
+ * Created by Filip on 3.1.2017..
  */
 
 public class Category {
-    @SerializedName("id")
+    @SerializedName("category")
     @Expose
-    private String id;
-    @SerializedName("category_title")
-    @Expose
-    private String title;
-    @SerializedName("category_description")
-    @Expose
-    private String description;
-    @SerializedName("user_id")
-    @Expose
-    private String userId;
-    @SerializedName("category_id")
-    @Expose
-    private String categoryId;
-    @SerializedName("active")
-    @Expose
-    private String active;
+    private List<Category_> category = new ArrayList<Category_>();
 
-    public String getId() {
-        return id;
+    public Category() {
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public Category(List<Category_> category) {
+        this.category = category;
     }
 
-    public String getTitle() {
-        return title;
+    public List<Category_> getCategory() {
+        return category;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setCategory(List<Category_> category) {
+        this.category = category;
     }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
-    public String getCategoryId() {
-        return categoryId;
-    }
-
-    public void setCategoryId(String categoryId) {
-        this.categoryId = categoryId;
-    }
-
-    public String getActive() {
-        return active;
-    }
-
-    public void setActive(String active) {
-        this.active = active;
-    }
-
 }

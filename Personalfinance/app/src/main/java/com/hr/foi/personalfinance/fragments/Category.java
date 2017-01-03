@@ -1,38 +1,26 @@
 package com.hr.foi.personalfinance.fragments;
 
-import android.app.Activity;
 import android.app.Dialog;
-import android.app.ListActivity;
-import android.content.Context;
-import android.icu.text.AlphabeticIndex;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AlertDialog;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ExpandableListView;
 import android.widget.ListView;
-import android.widget.Toast;
 
-import com.hr.foi.personalfinance.MainActivity;
 import com.hr.foi.personalfinance.R;
 import com.hr.foi.userinterface.BaseFragment;
 import com.hr.foi.userinterface.FragmentInterface;
-import com.squareup.okhttp.Response;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.LinkedHashMap;
-import java.util.List;
 
 import entities.DataBuilder;
 import entities.DataInterface;
+import pojo.Category_;
 
 /**
  * Created by Filip on 23.12.2016..
@@ -43,7 +31,7 @@ public class Category extends BaseFragment implements FragmentInterface, DataInt
     private EditText name;
     private  EditText description;
     private DataBuilder dataBuilder = new DataBuilder(this);
-    private pojo.Category category;
+    private Category_ category;
 
     public static final Category newInstance(String name){
         Category f = new Category();
@@ -83,7 +71,7 @@ public class Category extends BaseFragment implements FragmentInterface, DataInt
                         name = (EditText) dialog.findViewById(R.id.category_name);
                         description = (EditText) dialog.findViewById(R.id.category_description);
 
-                        category = new pojo.Category();
+                        category = new Category_();
 
                         category.setUserId("2");
                         category.setTitle(name.getText().toString());
@@ -105,18 +93,30 @@ public class Category extends BaseFragment implements FragmentInterface, DataInt
 
 
 
-        //dataBuilder.getCategories(1);
+        dataBuilder.getCategories(1);
     }
 
     @Override
     public void buildData(Object data) {
-        /*pojo.Category category = (pojo.Category) data;
-        if (category != null) {
+        pojo.Category category1 = (pojo.Category) data;
+        if (category1 != null) {
            listView = (ListView) getActivity().findViewById(R.id.kategorije);
             String[] items = {"prvi", "drugi", "treci", "prvi", "drugi", "treci", "prvi", "drugi", "treci", "prvi", "drugi", "treci"};
-            ArrayList arrayList = new ArrayList(Arrays.asList(((pojo.Category) data).getTitle()));
+            ArrayList<Category_> categories = new ArrayList<Category_>();
+
+            for (Category_ item : category1.getCategory()){
+                categories.add(item);
+            }
+
+            String[] listItems = new String[categories.size()];
+            for (int i=0; i<categories.size(); i++){
+                listItems[i] = categories.get(i).getTitle();
+            }
+
+            System.out.println(category1);
+            System.out.println(categories.size());
             ArrayAdapter adapter = new ArrayAdapter(getActivity(), android.R.layout.simple_list_item_1, items);
             listView.setAdapter(adapter);
-        }*/
+        }
     }
 }

@@ -29,14 +29,14 @@
         android:hint="Opis..." />
 
     <Button
-        android:text="Ok"
+        android:text="Spremi"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/category_ok"
         tools:ignore="HardcodedText" />
 
     <Button
-        android:text="Cancel"
+        android:text="Zatvori"
         android:layout_weight="0.00"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

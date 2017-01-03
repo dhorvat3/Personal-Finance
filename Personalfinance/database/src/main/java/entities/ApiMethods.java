@@ -2,7 +2,6 @@ package entities;
 
 import pojo.*;
 import retrofit.Call;
-import retrofit.Callback;
 import retrofit.GsonConverterFactory;
 import retrofit.Retrofit;
 import retrofit.http.Body;
@@ -26,10 +25,10 @@ public interface ApiMethods {
     Call<pojo.Category> getCategories(@Query("id") Integer userId);
 
     @POST("/add_category.php")
-    Call<pojo.Category> newCategory(@Body pojo.Category category);
+    Call<Category_> newCategory(@Body Category_ category);
 
     Retrofit retrofit = new Retrofit.Builder()
-            .baseUrl("http://finance2016.000webhostapp.com")
+            .baseUrl("http://finance2015.3eeweb.com/")
             .addConverterFactory(GsonConverterFactory.create())
             .build();
 
