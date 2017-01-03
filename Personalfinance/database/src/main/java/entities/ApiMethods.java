@@ -22,6 +22,9 @@ public interface ApiMethods {
     @POST("/new_user.php")
     Call<pojo.Response> newUser(@Body pojo.User user);
 
+    @POST("/edit_user.php")
+    Call<pojo.Response> editUser(@Body pojo.User user);
+
     Retrofit retrofit = new Retrofit.Builder()
             .baseUrl("http://finance2016.000webhostapp.com")
             .addConverterFactory(GsonConverterFactory.create())

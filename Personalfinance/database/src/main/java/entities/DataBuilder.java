@@ -55,4 +55,19 @@ public class DataBuilder {
             }
         });
     }
+
+    public void editUser(pojo.User user){
+        Call<pojo.Response> retrofitCall = apiMethods.editUser(user);
+        retrofitCall.enqueue(new Callback<pojo.Response>() {
+            @Override
+            public void onResponse(Response<pojo.Response> response, Retrofit retrofit) {
+
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+
+            }
+        });
+    }
 }
