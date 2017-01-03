@@ -2,7 +2,6 @@ package entities;
 
 import pojo.*;
 import retrofit.Call;
-import retrofit.Callback;
 import retrofit.GsonConverterFactory;
 import retrofit.Retrofit;
 import retrofit.http.Body;
@@ -22,8 +21,16 @@ public interface ApiMethods {
     @POST("/new_user.php")
     Call<pojo.Response> newUser(@Body pojo.User user);
 
+<<<<<<< HEAD
     @POST("/edit_user.php")
     Call<pojo.Response> editUser(@Body pojo.User user);
+=======
+    @GET("/category_by_user.php/")
+    Call<pojo.Category> getCategories(@Query("id") Integer userId);
+
+    @POST("/add_category.php")
+    Call<Category_> newCategory(@Body Category_ category);
+>>>>>>> filips
 
     Retrofit retrofit = new Retrofit.Builder()
             .baseUrl("http://finance2016.000webhostapp.com")

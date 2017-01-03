@@ -1,7 +1,6 @@
 package entities;
 
 import pojo.*;
-import pojo.User;
 import retrofit.Call;
 import retrofit.Callback;
 import retrofit.Response;
@@ -56,18 +55,57 @@ public class DataBuilder {
         });
     }
 
+<<<<<<< HEAD
     public void editUser(pojo.User user){
         Call<pojo.Response> retrofitCall = apiMethods.editUser(user);
         retrofitCall.enqueue(new Callback<pojo.Response>() {
             @Override
             public void onResponse(Response<pojo.Response> response, Retrofit retrofit) {
 
+=======
+    public void getCategories(Integer userId){
+        Call<pojo.Category> retrofitCall = apiMethods.getCategories(userId);
+        retrofitCall.enqueue((new Callback<Category>() {
+            @Override
+            public void onResponse(Response<pojo.Category> response, Retrofit retrofit) {
+                if(response.body() != null) {
+                    data = response.body();
+                } else {
+                    data = null;
+                }
+                call.buildData(data);
+>>>>>>> filips
             }
 
             @Override
             public void onFailure(Throwable t) {
+<<<<<<< HEAD
 
             }
         });
     }
+=======
+                data = null;
+                call.buildData(data);
+            }
+        }));
+    }
+
+    public void newCategory(Category_ category){
+        Call<Category_> retrofitCall = apiMethods.newCategory(category);
+        retrofitCall.enqueue(new Callback<Category_>() {
+            @Override
+            public void onResponse(Response<Category_> response, Retrofit retrofit) {
+                call.buildData(response.body());
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                call.buildData(null);
+            }
+        });
+    }
+
+
+>>>>>>> filips
 }

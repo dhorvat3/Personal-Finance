@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 
+import com.hr.foi.personalfinance.fragments.Category;
 import com.hr.foi.personalfinance.fragments.Flow;
 import com.hr.foi.personalfinance.fragments.Income_Expense;
 import com.hr.foi.personalfinance.fragments.Profile;
@@ -25,7 +26,8 @@ public class MainActivity extends Activity {
         menu.initFrag(Flow.newInstance(getString(R.string.frag_flow)),
                 Profile.newInstance(getString(R.string.frag_profile)),
                 Income_Expense.newInstance("Prihodi/Rashodi"),
-                Statistics.newInstance("Statistika"));
+                Statistics.newInstance("Statistika"),
+                Category.newInstance("Kategorije"));
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
