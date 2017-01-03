@@ -54,6 +54,7 @@ public class DataBuilder {
             }
         });
     }
+<<<<<<< HEAD
 
 <<<<<<< HEAD
     public void editUser(pojo.User user){
@@ -108,4 +109,6 @@ public class DataBuilder {
 
 
 >>>>>>> filips
+=======
+>>>>>>> parent of 1a8d388... Skripte
 }
