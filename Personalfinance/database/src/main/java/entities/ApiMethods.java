@@ -20,21 +20,16 @@ public interface ApiMethods {
 
     @POST("/new_user.php")
     Call<pojo.Response> newUser(@Body pojo.User user);
-
-<<<<<<< HEAD
-<<<<<<< HEAD
+    
     @POST("/edit_user.php")
     Call<pojo.Response> editUser(@Body pojo.User user);
-=======
+
     @GET("/category_by_user.php/")
     Call<pojo.Category> getCategories(@Query("id") Integer userId);
 
     @POST("/add_category.php")
     Call<Category_> newCategory(@Body Category_ category);
->>>>>>> filips
 
-=======
->>>>>>> parent of 1a8d388... Skripte
     Retrofit retrofit = new Retrofit.Builder()
             .baseUrl("http://finance2016.000webhostapp.com")
             .addConverterFactory(GsonConverterFactory.create())
