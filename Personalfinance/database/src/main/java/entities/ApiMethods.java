@@ -28,7 +28,7 @@ public interface ApiMethods {
     Call<Category_> newCategory(@Body Category_ category);
 
     Retrofit retrofit = new Retrofit.Builder()
-            .baseUrl("http://finance2015.3eeweb.com/")
+            .baseUrl("http://finance2016.000webhostapp.com")
             .addConverterFactory(GsonConverterFactory.create())
             .build();
 

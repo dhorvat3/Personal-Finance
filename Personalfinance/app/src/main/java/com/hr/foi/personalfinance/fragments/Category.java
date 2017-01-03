@@ -93,7 +93,7 @@ public class Category extends BaseFragment implements FragmentInterface, DataInt
 
 
 
-        dataBuilder.getCategories(1);
+        dataBuilder.getCategories(2);
     }
 
     @Override
@@ -115,7 +115,7 @@ public class Category extends BaseFragment implements FragmentInterface, DataInt
 
             System.out.println(category1);
             System.out.println(categories.size());
-            ArrayAdapter adapter = new ArrayAdapter(getActivity(), android.R.layout.simple_list_item_1, items);
+            ArrayAdapter adapter = new ArrayAdapter(getActivity(), android.R.layout.simple_list_item_1, listItems);
             listView.setAdapter(adapter);
         }
     }
