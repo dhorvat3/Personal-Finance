@@ -63,11 +63,15 @@ public class DataBuilder {
             @Override
             public void onFailure(Throwable t) {
 
+
             }
         });
     }
 
-    public void getCategories(Integer userId) {
+
+
+    public void getCategories(String userId) {
+
         Call<pojo.Category> retrofitCall = apiMethods.getCategories(userId);
         retrofitCall.enqueue(new Callback<Category>() {
             @Override
@@ -84,12 +88,11 @@ public class DataBuilder {
             @Override
             public void onFailure(Throwable t) {
 
+                data = null;
+                call.buildData(data);
             }
         });
     }
-
-
-
 
     public void newCategory(Category_ category){
         Call<Category_> retrofitCall = apiMethods.newCategory(category);
@@ -106,4 +109,24 @@ public class DataBuilder {
         });
     }
 
+    public void getRecords(String userId){
+        Call<pojo.Record> retrofitCall = apiMethods.getRecords(userId);
+        retrofitCall.enqueue(new Callback<Record>() {
+            @Override
+            public void onResponse(Response<Record> response, Retrofit retrofit) {
+                if (response.body() != null) {
+                    data = response.body();
+                } else {
+                    data = null;
+                }
+                call.buildData(data);
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                data = null;
+                call.buildData(data);
+            }
+        });
+    }
 }

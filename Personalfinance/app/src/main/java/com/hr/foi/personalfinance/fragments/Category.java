@@ -1,6 +1,8 @@
 package com.hr.foi.personalfinance.fragments;
 
 import android.app.Dialog;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -9,17 +11,23 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ExpandableListView;
 import android.widget.ListView;
 
 import com.hr.foi.personalfinance.R;
+import com.hr.foi.personalfinance.adapter.MyListAdapter;
+import com.hr.foi.personalfinance.info.DetailInfo;
+import com.hr.foi.personalfinance.info.HeaderInfo;
 import com.hr.foi.userinterface.BaseFragment;
 import com.hr.foi.userinterface.FragmentInterface;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedHashMap;
 
 import entities.DataBuilder;
 import entities.DataInterface;
+import entities.User;
 import pojo.Category_;
 
 /**
@@ -27,11 +35,15 @@ import pojo.Category_;
  */
 
 public class Category extends BaseFragment implements FragmentInterface, DataInterface{
-    private ListView listView;
+    private ExpandableListView listView;
     private EditText name;
     private  EditText description;
     private DataBuilder dataBuilder = new DataBuilder(this);
     private Category_ category;
+    private LinkedHashMap<String, HeaderInfo> myCategories = new LinkedHashMap<String, HeaderInfo>();
+    private ArrayList<HeaderInfo> deptList = new ArrayList<HeaderInfo>();
+    private MyListAdapter listAdapter;
+    private SharedPreferences preferences;
 
     public static final Category newInstance(String name){
         Category f = new Category();
@@ -72,11 +84,16 @@ public class Category extends BaseFragment implements FragmentInterface, DataInt
                         description = (EditText) dialog.findViewById(R.id.category_description);
 
                         category = new Category_();
-
-                        category.setUserId("2");
+                        String userId = userID();
+                        category.setUserId(userId);
                         category.setTitle(name.getText().toString());
                         category.setDescription(description.getText().toString());
                         dataBuilder.newCategory(category);
+
+                        int groupPosition = addCategory(name.getText().toString(),description.getText().toString());
+                        listAdapter.notifyDataSetChanged();
+                        listView.setSelectedGroup(groupPosition);
+
                         name.setText("");
                         description.setText("");
                     }
@@ -91,16 +108,16 @@ public class Category extends BaseFragment implements FragmentInterface, DataInt
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState){
         super.onViewCreated(view, savedInstanceState);
 
+        String userId = userID();
 
-
-        dataBuilder.getCategories(2);
+        dataBuilder.getCategories(userId);
     }
 
     @Override
     public void buildData(Object data) {
         pojo.Category category1 = (pojo.Category) data;
         if (category1 != null) {
-           listView = (ListView) getActivity().findViewById(R.id.kategorije);
+           listView = (ExpandableListView) getActivity().findViewById(R.id.kategorije);
             String[] items = {"prvi", "drugi", "treci", "prvi", "drugi", "treci", "prvi", "drugi", "treci", "prvi", "drugi", "treci"};
             ArrayList<Category_> categories = new ArrayList<Category_>();
 
@@ -111,12 +128,68 @@ public class Category extends BaseFragment implements FragmentInterface, DataInt
             String[] listItems = new String[categories.size()];
             for (int i=0; i<categories.size(); i++){
                 listItems[i] = categories.get(i).getTitle();
+                addCategory(categories.get(i).getTitle(), categories.get(i).getDescription());
             }
+            listAdapter = new MyListAdapter(getActivity(), deptList);
+            //ArrayAdapter adapter = new ArrayAdapter(getActivity(), android.R.layout.simple_list_item_1, listItems);
+            listView.setAdapter(listAdapter);
 
-            System.out.println(category1);
-            System.out.println(categories.size());
-            ArrayAdapter adapter = new ArrayAdapter(getActivity(), android.R.layout.simple_list_item_1, listItems);
-            listView.setAdapter(adapter);
+
+            listView.setOnChildClickListener(myListItemClicked);
+            listView.setOnGroupClickListener(myListGroupClicked);
         }
+    }
+
+    private ExpandableListView.OnChildClickListener myListItemClicked =  new ExpandableListView.OnChildClickListener() {
+
+        public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
+
+            HeaderInfo headerInfo = deptList.get(groupPosition);
+            DetailInfo detailInfo =  headerInfo.getCategoryList().get(childPosition);
+            return false;
+        }
+    };
+    private ExpandableListView.OnGroupClickListener myListGroupClicked =  new ExpandableListView.OnGroupClickListener() {
+
+        public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
+
+            HeaderInfo headerInfo = deptList.get(groupPosition);
+            return false;
+        }
+
+    };
+
+    private int addCategory(String name, String description){
+        int groupPosition = 0;
+
+        HeaderInfo headerInfo = myCategories.get(name);
+
+        if(headerInfo == null){
+            headerInfo = new HeaderInfo();
+            headerInfo.setName(name);
+            myCategories.put(name, headerInfo);
+            deptList.add(headerInfo);
+        }
+
+        ArrayList<DetailInfo> categoryList = headerInfo.getCategoryList();
+
+        int listSize = categoryList.size();
+
+        listSize++;
+
+        DetailInfo detailInfo = new DetailInfo();
+        detailInfo.setSequence(String.valueOf(listSize));
+        detailInfo.setName(description);
+        categoryList.add(detailInfo);
+        headerInfo.setCategoryList(categoryList);
+
+        groupPosition = deptList.indexOf(headerInfo);
+        return groupPosition;
+    }
+
+    private String userID(){
+        preferences = getActivity().getSharedPreferences("login", 0);
+        String status = preferences.getString("id", "");
+        return  status;
     }
 }
