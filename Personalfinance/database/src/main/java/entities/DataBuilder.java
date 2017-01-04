@@ -129,4 +129,19 @@ public class DataBuilder {
             }
         });
     }
+
+    public void newRecord(Record_ record){
+        Call<Record_> retrofitCall = apiMethods.newRecord(record);
+        retrofitCall.enqueue(new Callback<Record_>() {
+            @Override
+            public void onResponse(Response<Record_> response, Retrofit retrofit) {
+                call.buildData(response.body());
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                call.buildData(null);
+            }
+        });
+    }
 }

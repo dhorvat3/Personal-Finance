@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.ListView;
+import android.widget.Spinner;
 
 import com.hr.foi.personalfinance.R;
 import com.hr.foi.personalfinance.adapter.MyListAdapter;
@@ -37,13 +38,14 @@ import pojo.Category_;
 public class Category extends BaseFragment implements FragmentInterface, DataInterface{
     private ExpandableListView listView;
     private EditText name;
-    private  EditText description;
+    private EditText description;
     private DataBuilder dataBuilder = new DataBuilder(this);
     private Category_ category;
     private LinkedHashMap<String, HeaderInfo> myCategories = new LinkedHashMap<String, HeaderInfo>();
     private ArrayList<HeaderInfo> deptList = new ArrayList<HeaderInfo>();
     private MyListAdapter listAdapter;
     private SharedPreferences preferences;
+
 
     public static final Category newInstance(String name){
         Category f = new Category();
@@ -118,7 +120,7 @@ public class Category extends BaseFragment implements FragmentInterface, DataInt
         pojo.Category category1 = (pojo.Category) data;
         if (category1 != null) {
            listView = (ExpandableListView) getActivity().findViewById(R.id.kategorije);
-            String[] items = {"prvi", "drugi", "treci", "prvi", "drugi", "treci", "prvi", "drugi", "treci", "prvi", "drugi", "treci"};
+
             ArrayList<Category_> categories = new ArrayList<Category_>();
 
             for (Category_ item : category1.getCategory()){
@@ -130,6 +132,7 @@ public class Category extends BaseFragment implements FragmentInterface, DataInt
                 listItems[i] = categories.get(i).getTitle();
                 addCategory(categories.get(i).getTitle(), categories.get(i).getDescription());
             }
+
             listAdapter = new MyListAdapter(getActivity(), deptList);
             //ArrayAdapter adapter = new ArrayAdapter(getActivity(), android.R.layout.simple_list_item_1, listItems);
             listView.setAdapter(listAdapter);

@@ -33,6 +33,9 @@ public interface ApiMethods {
     @GET("/records_by_user.php/")
     Call<pojo.Record> getRecords(@Query("id") String userId);
 
+    @POST("/new_record.php")
+    Call<Record_> newRecord(@Body Record_ category);
+
     Retrofit retrofit = new Retrofit.Builder()
             .baseUrl("http://finance2016.000webhostapp.com")
             .addConverterFactory(GsonConverterFactory.create())

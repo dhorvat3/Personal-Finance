@@ -59,7 +59,7 @@
         android:layout_marginLeft="23dp"
         android:layout_marginStart="23dp"
         android:layout_marginTop="11dp"
-        android:id="@+id/kategorija" />
+        android:id="@+id/sp_kategorija" />
 
     <EditText
         android:layout_width="match_parent"
@@ -68,7 +68,7 @@
         android:ems="10"
         android:layout_marginTop="12dp"
         android:id="@+id/iznos"
-        android:layout_below="@+id/kategorija"
+        android:layout_below="@+id/sp_kategorija"
         android:layout_alignLeft="@+id/datum"
         android:layout_alignStart="@+id/datum"
         android:hint="Iznos" />
