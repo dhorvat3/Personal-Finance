@@ -4,10 +4,66 @@
     android:layout_height="match_parent"
     tools:context="com.hr.foi.personalfinance.fragments.ProfileEdit">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/first_name"
+            android:layout_width="fill_parent"
+            android:layout_height="50dp"
+            android:hint="Ime"
+            android:maxLines="1"
+            android:inputType="textCapWords" />
+
+        <EditText
+            android:id="@+id/last_name"
+            android:layout_width="fill_parent"
+            android:layout_height="50dp"
+            android:layout_below="@+id/first_name"
+            android:hint="Prezime"
+            android:maxLines="1"
+            android:inputType="textCapWords" />
+
+        <EditText
+            android:id="@+id/email"
+            android:layout_width="fill_parent"
+            android:layout_height="50dp"
+            android:layout_below="@+id/last_name"
+            android:hint="E-mail"
+            android:maxLines="1"
+            android:inputType="textEmailAddress" />
+
+        <EditText
+            android:id="@+id/password"
+            android:layout_width="fill_parent"
+            android:layout_height="50dp"
+            android:layout_below="@+id/email"
+            android:hint="Lozinka"
+            android:maxLines="1"
+            android:inputType="textPassword" />
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/password">
+
+            <Button
+                android:id="@+id/cancel_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Odustani" />
+
+            <Button
+                android:id="@+id/submit_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Spremi" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
 
 </FrameLayout>

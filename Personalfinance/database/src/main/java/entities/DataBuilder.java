@@ -54,21 +54,21 @@ public class DataBuilder {
             }
         });
     }
+
     public void editUser(pojo.User user){
         Call<pojo.Response> retrofitCall = apiMethods.editUser(user);
         retrofitCall.enqueue(new Callback<pojo.Response>() {
             @Override
-            public void onResponse(Response<pojo.Response> response, Retrofit retrofit) {}
+            public void onResponse(Response<pojo.Response> response, Retrofit retrofit) {
+                call.buildData(response.body());
+            }
 
             @Override
             public void onFailure(Throwable t) {
-
-
+                call.buildData(null);
             }
         });
     }
-
-
 
     public void getCategories(String userId) {
 
@@ -82,12 +82,10 @@ public class DataBuilder {
                     data = null;
                 }
                 call.buildData(data);
-
             }
 
             @Override
             public void onFailure(Throwable t) {
-
                 data = null;
                 call.buildData(data);
             }

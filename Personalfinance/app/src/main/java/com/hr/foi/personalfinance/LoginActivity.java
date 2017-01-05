@@ -79,6 +79,7 @@ public class LoginActivity extends AppCompatActivity implements DataInterface{
             editor.putString("name", user.getName());
             editor.putString("surname", user.getSurname());
             editor.putString("email", user.getEmail());
+            editor.putString("password", user.getPassword());
             editor.commit();
 
             //Print to log user id from preferences

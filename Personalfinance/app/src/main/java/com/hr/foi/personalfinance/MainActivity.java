@@ -21,7 +21,8 @@ public class MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         ActionBar bar = getActionBar();
-        bar.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#0665D6")));
+        bar.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#3F51B5")));
+        bar.setDisplayShowHomeEnabled(false);
 
         menu.initFrag(Flow.newInstance(getString(R.string.frag_flow)),
                 Profile.newInstance(getString(R.string.frag_profile)),

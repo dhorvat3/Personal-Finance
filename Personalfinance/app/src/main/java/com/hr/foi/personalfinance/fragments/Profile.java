@@ -19,6 +19,8 @@ import com.hr.foi.userinterface.FragmentInterface;
 
 public class Profile extends BaseFragment implements FragmentInterface {
 
+    private SharedPreferences prefs;
+
     public static final Profile newInstance(String name){
         Profile f = new Profile();
         f.setName(name);
@@ -45,11 +47,11 @@ public class Profile extends BaseFragment implements FragmentInterface {
      */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
+        prefs = this.getActivity().getSharedPreferences("login", 0);
+
         View view = inflater.inflate(R.layout.profile_layout, container, false);
         TextView profileFullName = (TextView) view.findViewById(R.id.profile_full_name);
         TextView profileEmail = (TextView) view.findViewById(R.id.profile_email);
-
-        SharedPreferences prefs = this.getActivity().getSharedPreferences("login", 0);
 
         profileFullName.setText(prefs.getString("name", "") + " " + prefs.getString("surname", ""));
         profileEmail.setText(prefs.getString("email", ""));
@@ -73,11 +75,28 @@ public class Profile extends BaseFragment implements FragmentInterface {
             public void onClick(View v) {
                 int fragmentId = ((ViewGroup)(getView().getParent())).getId();
 
-                getFragmentManager().beginTransaction().replace(fragmentId, new ProfileEdit()).commit();
+                getFragmentManager().beginTransaction().replace(fragmentId, new ProfileEdit()).addToBackStack(null).commit();
             }
         });
 
         super.onViewCreated(view, savedInstanceState);
     }
 
+    @Override
+    public void onResume() {
+        if (prefs.contains("profile-edited")) {
+            TextView profileFullName = (TextView) getView().findViewById(R.id.profile_full_name);
+            TextView profileEmail = (TextView) getView().findViewById(R.id.profile_email);
+
+            profileFullName.setText(prefs.getString("name", "") + " " + prefs.getString("surname", ""));
+            profileEmail.setText(prefs.getString("email", ""));
+
+            SharedPreferences.Editor editor = prefs.edit();
+
+            editor.remove("profile-edited");
+            editor.commit();
+        }
+
+        super.onResume();
+    }
 }
