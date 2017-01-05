@@ -3,6 +3,7 @@ package com.hr.foi.personalfinance.fragments;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.icu.util.TimeZone;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -126,6 +127,7 @@ public class Category extends BaseFragment implements FragmentInterface, DataInt
             myCategories.clear();
             deptList.clear();
 
+
             for (Category_ item : category1.getCategory()){
                 categories.add(item);
             }
@@ -135,31 +137,8 @@ public class Category extends BaseFragment implements FragmentInterface, DataInt
             }
             listAdapter = new MyListAdapter(getActivity(), deptList);
             listView.setAdapter(listAdapter);
-
-            listView.setOnChildClickListener(myListItemClicked);
-            listView.setOnGroupClickListener(myListGroupClicked);
         }
     }
-
-
-    private ExpandableListView.OnChildClickListener myListItemClicked =  new ExpandableListView.OnChildClickListener() {
-
-        public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
-
-            HeaderInfo headerInfo = deptList.get(groupPosition);
-            DetailInfo detailInfo =  headerInfo.getCategoryList().get(childPosition);
-            return false;
-        }
-    };
-    private ExpandableListView.OnGroupClickListener myListGroupClicked =  new ExpandableListView.OnGroupClickListener() {
-
-        public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
-
-            HeaderInfo headerInfo = deptList.get(groupPosition);
-            return false;
-        }
-
-    };
 
     private int addCategory(String name, String description){
         int groupPosition = 0;

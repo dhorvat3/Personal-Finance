@@ -23,7 +23,8 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        tools:ignore="HardcodedText" />
+        tools:ignore="HardcodedText"
+        style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog" />
 
 
 </RelativeLayout>

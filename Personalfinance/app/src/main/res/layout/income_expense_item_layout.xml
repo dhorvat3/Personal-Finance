@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent" android:layout_height="match_parent"
     android:orientation="vertical">
 
@@ -13,19 +14,21 @@
         android:layout_marginLeft="55dp"
         android:layout_marginStart="55dp"
         android:layout_marginTop="18dp"
-        android:id="@+id/prihod" />
+        android:id="@+id/prihod"
+        tools:ignore="HardcodedText,ObsoleteLayoutParam" />
 
     <RadioButton
         android:text="Rashod"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="81dp"
-        android:layout_marginStart="81dp"
+        android:layout_marginLeft="55dp"
+        android:layout_marginStart="55dp"
         android:id="@+id/rashod"
         android:layout_alignBaseline="@+id/prihod"
         android:layout_alignBottom="@+id/prihod"
         android:layout_toRightOf="@+id/prihod"
-        android:layout_toEndOf="@+id/prihod" />
+        android:layout_toEndOf="@+id/prihod"
+        tools:ignore="HardcodedText,ObsoleteLayoutParam" />
 
     <EditText
         android:layout_width="match_parent"
@@ -35,20 +38,22 @@
         android:layout_below="@+id/prihod"
         android:layout_alignRight="@+id/rashod"
         android:layout_alignEnd="@+id/rashod"
-        android:layout_marginTop="21dp"
+        android:layout_marginTop="10dp"
         android:id="@+id/napomena"
-        android:hint="Napomena" />
+        android:hint="Napomena"
+        tools:ignore="HardcodedText,ObsoleteLayoutParam" />
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="date"
+        android:inputType="date|time"
         android:ems="10"
         android:id="@+id/datum"
         android:layout_below="@+id/napomena"
         android:layout_alignLeft="@+id/napomena"
         android:layout_alignStart="@+id/napomena"
-        android:hint="Datum" />
+        android:hint="Datum"
+        tools:ignore="HardcodedText,ObsoleteLayoutParam" />
 
     <Spinner
         android:layout_width="match_parent"
@@ -59,7 +64,8 @@
         android:layout_marginLeft="23dp"
         android:layout_marginStart="23dp"
         android:layout_marginTop="11dp"
-        android:id="@+id/sp_kategorija" />
+        android:id="@+id/sp_kategorija"
+        tools:ignore="ObsoleteLayoutParam" />
 
     <EditText
         android:layout_width="match_parent"
@@ -71,7 +77,8 @@
         android:layout_below="@+id/sp_kategorija"
         android:layout_alignLeft="@+id/datum"
         android:layout_alignStart="@+id/datum"
-        android:hint="Iznos" />
+        android:hint="Iznos"
+        tools:ignore="HardcodedText,ObsoleteLayoutParam" />
 
     <Button
         android:text="Spremi"
@@ -80,13 +87,16 @@
         android:layout_below="@+id/iznos"
         android:layout_alignLeft="@+id/rashod"
         android:layout_alignStart="@+id/rashod"
-        android:layout_marginTop="99dp"
-        android:id="@+id/ok" />
+        android:id="@+id/ok"
+        style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog"
+        tools:ignore="HardcodedText,ObsoleteLayoutParam" />
 
     <Button
         android:text="Zatvori"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/cancel" />
+        android:id="@+id/cancel"
+        style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog"
+        tools:ignore="HardcodedText" />
 
 </LinearLayout>

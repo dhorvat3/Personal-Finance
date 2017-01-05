@@ -34,7 +34,7 @@ public interface ApiMethods {
     Call<pojo.Record> getRecords(@Query("id") String userId);
 
     @POST("/new_record.php")
-    Call<Record_> newRecord(@Body Record_ category);
+    Call<pojo.Response> newRecord(@Body pojo.Record_ record);
 
     Retrofit retrofit = new Retrofit.Builder()
             .baseUrl("http://finance2016.000webhostapp.com")

@@ -129,10 +129,10 @@ public class DataBuilder {
     }
 
     public void newRecord(Record_ record){
-        Call<Record_> retrofitCall = apiMethods.newRecord(record);
-        retrofitCall.enqueue(new Callback<Record_>() {
+        Call<pojo.Response> retrofitCall = apiMethods.newRecord(record);
+        retrofitCall.enqueue(new Callback<pojo.Response>() {
             @Override
-            public void onResponse(Response<Record_> response, Retrofit retrofit) {
+            public void onResponse(Response<pojo.Response> response, Retrofit retrofit) {
                 call.buildData(response.body());
             }
 

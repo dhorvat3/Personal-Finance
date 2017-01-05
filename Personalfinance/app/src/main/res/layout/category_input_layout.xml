@@ -33,7 +33,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/category_ok"
-        tools:ignore="HardcodedText" />
+        tools:ignore="HardcodedText"
+        style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog" />
 
     <Button
         android:text="Zatvori"
@@ -41,7 +42,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/category_cancel"
-        tools:ignore="HardcodedText,InefficientWeight" />
+        tools:ignore="HardcodedText,InefficientWeight"
+        style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog" />
 
 
 
