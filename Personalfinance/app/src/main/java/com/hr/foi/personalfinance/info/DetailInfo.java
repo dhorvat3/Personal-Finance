@@ -5,15 +5,8 @@ package com.hr.foi.personalfinance.info;
  */
 
 public class DetailInfo {
-    private String sequence = "";
     private String name = "";
 
-    public String getSequence() {
-        return sequence;
-    }
-    public void setSequence(String sequence) {
-        this.sequence = sequence;
-    }
     public String getName() {
         return name;
     }

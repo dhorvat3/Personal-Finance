@@ -2,7 +2,6 @@ package com.hr.foi.personalfinance.fragments;
 
 import android.app.Dialog;
 import android.content.SharedPreferences;
-import android.icu.text.SimpleDateFormat;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringDef;
@@ -38,8 +37,6 @@ import pojo.Record_;
  */
 
 public class Income_Expense extends BaseFragment implements FragmentInterface, DataInterface {
-    private EditText napomena, datum, iznos;
-    private RadioButton vrsta;
     private Record_ record;
     private DataBuilder dataBuilder = new DataBuilder(this);
     private SharedPreferences preferences;
@@ -76,6 +73,8 @@ public class Income_Expense extends BaseFragment implements FragmentInterface, D
 
                 Button submit = (Button) dialog.findViewById(R.id.ok);
                 Button cancel = (Button) dialog.findViewById(R.id.cancel);
+
+
 
                 submit.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -123,26 +122,25 @@ public class Income_Expense extends BaseFragment implements FragmentInterface, D
 
     @Override
     public void buildData(Object data) {
+
         pojo.Record record = (pojo.Record) data;
         if (record !=null){
+
             listView = (ExpandableListView) getActivity().findViewById(R.id.zapisi);
+
+            myRecords.clear();
+            deptList.clear();
+
             ArrayList<Record_> records = new ArrayList<Record_>();
 
             for (Record_ item : record.getRecord()){
                 records.add(item);
             }
 
-            String[] listItems = new String[records.size()];
             for (int i=0; i<records.size(); i++){
-                listItems[i] = records.get(i).getIznos();
                 addRecord(records.get(i).getDatum(), records.get(i).getIznos());
             }
-
-            System.out.println(records.size());
-
-            //ArrayAdapter adapter = new ArrayAdapter(getActivity(), android.R.layout.simple_list_item_1, listItems);
             listAdapter = new MyListAdapter(getActivity(), deptList);
-            //ArrayAdapter adapter = new ArrayAdapter(getActivity(), android.R.layout.simple_list_item_1, listItems);
             listView.setAdapter(listAdapter);
 
 
@@ -175,6 +173,7 @@ public class Income_Expense extends BaseFragment implements FragmentInterface, D
 
         HeaderInfo headerInfo = myRecords.get(name);
 
+
         if(headerInfo == null){
             headerInfo = new HeaderInfo();
             headerInfo.setName(name);
@@ -182,17 +181,12 @@ public class Income_Expense extends BaseFragment implements FragmentInterface, D
             deptList.add(headerInfo);
         }
 
-        ArrayList<DetailInfo> categoryList = headerInfo.getCategoryList();
-
-        int listSize = categoryList.size();
-
-        listSize++;
+        ArrayList<DetailInfo> recordList = headerInfo.getCategoryList();
 
         DetailInfo detailInfo = new DetailInfo();
-        detailInfo.setSequence(String.valueOf(listSize));
         detailInfo.setName(description);
-        categoryList.add(detailInfo);
-        headerInfo.setCategoryList(categoryList);
+        recordList.add(detailInfo);
+        headerInfo.setCategoryList(recordList);
 
         groupPosition = deptList.indexOf(headerInfo);
         return groupPosition;

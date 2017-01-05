@@ -123,25 +123,24 @@ public class Category extends BaseFragment implements FragmentInterface, DataInt
 
             ArrayList<Category_> categories = new ArrayList<Category_>();
 
+            myCategories.clear();
+            deptList.clear();
+
             for (Category_ item : category1.getCategory()){
                 categories.add(item);
             }
 
-            String[] listItems = new String[categories.size()];
             for (int i=0; i<categories.size(); i++){
-                listItems[i] = categories.get(i).getTitle();
                 addCategory(categories.get(i).getTitle(), categories.get(i).getDescription());
             }
-
             listAdapter = new MyListAdapter(getActivity(), deptList);
-            //ArrayAdapter adapter = new ArrayAdapter(getActivity(), android.R.layout.simple_list_item_1, listItems);
             listView.setAdapter(listAdapter);
-
 
             listView.setOnChildClickListener(myListItemClicked);
             listView.setOnGroupClickListener(myListGroupClicked);
         }
     }
+
 
     private ExpandableListView.OnChildClickListener myListItemClicked =  new ExpandableListView.OnChildClickListener() {
 
@@ -176,12 +175,7 @@ public class Category extends BaseFragment implements FragmentInterface, DataInt
 
         ArrayList<DetailInfo> categoryList = headerInfo.getCategoryList();
 
-        int listSize = categoryList.size();
-
-        listSize++;
-
         DetailInfo detailInfo = new DetailInfo();
-        detailInfo.setSequence(String.valueOf(listSize));
         detailInfo.setName(description);
         categoryList.add(detailInfo);
         headerInfo.setCategoryList(categoryList);
