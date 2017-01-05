@@ -96,9 +96,9 @@ public class ProfileEdit extends Fragment implements DataInterface {
 
                     if (field.getText().toString().isEmpty()) {
                         field.setError("Obavezno polje");
-                    }
 
-                    valid = false;
+                        valid = false;
+                    }
                 }
 
                 if (valid) {
