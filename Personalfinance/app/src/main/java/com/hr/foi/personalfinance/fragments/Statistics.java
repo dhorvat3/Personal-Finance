@@ -1,5 +1,6 @@
 package com.hr.foi.personalfinance.fragments;
 
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.icu.util.Calendar;
 import android.os.Bundle;
@@ -7,8 +8,10 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ExpandableListView;
 
 import com.hr.foi.personalfinance.R;
+import com.hr.foi.personalfinance.adapter.MyListAdapter;
 import com.hr.foi.userinterface.BaseFragment;
 import com.hr.foi.userinterface.FragmentInterface;
 import com.jjoe64.graphview.GraphView;
@@ -17,14 +20,23 @@ import com.jjoe64.graphview.series.BarGraphSeries;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 
+import java.io.Console;
+import java.util.ArrayList;
 import java.util.Date;
+
+import entities.DataBuilder;
+import entities.DataInterface;
+import pojo.Record_;
 
 /**
  * Created by dominik on 21.12.16..
  */
 
-public class Statistics extends BaseFragment implements FragmentInterface
+public class Statistics extends BaseFragment implements FragmentInterface, DataInterface
 {
+    private DataBuilder dataBuilder = new DataBuilder(this);
+    private SharedPreferences preferences;
+    private ArrayList<Record_> records;
 
 
     public static final Statistics newInstance(String name){
@@ -52,7 +64,13 @@ public class Statistics extends BaseFragment implements FragmentInterface
      * @return
      */
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+    {
+        String userId = userID();
+        dataBuilder.getRecords(userId);
+
+
+
         View view = inflater.inflate(R.layout.statistics_layout, container, false);
 
         // Line Graph za prihode ukupno po danu u mjesecu
@@ -228,5 +246,27 @@ public class Statistics extends BaseFragment implements FragmentInterface
      */
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState){
         super.onViewCreated(view, savedInstanceState);
+    }
+
+    @Override
+    public void buildData(Object data)
+    {
+        pojo.Record record = (pojo.Record) data;
+        if (record !=null)
+        {
+            records = new ArrayList<Record_>();
+
+            for (Record_ item : record.getRecord())
+            {
+                records.add(item);
+            }
+        }
+    }
+
+    private String userID()
+    {
+        preferences = getActivity().getSharedPreferences("login", 0);
+        String status = preferences.getString("id", "");
+        return  status;
     }
 }
