@@ -39,6 +39,12 @@ public class Category_ {
         this.active = active;
     }
 
+    //For spinner display items
+    @Override
+    public String toString(){
+        return title;
+    }
+
     public String getId() {
         return id;
     }

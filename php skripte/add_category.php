@@ -4,8 +4,8 @@
 *
 * --- PARAMS ---
 * [user_id]
-* [category_title]
-* [category_description]
+* [title]
+* [description]
 **/
 $data = json_decode(file_get_contents('php://input'), true);
 $response = array();
@@ -16,7 +16,7 @@ $con = $db->connect();
 
 //Add new category
 $results = array();
-$sql = "INSERT INTO category VALUES (DEFAULT, '".$data['category_title']."', '".$data['category_description']."');";
+$sql = "INSERT INTO category VALUES (DEFAULT, '".$data['title']."', '".$data['description']."');";
 $results = mysqli_query($con, $sql);
 
 //Get id of inserted category

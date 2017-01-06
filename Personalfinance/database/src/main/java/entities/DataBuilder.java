@@ -142,4 +142,34 @@ public class DataBuilder {
             }
         });
     }
+
+    public void editRecord(Record_ record){
+        Call<pojo.Response> retrofitCall = apiMethods.editRecord(record);
+        retrofitCall.enqueue(new Callback<pojo.Response>() {
+            @Override
+            public void onResponse(Response<pojo.Response> response, Retrofit retrofit) {
+
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+
+            }
+        });
+    }
+
+    public void deleteRecord(String id){
+        Call<pojo.Response> retrofitCall = apiMethods.deleteRecord(id);
+        retrofitCall.enqueue(new Callback<pojo.Response>() {
+            @Override
+            public void onResponse(Response<pojo.Response> response, Retrofit retrofit) {
+
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+
+            }
+        });
+    }
 }

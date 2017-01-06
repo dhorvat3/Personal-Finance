@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringDef;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -52,6 +53,12 @@ public class Income_Expense extends BaseFragment implements FragmentInterface, D
     private EditText napomena, datum, iznos;
     private RadioButton prihod, rashod;
     private ArrayList<Record_> records;
+    private ArrayList<pojo.Category_> catList;
+    private Dialog dialog;
+    private Spinner spinner;
+    private int seqInt;
+    private Category_ myItem = null;
+    private ArrayAdapter<Category_> adapter;
     private int sequence = 0;
 
 
@@ -71,11 +78,12 @@ public class Income_Expense extends BaseFragment implements FragmentInterface, D
         View view = inflater.inflate(R.layout.income_expense_layout, container, false);
 
         Button button = (Button) view.findViewById(R.id.AddIncomeExpense);
+        dialog = new Dialog(getActivity());
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final Dialog dialog = new Dialog(getActivity());
+                //final Dialog dialog = new Dialog(getActivity());
                 dialog.setTitle("Nova Prihod/rashod");
                 dialog.setContentView(R.layout.income_expense_item_layout);
                 dialog.show();
@@ -83,11 +91,11 @@ public class Income_Expense extends BaseFragment implements FragmentInterface, D
                 Button submit = (Button) dialog.findViewById(R.id.ok);
                 Button cancel = (Button) dialog.findViewById(R.id.cancel);
 
-                Spinner spinner = (Spinner) dialog.findViewById(R.id.sp_kategorija);
-
-                String[] days ={"pon", "uto", "sri"};
-                ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item,days);
-                spinner.setAdapter(adapter);
+                spinner = (Spinner) dialog.findViewById(R.id.sp_kategorija);
+                dataBuilder.getCategories(userID());
+                //String[] days ={"pon", "uto", "sri"};
+                //ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item,days);
+                //spinner.setAdapter(adapter);
 
 
                 submit.setOnClickListener(new View.OnClickListener() {
@@ -100,6 +108,9 @@ public class Income_Expense extends BaseFragment implements FragmentInterface, D
                         iznos = (EditText) dialog.findViewById(R.id.iznos);
                         prihod = (RadioButton) dialog.findViewById(R.id.prihod);
                         rashod = (RadioButton) dialog.findViewById(R.id.rashod);
+
+                        Category_ catId = (Category_) spinner.getSelectedItem();
+                        Log.w("CatID", catId.getId());
 
                         record = new Record_();
 
@@ -115,7 +126,7 @@ public class Income_Expense extends BaseFragment implements FragmentInterface, D
                         record.setNapomena(napomena.getText().toString());
                         record.setUserId(userId);
                         record.setAktivan("1");
-                        record.setCatgoryId("1");
+                        record.setCatgoryId(catId.getId());
                         record.setDatum("2001-12-01 00:00:00");
                         record.setIznos(iznos.getText().toString());
 
@@ -156,29 +167,53 @@ public class Income_Expense extends BaseFragment implements FragmentInterface, D
     @Override
     public void buildData(Object data) {
 
-        pojo.Record record = (pojo.Record) data;
-        if (record !=null){
-
-            listView = (ExpandableListView) getActivity().findViewById(R.id.zapisi);
-
-            myRecords.clear();
-            deptList.clear();
-
-            records = new ArrayList<Record_>();
-
-            for (Record_ item : record.getRecord()){
-                records.add(item);
+        if(data instanceof pojo.Category){
+            pojo.Category categories = (pojo.Category) data;
+            catList = new ArrayList<>();
+            for(Category_ item: categories.getCategory()){
+                catList.add(item);
             }
 
-            for (int i=0; i<records.size(); i++){
-                sequence = i;
-                addRecord(records.get(i).getDatum().substring(0,10), records.get(i).getIznos());
+            adapter = new ArrayAdapter<Category_>(getActivity(), android.R.layout.simple_spinner_dropdown_item, catList);
+            spinner.setAdapter(adapter);
+            //find selected cat
+            String catID = records.get(seqInt).getCatgoryId();
+            //Category_ myItem = null;
+            for(int i=0; i < adapter.getCount(); i++){
+                Category_ item = adapter.getItem(i);
+
+                if(item.getId().equals(catID)){
+                    myItem = item;
+                    break;
+                }
             }
-            listAdapter = new MyListAdapter(getActivity(), deptList);
-            listView.setAdapter(listAdapter);
+            spinner.setSelection(adapter.getPosition(myItem));
+        }
+        if(data instanceof pojo.Record) {
+            pojo.Record record = (pojo.Record) data;
+            if (record != null) {
+
+                listView = (ExpandableListView) getActivity().findViewById(R.id.zapisi);
+
+                myRecords.clear();
+                deptList.clear();
+
+                records = new ArrayList<Record_>();
+
+                for (Record_ item : record.getRecord()) {
+                    records.add(item);
+                }
+
+                for (int i = 0; i < records.size(); i++) {
+                    sequence = i;
+                    addRecord(records.get(i).getDatum().substring(0, 10), records.get(i).getIznos());
+                }
+                listAdapter = new MyListAdapter(getActivity(), deptList);
+                listView.setAdapter(listAdapter);
 
 
-            listView.setOnChildClickListener(myListItemClicked);
+                listView.setOnChildClickListener(myListItemClicked);
+            }
         }
     }
 
@@ -201,13 +236,18 @@ public class Income_Expense extends BaseFragment implements FragmentInterface, D
             update.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    final Dialog dialog = new Dialog(getActivity());
+                    //final Dialog dialog = new Dialog(getActivity());
                     dialog.setTitle("Ažuriranje prihoda/rashoda");
                     dialog.setContentView(R.layout.income_expense_item_layout);
                     dialog.show();
 
-                    int seqInt, vrsta;
+                    int vrsta;
                     seqInt=  Integer.parseInt(String.valueOf(seq.getText()));
+
+                    spinner = (Spinner) dialog.findViewById(R.id.sp_kategorija);
+                    dataBuilder.getCategories(userID());
+
+
 
                     napomena = (EditText) dialog.findViewById(R.id.napomena);
                     datum = (EditText) dialog.findViewById(R.id.datum);
