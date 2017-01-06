@@ -133,12 +133,12 @@ public class DataBuilder {
         retrofitCall.enqueue(new Callback<pojo.Response>() {
             @Override
             public void onResponse(Response<pojo.Response> response, Retrofit retrofit) {
-                call.buildData(response.body());
+
             }
 
             @Override
             public void onFailure(Throwable t) {
-                call.buildData(null);
+
             }
         });
     }

@@ -19,7 +19,9 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.hr.foi.personalfinance.R;
 import com.hr.foi.personalfinance.adapter.MyListAdapter;
@@ -48,7 +50,9 @@ public class Income_Expense extends BaseFragment implements FragmentInterface, D
     private ArrayList<HeaderInfo> deptList = new ArrayList<HeaderInfo>();
     private MyListAdapter listAdapter;
     private EditText napomena, datum, iznos;
+    private RadioButton prihod, rashod;
     private ArrayList<Record_> records;
+    private int sequence = 0;
 
 
 
@@ -92,22 +96,37 @@ public class Income_Expense extends BaseFragment implements FragmentInterface, D
 
                         String userId = userID();
                         napomena = (EditText) dialog.findViewById(R.id.napomena);
-                        datum = (EditText) dialog.findViewById(R.id.napomena);
-                        iznos = (EditText) dialog.findViewById(R.id.napomena);
+                        datum = (EditText) dialog.findViewById(R.id.datum);
+                        iznos = (EditText) dialog.findViewById(R.id.iznos);
+                        prihod = (RadioButton) dialog.findViewById(R.id.prihod);
+                        rashod = (RadioButton) dialog.findViewById(R.id.rashod);
 
                         record = new Record_();
+
+                        if (prihod.isChecked()){
+                            System.out.println("prihod");
+                            record.setVrsta("1");
+                        }
+                        else if(rashod.isChecked()){
+                            System.out.println("rashod");
+                            record.setVrsta("0");
+                        }
+
                         record.setNapomena(napomena.getText().toString());
                         record.setUserId(userId);
                         record.setAktivan("1");
                         record.setCatgoryId("1");
                         record.setDatum("2001-12-01 00:00:00");
                         record.setIznos(iznos.getText().toString());
-                        record.setVrsta("1");
+
                         dataBuilder.newRecord(record);
 
+                        sequence++;
                         int groupPosition = addRecord(record.getDatum(),record.getIznos());
                         listAdapter.notifyDataSetChanged();
                         listView.setSelectedGroup(groupPosition);
+
+                        dataBuilder.getRecords(userId);
 
                     }
                 });
@@ -152,7 +171,8 @@ public class Income_Expense extends BaseFragment implements FragmentInterface, D
             }
 
             for (int i=0; i<records.size(); i++){
-                addRecord(records.get(i).getDatum(), records.get(i).getIznos());
+                sequence = i;
+                addRecord(records.get(i).getDatum().substring(0,10), records.get(i).getIznos());
             }
             listAdapter = new MyListAdapter(getActivity(), deptList);
             listView.setAdapter(listAdapter);
@@ -175,6 +195,9 @@ public class Income_Expense extends BaseFragment implements FragmentInterface, D
             ImageButton update = (ImageButton) linearLayout.findViewById(R.id.update);
             ImageButton delete = (ImageButton) linearLayout.findViewById(R.id.delete);
 
+            parent.getExpandableListAdapter().getChild(groupPosition, childPosition);
+            final EditText seq = (EditText) v.findViewById(R.id.sequence);
+
             update.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -183,13 +206,27 @@ public class Income_Expense extends BaseFragment implements FragmentInterface, D
                     dialog.setContentView(R.layout.income_expense_item_layout);
                     dialog.show();
 
-                    napomena = (EditText) dialog.findViewById(R.id.napomena);
-                    napomena.setText(records.get(childPosition).getNapomena());
+                    int seqInt, vrsta;
+                    seqInt=  Integer.parseInt(String.valueOf(seq.getText()));
 
-                    System.out.println(v.toString());
-                    System.out.println(groupPosition);
-                    System.out.println(childPosition);
-                    System.out.println(id);
+                    napomena = (EditText) dialog.findViewById(R.id.napomena);
+                    datum = (EditText) dialog.findViewById(R.id.datum);
+                    iznos = (EditText) dialog.findViewById(R.id.iznos);
+                    prihod = (RadioButton) dialog.findViewById(R.id.prihod);
+                    rashod = (RadioButton) dialog.findViewById(R.id.rashod);
+
+                    napomena.setText(records.get(seqInt).getNapomena());
+                    datum.setText(records.get(seqInt).getDatum());
+                    iznos.setText(records.get(seqInt).getIznos());
+                    vrsta = Integer.parseInt(records.get(seqInt).getVrsta());
+
+                    if (vrsta == 0){
+                        rashod.setChecked(true);
+                    }
+                    else if(vrsta == 1){
+                        rashod.setChecked(true);
+                    }
+
 
                     Button ok = (Button) dialog.findViewById(R.id.ok);
                     Button cancel = (Button) dialog.findViewById(R.id.cancel);
@@ -256,6 +293,7 @@ public class Income_Expense extends BaseFragment implements FragmentInterface, D
         ArrayList<DetailInfo> recordList = headerInfo.getCategoryList();
 
         DetailInfo detailInfo = new DetailInfo();
+        detailInfo.setSequence(String.valueOf(sequence));
         detailInfo.setName(description);
         recordList.add(detailInfo);
         headerInfo.setCategoryList(recordList);

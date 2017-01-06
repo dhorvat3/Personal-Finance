@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.hr.foi.personalfinance.R;
@@ -87,7 +88,8 @@ public class MyListAdapter extends BaseExpandableListAdapter{
                 view = infalInflater.inflate(R.layout.child_layout, null);
             }
 
-
+            EditText sequence = (EditText) view.findViewById(R.id.sequence);
+            sequence.setText(detailInfo.getSequence().trim());
             TextView childItem = (TextView) view.findViewById(R.id.childItem);
             childItem.setText(detailInfo.getName().trim());
 

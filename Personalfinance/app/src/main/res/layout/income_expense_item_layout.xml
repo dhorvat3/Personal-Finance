@@ -4,31 +4,39 @@
     android:layout_width="match_parent" android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <RadioButton
-        android:text="Prihod"
-        android:layout_width="wrap_content"
+    <RadioGroup
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginLeft="55dp"
-        android:layout_marginStart="55dp"
-        android:layout_marginTop="18dp"
-        android:id="@+id/prihod"
-        tools:ignore="HardcodedText,ObsoleteLayoutParam" />
+        android:id="@+id/odabir">
 
-    <RadioButton
-        android:text="Rashod"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="55dp"
-        android:layout_marginStart="55dp"
-        android:id="@+id/rashod"
-        android:layout_alignBaseline="@+id/prihod"
-        android:layout_alignBottom="@+id/prihod"
-        android:layout_toRightOf="@+id/prihod"
-        android:layout_toEndOf="@+id/prihod"
-        tools:ignore="HardcodedText,ObsoleteLayoutParam" />
+        <RadioButton
+            android:text="Rashod"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="55dp"
+            android:layout_marginStart="55dp"
+            android:id="@+id/rashod"
+            android:layout_alignBaseline="@+id/prihod"
+            android:layout_alignBottom="@+id/prihod"
+            android:layout_toRightOf="@+id/prihod"
+            android:layout_toEndOf="@+id/prihod"
+            tools:ignore="HardcodedText,ObsoleteLayoutParam"
+            android:layout_weight="1" />
+
+        <RadioButton
+            android:text="Prihod"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginLeft="55dp"
+            android:layout_marginStart="55dp"
+            android:layout_marginTop="18dp"
+            android:id="@+id/prihod"
+            tools:ignore="HardcodedText,ObsoleteLayoutParam"
+            android:layout_weight="1" />
+    </RadioGroup>
 
     <EditText
         android:layout_width="match_parent"
