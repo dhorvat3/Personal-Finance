@@ -1,28 +1,24 @@
 package com.hr.foi.personalfinance.fragments;
 
+import android.app.DatePickerDialog;
 import android.app.Dialog;
-import android.app.DialogFragment;
+import android.app.TimePickerDialog;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.annotation.StringDef;
-import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.Spinner;
-import android.widget.TextView;
 
 import com.hr.foi.personalfinance.R;
 import com.hr.foi.personalfinance.adapter.MyListAdapter;
@@ -31,10 +27,11 @@ import com.hr.foi.personalfinance.info.HeaderInfo;
 import com.hr.foi.userinterface.BaseFragment;
 import com.hr.foi.userinterface.FragmentInterface;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.LinkedHashMap;
 
-import entities.ApiMethods;
 import entities.DataBuilder;
 import entities.DataInterface;
 import pojo.*;
@@ -60,6 +57,10 @@ public class Income_Expense extends BaseFragment implements FragmentInterface, D
     private int seqInt;
     private Category_ myItem = null;
     private ArrayAdapter<Category_> adapter;
+    private DatePickerDialog datePickerDialog;
+    private TimePickerDialog timePickerDialog;
+    private SimpleDateFormat userFormat, databaseFormat;
+    private String dateAndTime;
     private int sequence = 0;
 
 
@@ -98,6 +99,16 @@ public class Income_Expense extends BaseFragment implements FragmentInterface, D
                 //ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item,days);
                 //spinner.setAdapter(adapter);
 
+                datum = (EditText) dialog.findViewById(R.id.datum);
+
+                datePickerSetter();
+
+                datum.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        datePickerDialog.show();
+                    }
+                });
 
                 submit.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -105,10 +116,10 @@ public class Income_Expense extends BaseFragment implements FragmentInterface, D
 
                         String userId = userID();
                         napomena = (EditText) dialog.findViewById(R.id.napomena);
-                        datum = (EditText) dialog.findViewById(R.id.datum);
                         iznos = (EditText) dialog.findViewById(R.id.iznos);
                         prihod = (RadioButton) dialog.findViewById(R.id.prihod);
                         rashod = (RadioButton) dialog.findViewById(R.id.rashod);
+
 
                         Category_ catId = (Category_) spinner.getSelectedItem();
                         Log.w("CatID", catId.getId());
@@ -128,7 +139,9 @@ public class Income_Expense extends BaseFragment implements FragmentInterface, D
                         record.setUserId(userId);
                         record.setAktivan("1");
                         record.setCatgoryId(catId.getId());
-                        record.setDatum("2001-12-01 00:00:00");
+                        record.setDatum(dateAndTime+ " 00:00:00");
+                        //record.setDatum("2001-12-01 00:00:00");
+                        System.out.println(record.getDatum());
                         record.setIznos(iznos.getText().toString());
 
                         dataBuilder.newRecord(record);
@@ -196,7 +209,7 @@ public class Income_Expense extends BaseFragment implements FragmentInterface, D
         if(data instanceof pojo.Record) {
             pojo.Record record = (pojo.Record) data;
             if (record != null) {
-
+                String godina, mjesec, dan, datum;
                 listView = (ExpandableListView) getActivity().findViewById(R.id.zapisi);
 
                 myRecords.clear();
@@ -210,7 +223,11 @@ public class Income_Expense extends BaseFragment implements FragmentInterface, D
 
                 for (int i = 0; i < records.size(); i++) {
                     sequence = i;
-                    addRecord(records.get(i).getDatum().substring(0, 10), records.get(i).getIznos());
+                    godina = records.get(i).getDatum().substring(0, 4);
+                    mjesec = records.get(i).getDatum().substring(6, 7);
+                    dan = records.get(i).getDatum().substring(9, 10);
+                    datum = dan+"."+mjesec+"."+godina+".";
+                    addRecord(datum, records.get(i).getIznos()+" kn");
                 }
                 listAdapter = new MyListAdapter(getActivity(), deptList);
                 listView.setAdapter(listAdapter);
@@ -248,11 +265,8 @@ public class Income_Expense extends BaseFragment implements FragmentInterface, D
 
                     int vrsta;
 
-
                     spinner = (Spinner) dialog.findViewById(R.id.sp_kategorija);
                     dataBuilder.getCategories(userID());
-
-
 
                     napomena = (EditText) dialog.findViewById(R.id.napomena);
                     datum = (EditText) dialog.findViewById(R.id.datum);
@@ -261,9 +275,18 @@ public class Income_Expense extends BaseFragment implements FragmentInterface, D
                     rashod = (RadioButton) dialog.findViewById(R.id.rashod);
 
                     napomena.setText(records.get(seqInt).getNapomena());
-                    datum.setText(records.get(seqInt).getDatum());
+                    datum.setText(records.get(seqInt).getDatum().substring(0, 10));
                     iznos.setText(records.get(seqInt).getIznos());
                     vrsta = Integer.parseInt(records.get(seqInt).getVrsta());
+
+                    datePickerSetter();
+
+                    datum.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            datePickerDialog.show();
+                        }
+                    });
 
                     System.out.println("recordId: "+records.get(seqInt).getId());
 
@@ -355,6 +378,23 @@ public class Income_Expense extends BaseFragment implements FragmentInterface, D
 
         groupPosition = deptList.indexOf(headerInfo);
         return groupPosition;
+    }
+
+    private void datePickerSetter(){
+        Calendar calendar = Calendar.getInstance();
+        userFormat = new SimpleDateFormat("dd.MM.yyyy");
+        databaseFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+
+        datePickerDialog = new DatePickerDialog(getActivity(), new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                Calendar date = Calendar.getInstance();
+                date.set(year, month, dayOfMonth);
+                datum.setText(userFormat.format(date.getTime()));
+                dateAndTime = databaseFormat.format(date.getTime());
+            }
+        }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
     }
 
     private String userID(){

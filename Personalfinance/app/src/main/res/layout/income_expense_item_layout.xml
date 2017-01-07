@@ -54,14 +54,13 @@
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="date|time"
-        android:ems="10"
         android:id="@+id/datum"
         android:layout_below="@+id/napomena"
         android:layout_alignLeft="@+id/napomena"
         android:layout_alignStart="@+id/napomena"
         android:hint="Datum"
-        tools:ignore="HardcodedText,ObsoleteLayoutParam" />
+        tools:ignore="HardcodedText,ObsoleteLayoutParam"
+        android:layout_weight="1" />
 
     <Spinner
         android:layout_width="match_parent"
