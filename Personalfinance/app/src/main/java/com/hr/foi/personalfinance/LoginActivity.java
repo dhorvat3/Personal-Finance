@@ -20,6 +20,7 @@ import java.util.List;
 
 import entities.DataBuilder;
 import entities.DataInterface;
+import entities.MainDatabase;
 import entities.User;
 import helper.MockData;
 
@@ -31,10 +32,15 @@ public class LoginActivity extends AppCompatActivity implements DataInterface{
     private Button loginButton, registerButton;
     private EditText korime, lozinka;
     private DataBuilder dataBulder = new DataBuilder(this);
+    private SharedPreferences prefs; //= this.getSharedPreferences("login", 0);
+    private SharedPreferences.Editor editor;// = prefs.edit();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         setContentView(R.layout.login_layout);
+
+        prefs = this.getSharedPreferences("login", 0);
+        editor = prefs.edit();
 
         loginButton = (Button) findViewById(R.id.login);
         registerButton = (Button) findViewById(R.id.register);
@@ -54,9 +60,14 @@ public class LoginActivity extends AppCompatActivity implements DataInterface{
                 korime = (EditText) findViewById(R.id.korime);
                 lozinka = (EditText) findViewById(R.id.lozinka);
 
-                dataBulder.login(korime.getText().toString());
+                dataBulder.login(korime.getText().toString(), lozinka.getText().toString());
             }
         });
+        String id = prefs.getString("id", "");
+        if(!id.equals("")){
+            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+            startActivity(intent);
+        }
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -72,8 +83,8 @@ public class LoginActivity extends AppCompatActivity implements DataInterface{
         if (user != null){
             //put user id in shared preferences
             // SharedPreferences prefs = this.getPreferences(MODE_PRIVATE);
-            SharedPreferences prefs = this.getSharedPreferences("login", 0);
-            SharedPreferences.Editor editor = prefs.edit();
+            //SharedPreferences prefs = this.getSharedPreferences("login", 0);
+            //SharedPreferences.Editor editor = prefs.edit();
             editor.putString("id", user.getId());
             editor.putString("username", user.getUsername());
             editor.putString("name", user.getName());

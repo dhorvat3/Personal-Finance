@@ -1,14 +1,17 @@
 package com.hr.foi.personalfinance.fragments;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.hr.foi.personalfinance.LoginActivity;
 import com.hr.foi.personalfinance.R;
 import com.hr.foi.userinterface.BaseFragment;
 import com.hr.foi.userinterface.FragmentInterface;
@@ -52,6 +55,16 @@ public class Profile extends BaseFragment implements FragmentInterface {
         View view = inflater.inflate(R.layout.profile_layout, container, false);
         TextView profileFullName = (TextView) view.findViewById(R.id.profile_full_name);
         TextView profileEmail = (TextView) view.findViewById(R.id.profile_email);
+        Button logout = (Button) view.findViewById(R.id.logout);
+
+        logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                prefs.edit().clear().commit();
+                Intent intent = new Intent(getActivity(), LoginActivity.class);
+                startActivity(intent);
+            }
+        });
 
         profileFullName.setText(prefs.getString("name", "") + " " + prefs.getString("surname", ""));
         profileEmail.setText(prefs.getString("email", ""));

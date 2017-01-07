@@ -16,7 +16,7 @@ import retrofit.http.Query;
 public interface ApiMethods {
     @GET("/user_by_name.php/")
     //void login(@Query("username") String username,  Callback<pojo.User> callback);
-    Call<pojo.User> login(@Query("username") String username);
+    Call<pojo.User> login(@Query("username") String username, @Query("pass") String pass);
 
     @POST("/new_user.php")
     Call<pojo.Response> newUser(@Body pojo.User user);

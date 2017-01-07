@@ -236,6 +236,10 @@ public class Income_Expense extends BaseFragment implements FragmentInterface, D
                 listView.setOnChildClickListener(myListItemClicked);
             }
         }
+        if(data instanceof Response){
+            Response response = (Response) data;
+            Log.w("response", response.getResponse());
+        }
     }
 
     private ExpandableListView.OnChildClickListener myListItemClicked =  new ExpandableListView.OnChildClickListener() {
@@ -304,6 +308,22 @@ public class Income_Expense extends BaseFragment implements FragmentInterface, D
                     ok.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
+                            Record_ record = new Record_();
+                            record.setId(records.get(seqInt).getId());
+                            record.setAktivan("1");
+
+                            Category_ catId = (Category_) spinner.getSelectedItem();
+                            record.setCatgoryId(catId.getId());
+                            record.setDatum(datum.getText().toString());
+                            record.setIznos(iznos.getText().toString());
+                            record.setNapomena(napomena.getText().toString());
+
+                            if(rashod.isChecked()){
+                                record.setVrsta("false");
+                            } else {
+                                record.setVrsta("true");
+                            }
+
                             dataBuilder.editRecord(records.get(seqInt));
                             listAdapter.notifyDataSetChanged();
                             dataBuilder.getRecords(userID());

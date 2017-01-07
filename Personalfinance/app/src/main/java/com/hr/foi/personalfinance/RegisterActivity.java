@@ -1,5 +1,7 @@
 package com.hr.foi.personalfinance;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -49,6 +51,18 @@ public class RegisterActivity extends AppCompatActivity implements DataInterface
         Toast.makeText(this, response.getResponse(), Toast.LENGTH_LONG).show();
         if(response.getId() != null){
             Log.w("user-response", response.getId());
+            SharedPreferences prefs = this.getSharedPreferences("login", 0);
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.putString("id", user.getId());
+            editor.putString("username", user.getUsername());
+            editor.putString("name", user.getName());
+            editor.putString("surname", user.getSurname());
+            editor.putString("email", user.getEmail());
+            editor.putString("password", user.getPassword());
+            editor.commit();
+
+            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+            startActivity(intent);
         }
     }
 

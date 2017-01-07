@@ -19,8 +19,8 @@ public class DataBuilder {
         call = caller;
     }
 
-    public void login(String user){
-        Call<pojo.User> retrofitCall = apiMethods.login(user);
+    public void login(String user, String pass){
+        Call<pojo.User> retrofitCall = apiMethods.login(user, pass);
         retrofitCall.enqueue(new Callback<pojo.User>() {
             @Override
             public void onResponse(Response<pojo.User> response, Retrofit retrofit) {
@@ -148,7 +148,7 @@ public class DataBuilder {
         retrofitCall.enqueue(new Callback<pojo.Response>() {
             @Override
             public void onResponse(Response<pojo.Response> response, Retrofit retrofit) {
-
+                call.buildData(response.body());
             }
 
             @Override

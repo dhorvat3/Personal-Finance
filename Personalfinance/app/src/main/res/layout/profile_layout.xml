@@ -72,6 +72,12 @@
                 android:layout_centerHorizontal="true"
                 android:textSize="14sp"
                 android:text="ime.prezime@primjer.hr" />
+            <Button
+                android:id="@+id/logout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Odjava"
+                android:layout_below="@+id/profile_email"/>
         </RelativeLayout>
 
     </RelativeLayout>
