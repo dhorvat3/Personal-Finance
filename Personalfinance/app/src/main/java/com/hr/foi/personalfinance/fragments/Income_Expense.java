@@ -309,6 +309,8 @@ public class Income_Expense extends BaseFragment implements FragmentInterface, D
                         @Override
                         public void onClick(View v) {
                             Record_ record = new Record_();
+                            Log.w("recordID", records.get(seqInt).getId());
+                            Log.w("recordDate", datum.getText().toString());
                             record.setId(records.get(seqInt).getId());
                             record.setAktivan("1");
 
@@ -324,7 +326,7 @@ public class Income_Expense extends BaseFragment implements FragmentInterface, D
                                 record.setVrsta("true");
                             }
 
-                            dataBuilder.editRecord(records.get(seqInt));
+                            dataBuilder.editRecord(record);
                             listAdapter.notifyDataSetChanged();
                             dataBuilder.getRecords(userID());
                             dialog.cancel();
