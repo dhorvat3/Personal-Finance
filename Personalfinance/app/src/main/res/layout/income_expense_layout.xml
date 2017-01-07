@@ -20,7 +20,7 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:layout_marginBottom="50dp"
+        android:layout_marginBottom="85dp"
         style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog" />
 
     <LinearLayout
@@ -33,14 +33,14 @@
 
         <ImageButton
             android:layout_width="wrap_content"
-            android:layout_height="45dp"
+            android:layout_height="80dp"
             app:srcCompat="@android:drawable/ic_menu_edit"
             android:id="@+id/update"
             android:layout_weight="1" />
 
         <ImageButton
             android:layout_width="wrap_content"
-            android:layout_height="45dp"
+            android:layout_height="80dp"
             app:srcCompat="@android:drawable/ic_menu_delete"
             android:id="@+id/delete"
             android:layout_weight="1" />

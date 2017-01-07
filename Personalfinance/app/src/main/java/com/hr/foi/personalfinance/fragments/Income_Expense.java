@@ -62,6 +62,7 @@ public class Income_Expense extends BaseFragment implements FragmentInterface, D
     private SimpleDateFormat userFormat, databaseFormat;
     private String dateAndTime;
     private int sequence = 0;
+    private String godina, mjesec, dan, dat;
 
 
 
@@ -209,7 +210,6 @@ public class Income_Expense extends BaseFragment implements FragmentInterface, D
         if(data instanceof pojo.Record) {
             pojo.Record record = (pojo.Record) data;
             if (record != null) {
-                String godina, mjesec, dan, datum;
                 listView = (ExpandableListView) getActivity().findViewById(R.id.zapisi);
 
                 myRecords.clear();
@@ -226,8 +226,8 @@ public class Income_Expense extends BaseFragment implements FragmentInterface, D
                     godina = records.get(i).getDatum().substring(0, 4);
                     mjesec = records.get(i).getDatum().substring(6, 7);
                     dan = records.get(i).getDatum().substring(9, 10);
-                    datum = dan+"."+mjesec+"."+godina+".";
-                    addRecord(datum, records.get(i).getIznos()+" kn");
+                    dat = dan+"."+mjesec+"."+godina+".";
+                    addRecord(dat, records.get(i).getIznos()+" kn");
                 }
                 listAdapter = new MyListAdapter(getActivity(), deptList);
                 listView.setAdapter(listAdapter);
@@ -278,8 +278,13 @@ public class Income_Expense extends BaseFragment implements FragmentInterface, D
                     prihod = (RadioButton) dialog.findViewById(R.id.prihod);
                     rashod = (RadioButton) dialog.findViewById(R.id.rashod);
 
+                    godina = records.get(seqInt).getDatum().substring(0, 4);
+                    mjesec = records.get(seqInt).getDatum().substring(6, 7);
+                    dan = records.get(seqInt).getDatum().substring(9, 10);
+                    dat = dan+"."+mjesec+"."+godina+".";
+
                     napomena.setText(records.get(seqInt).getNapomena());
-                    datum.setText(records.get(seqInt).getDatum().substring(0, 10));
+                    datum.setText(dat);
                     iznos.setText(records.get(seqInt).getIznos());
                     vrsta = Integer.parseInt(records.get(seqInt).getVrsta());
 
@@ -316,7 +321,17 @@ public class Income_Expense extends BaseFragment implements FragmentInterface, D
 
                             Category_ catId = (Category_) spinner.getSelectedItem();
                             record.setCatgoryId(catId.getId());
-                            record.setDatum(datum.getText().toString());
+
+                           String dat1 = datum.getText().toString();
+                            dan = dat1.substring(0,2);
+                            mjesec = dat1.substring(3,5);
+                            godina = dat1.substring(6,10);
+                            dat = godina+"-"+mjesec+"-"+dan;
+
+                            Log.w("datum1", dat);
+                            Log.w("datum", datum.getText().toString());
+
+                            record.setDatum(dat+ " 00:00:00");
                             record.setIznos(iznos.getText().toString());
                             record.setNapomena(napomena.getText().toString());
 
