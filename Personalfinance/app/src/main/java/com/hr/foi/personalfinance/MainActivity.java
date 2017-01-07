@@ -8,7 +8,6 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 
 import com.hr.foi.personalfinance.fragments.Category;
-import com.hr.foi.personalfinance.fragments.Flow;
 import com.hr.foi.personalfinance.fragments.Income_Expense;
 import com.hr.foi.personalfinance.fragments.Profile;
 import com.hr.foi.personalfinance.fragments.Statistics;
@@ -24,11 +23,10 @@ public class MainActivity extends Activity {
         bar.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#3F51B5")));
         bar.setDisplayShowHomeEnabled(false);
 
-        menu.initFrag(Flow.newInstance(getString(R.string.frag_flow)),
-                Profile.newInstance(getString(R.string.frag_profile)),
-                Income_Expense.newInstance("Prihodi/Rashodi"),
+        menu.initFrag(Income_Expense.newInstance("Prihodi/Rashodi"),
+                Category.newInstance("Kategorije"),
                 Statistics.newInstance("Statistika"),
-                Category.newInstance("Kategorije"));
+                Profile.newInstance("Moj profil"));
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
