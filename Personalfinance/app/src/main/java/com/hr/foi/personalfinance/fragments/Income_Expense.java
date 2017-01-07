@@ -224,8 +224,8 @@ public class Income_Expense extends BaseFragment implements FragmentInterface, D
                 for (int i = 0; i < records.size(); i++) {
                     sequence = i;
                     godina = records.get(i).getDatum().substring(0, 4);
-                    mjesec = records.get(i).getDatum().substring(6, 7);
-                    dan = records.get(i).getDatum().substring(9, 10);
+                    mjesec = records.get(i).getDatum().substring(5, 7);
+                    dan = records.get(i).getDatum().substring(8, 10);
                     dat = dan+"."+mjesec+"."+godina+".";
                     addRecord(dat, records.get(i).getIznos()+" kn");
                 }
@@ -279,8 +279,8 @@ public class Income_Expense extends BaseFragment implements FragmentInterface, D
                     rashod = (RadioButton) dialog.findViewById(R.id.rashod);
 
                     godina = records.get(seqInt).getDatum().substring(0, 4);
-                    mjesec = records.get(seqInt).getDatum().substring(6, 7);
-                    dan = records.get(seqInt).getDatum().substring(9, 10);
+                    mjesec = records.get(seqInt).getDatum().substring(5, 7);
+                    dan = records.get(seqInt).getDatum().substring(8, 10);
                     dat = dan+"."+mjesec+"."+godina+".";
 
                     napomena.setText(records.get(seqInt).getNapomena());
