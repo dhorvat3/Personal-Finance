@@ -6,32 +6,32 @@
 
     <EditText
         android:id="@+id/name"
-        android:hint="Name..."
+        android:hint="Ime"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
     <EditText
         android:id="@+id/surname"
-        android:hint="Surname..."
+        android:hint="Prezime"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
     <EditText
         android:id="@+id/email"
-        android:hint="E-mail..."
+        android:hint="E-mail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
     <EditText
         android:id="@+id/username"
-        android:hint="Username..."
+        android:hint="Korisničko ime"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
     <EditText
         android:id="@+id/pass"
-        android:hint="Password..."
+        android:hint="Lozinka"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
     <Button
         android:id="@+id/register"
-        android:text="Register"
+        android:text="Registracija"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 </LinearLayout>

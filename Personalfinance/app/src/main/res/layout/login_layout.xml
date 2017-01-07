@@ -19,12 +19,13 @@
 
     <Button
         android:id="@+id/login"
-        android:text="Login"
+        android:text="Prijava"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
+
     <Button
         android:id="@+id/register"
-        android:text="Register"
+        android:text="Registracija"
         android:layout_height="wrap_content"
         android:layout_width="match_parent" />
 </LinearLayout>
