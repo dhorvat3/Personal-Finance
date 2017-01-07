@@ -34,6 +34,7 @@ import com.hr.foi.userinterface.FragmentInterface;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
+import entities.ApiMethods;
 import entities.DataBuilder;
 import entities.DataInterface;
 import pojo.*;
@@ -116,11 +117,11 @@ public class Income_Expense extends BaseFragment implements FragmentInterface, D
 
                         if (prihod.isChecked()){
                             System.out.println("prihod");
-                            record.setVrsta("1");
+                            record.setVrsta("true");
                         }
                         else if(rashod.isChecked()){
                             System.out.println("rashod");
-                            record.setVrsta("0");
+                            record.setVrsta("false");
                         }
 
                         record.setNapomena(napomena.getText().toString());
@@ -138,6 +139,7 @@ public class Income_Expense extends BaseFragment implements FragmentInterface, D
                         listView.setSelectedGroup(groupPosition);
 
                         dataBuilder.getRecords(userId);
+                        dialog.cancel();
 
                     }
                 });
@@ -176,18 +178,20 @@ public class Income_Expense extends BaseFragment implements FragmentInterface, D
 
             adapter = new ArrayAdapter<Category_>(getActivity(), android.R.layout.simple_spinner_dropdown_item, catList);
             spinner.setAdapter(adapter);
-            //find selected cat
-            String catID = records.get(seqInt).getCatgoryId();
-            //Category_ myItem = null;
-            for(int i=0; i < adapter.getCount(); i++){
-                Category_ item = adapter.getItem(i);
+            if (record != null){
+                //find selected cat
+                String catID = records.get(seqInt).getCatgoryId();
+                //Category_ myItem = null;
+                for(int i=0; i < adapter.getCount(); i++){
+                    Category_ item = adapter.getItem(i);
 
-                if(item.getId().equals(catID)){
-                    myItem = item;
-                    break;
+                    if(item.getId().equals(catID)){
+                        myItem = item;
+                        break;
+                    }
                 }
+                spinner.setSelection(adapter.getPosition(myItem));
             }
-            spinner.setSelection(adapter.getPosition(myItem));
         }
         if(data instanceof pojo.Record) {
             pojo.Record record = (pojo.Record) data;
@@ -232,6 +236,7 @@ public class Income_Expense extends BaseFragment implements FragmentInterface, D
 
             parent.getExpandableListAdapter().getChild(groupPosition, childPosition);
             final EditText seq = (EditText) v.findViewById(R.id.sequence);
+            seqInt=  Integer.parseInt(String.valueOf(seq.getText()));
 
             update.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -242,7 +247,7 @@ public class Income_Expense extends BaseFragment implements FragmentInterface, D
                     dialog.show();
 
                     int vrsta;
-                    seqInt=  Integer.parseInt(String.valueOf(seq.getText()));
+
 
                     spinner = (Spinner) dialog.findViewById(R.id.sp_kategorija);
                     dataBuilder.getCategories(userID());
@@ -260,12 +265,15 @@ public class Income_Expense extends BaseFragment implements FragmentInterface, D
                     iznos.setText(records.get(seqInt).getIznos());
                     vrsta = Integer.parseInt(records.get(seqInt).getVrsta());
 
+                    System.out.println("recordId: "+records.get(seqInt).getId());
+
                     if (vrsta == 0){
                         rashod.setChecked(true);
                     }
                     else if(vrsta == 1){
-                        rashod.setChecked(true);
+                        prihod.setChecked(true);
                     }
+                    System.out.println("edit record: "+seqInt);
 
 
                     Button ok = (Button) dialog.findViewById(R.id.ok);
@@ -273,6 +281,9 @@ public class Income_Expense extends BaseFragment implements FragmentInterface, D
                     ok.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
+                            dataBuilder.editRecord(records.get(seqInt));
+                            listAdapter.notifyDataSetChanged();
+                            dataBuilder.getRecords(userID());
                             dialog.cancel();
                         }
                     });
@@ -293,12 +304,16 @@ public class Income_Expense extends BaseFragment implements FragmentInterface, D
                     dialog.setTitle("Sigurno želite obrisati?");
                     dialog.setContentView(R.layout.income_expense_delete_layout);
                     dialog.show();
+                    System.out.println("delete: "+seqInt);
 
                     Button ok = (Button) dialog.findViewById(R.id.ok);
                     Button cancel = (Button) dialog.findViewById(R.id.cancel);
                     ok.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
+                            dataBuilder.deleteRecord(records.get(seqInt).getId());
+                            listAdapter.notifyDataSetChanged();
+                            dataBuilder.getRecords(userID());
                             dialog.cancel();
                         }
                     });
