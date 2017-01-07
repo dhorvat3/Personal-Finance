@@ -192,9 +192,12 @@ public class Income_Expense extends BaseFragment implements FragmentInterface, D
 
             adapter = new ArrayAdapter<Category_>(getActivity(), android.R.layout.simple_spinner_dropdown_item, catList);
             spinner.setAdapter(adapter);
-            if (record != null){
+
+            System.out.println("kategorija ne radi: ");
+            if (myRecords.size() != 0){
                 //find selected cat
                 String catID = records.get(seqInt).getCatgoryId();
+                System.out.println("kategorija: "+ catID);
                 //Category_ myItem = null;
                 for(int i=0; i < adapter.getCount(); i++){
                     Category_ item = adapter.getItem(i);
