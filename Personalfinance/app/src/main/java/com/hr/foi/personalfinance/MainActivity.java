@@ -8,6 +8,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 
 import com.hr.foi.personalfinance.fragments.Category;
+import com.hr.foi.personalfinance.fragments.Daybook;
 import com.hr.foi.personalfinance.fragments.Income_Expense;
 import com.hr.foi.personalfinance.fragments.Profile;
 import com.hr.foi.personalfinance.fragments.Statistics;
@@ -26,6 +27,7 @@ public class MainActivity extends Activity {
         menu.initFrag(Income_Expense.newInstance("Prihodi/Rashodi"),
                 Category.newInstance("Kategorije"),
                 Statistics.newInstance("Statistika"),
+                Daybook.newInstance("Dnevnik"),
                 Profile.newInstance("Moj profil"));
 
         super.onCreate(savedInstanceState);

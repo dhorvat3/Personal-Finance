@@ -2,10 +2,10 @@ package com.hr.foi.personalfinance.fragments;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
-import android.app.TimePickerDialog;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +19,7 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.Spinner;
+import android.widget.TabHost;
 
 import com.hr.foi.personalfinance.R;
 import com.hr.foi.personalfinance.adapter.MyListAdapter;
@@ -37,13 +38,16 @@ import java.util.List;
 
 import entities.DataBuilder;
 import entities.DataInterface;
-import pojo.*;
+import pojo.Category_;
+import pojo.Record;
+import pojo.Record_;
+import pojo.Response;
 
 /**
  * Created by Filip on 22.12.2016..
  */
 
-public class Income_Expense extends BaseFragment implements FragmentInterface, DataInterface {
+public class Daybook extends BaseFragment implements FragmentInterface, DataInterface {
     private Record_ record;
     private DataBuilder dataBuilder = new DataBuilder(this);
     private SharedPreferences preferences;
@@ -54,7 +58,7 @@ public class Income_Expense extends BaseFragment implements FragmentInterface, D
     private EditText napomena, datum, iznos;
     private RadioButton prihod, rashod;
     private ArrayList<Record_> records;
-    private ArrayList<pojo.Category_> catList;
+    private ArrayList<Category_> catList;
     private Dialog dialog;
     private Spinner spinner;
     private int seqInt;
@@ -65,11 +69,10 @@ public class Income_Expense extends BaseFragment implements FragmentInterface, D
     private String dateAndTime;
     private int sequence = 0;
     private String godina, mjesec, dan, dat;
+    private android.widget.SearchView search;
 
-
-
-    public static final Income_Expense newInstance(String name){
-        Income_Expense f = new Income_Expense();
+    public static final Daybook newInstance(String name){
+        Daybook f = new Daybook();
         f.setName(name);
 
         return f;
@@ -80,107 +83,27 @@ public class Income_Expense extends BaseFragment implements FragmentInterface, D
     }
 
     public View onCreateView (LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
-        View view = inflater.inflate(R.layout.income_expense_layout, container, false);
+        View view = inflater.inflate(R.layout.daybook_layout, container, false);
 
-        Button button = (Button) view.findViewById(R.id.AddIncomeExpense);
-        dialog = new Dialog(getActivity());
+        search = (android.widget.SearchView) view.findViewById(R.id.search_view);
+        search.setQueryHint("Datum...");
 
-        button.setOnClickListener(new View.OnClickListener() {
+        search.setOnQueryTextFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
-            public void onClick(View v) {
-                //final Dialog dialog = new Dialog(getActivity());
-                dialog.setTitle("Nova Prihod/rashod");
-                dialog.setContentView(R.layout.income_expense_item_layout);
-                dialog.show();
+            public void onFocusChange(View v, boolean hasFocus) {
 
-                Button submit = (Button) dialog.findViewById(R.id.ok);
-                Button cancel = (Button) dialog.findViewById(R.id.cancel);
+            }
+        });
 
-                spinner = (Spinner) dialog.findViewById(R.id.sp_kategorija);
-                dataBuilder.getCategories(userID());
-                //String[] days ={"pon", "uto", "sri"};
-                //ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item,days);
-                //spinner.setAdapter(adapter);
+        search.setOnQueryTextListener(new android.widget.SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
 
-                datum = (EditText) dialog.findViewById(R.id.datum);
-                datum.setFocusable(false);
-                datePickerSetter();
-
-                datum.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        datePickerDialog.show();
-                    }
-                });
-
-                submit.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-
-                        napomena = (EditText) dialog.findViewById(R.id.napomena);
-                        iznos = (EditText) dialog.findViewById(R.id.iznos);
-                        prihod = (RadioButton) dialog.findViewById(R.id.prihod);
-                        rashod = (RadioButton) dialog.findViewById(R.id.rashod);
-                        boolean valid = true;
-                        List<EditText> fieldsE = Arrays.asList(napomena, iznos, datum);
-
-                        Category_ catId = (Category_) spinner.getSelectedItem();
-                        //Log.w("CatID", catId.getId());
-
-                        record = new Record_();
-
-                        if (prihod.isChecked()){
-                            System.out.println("prihod");
-                            record.setVrsta("true");
-                            prihod.setError(null);
-                        }
-                        else if(rashod.isChecked()){
-                            System.out.println("rashod");
-                            record.setVrsta("false");
-                            prihod.setError(null);
-                        }
-                        else {
-                            prihod.setError("morate odabrati prihod ili rashod");
-                            valid =false;
-                        }
-
-                        for (Iterator<EditText> i = fieldsE.iterator(); i.hasNext();) {
-                            EditText field = i.next();
-
-                            if (field.getText().toString().isEmpty()) {
-                                field.setError("Obavezno polje");
-                                valid = false;
-                            }
-                        }
-                        if(valid) {
-                            record.setNapomena(napomena.getText().toString());
-                            record.setUserId(userID());
-                            record.setAktivan("1");
-                            record.setCatgoryId(catId.getId());
-                            record.setDatum(dateAndTime + " 00:00:00");
-                            //record.setDatum("2001-12-01 00:00:00");
-                            System.out.println(record.getDatum());
-                            record.setIznos(iznos.getText().toString());
-
-                            dataBuilder.newRecord(record);
-
-                            sequence++;
-                            int groupPosition = addRecord(record.getDatum(), record.getIznos());
-                            listAdapter.notifyDataSetChanged();
-                            listView.setSelectedGroup(groupPosition);
-
-                            dataBuilder.getRecords(userID());
-                            dialog.cancel();
-                        }
-                    }
-                });
-
-                cancel.setOnClickListener(new View.OnClickListener(){
-                    @Override
-                    public void onClick(View v) {
-                        dialog.cancel();
-                    }
-                });
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
             }
         });
 
@@ -190,9 +113,7 @@ public class Income_Expense extends BaseFragment implements FragmentInterface, D
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState){
         super.onViewCreated(view, savedInstanceState);
 
-        String userId = userID();
-
-        dataBuilder.getRecords(userId);
+        dataBuilder.getRecords(userID());
     }
 
 
@@ -227,8 +148,8 @@ public class Income_Expense extends BaseFragment implements FragmentInterface, D
                 spinner.setSelection(adapter.getPosition(myItem));
             }
         }
-        if(data instanceof pojo.Record) {
-            pojo.Record record = (pojo.Record) data;
+        if(data instanceof Record) {
+            Record record = (Record) data;
             if (record != null) {
                 listView = (ExpandableListView) getActivity().findViewById(R.id.zapisi);
 

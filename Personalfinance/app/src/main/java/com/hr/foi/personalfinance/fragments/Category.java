@@ -25,7 +25,9 @@ import com.hr.foi.userinterface.FragmentInterface;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
+import java.util.List;
 
 import entities.DataBuilder;
 import entities.DataInterface;
@@ -85,18 +87,31 @@ public class Category extends BaseFragment implements FragmentInterface, DataInt
 
                         name = (EditText) dialog.findViewById(R.id.category_name);
                         description = (EditText) dialog.findViewById(R.id.category_description);
+                        boolean valid = true;
 
-                        category = new Category_();
-                        String userId = userID();
-                        category.setUserId(userId);
-                        category.setTitle(name.getText().toString());
-                        category.setDescription(description.getText().toString());
-                        dataBuilder.newCategory(category);
+                        List<EditText> fields = Arrays.asList(name, description);
 
-                        dataBuilder.getCategories(userId);
-                        int groupPosition = addCategory(name.getText().toString(),description.getText().toString());
-                        listAdapter.notifyDataSetChanged();
-                        listView.setSelectedGroup(groupPosition);
+                        for (Iterator<EditText> i = fields.iterator(); i.hasNext();) {
+                            EditText field = i.next();
+
+                            if (field.getText().toString().isEmpty()) {
+                                field.setError("Obavezno polje");
+
+                                valid = false;
+                            }
+                        }
+                        if (valid) {
+                            category = new Category_();
+                            category.setUserId(userID());
+                            category.setTitle(name.getText().toString());
+                            category.setDescription(description.getText().toString());
+                            dataBuilder.newCategory(category);
+
+                            dataBuilder.getCategories(userID());
+                            int groupPosition = addCategory(name.getText().toString(), description.getText().toString());
+                            listAdapter.notifyDataSetChanged();
+                            listView.setSelectedGroup(groupPosition);
+                        }
 
                         name.setText("");
                         description.setText("");
