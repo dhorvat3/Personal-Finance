@@ -88,6 +88,7 @@ public class Daybook extends BaseFragment implements FragmentInterface, DataInte
         search = (android.widget.SearchView) view.findViewById(R.id.search_view);
         search.setQueryHint("Datum...");
 
+
         search.setOnQueryTextFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
@@ -95,14 +96,26 @@ public class Daybook extends BaseFragment implements FragmentInterface, DataInte
             }
         });
 
+        search.setOnCloseListener(new android.widget.SearchView.OnCloseListener() {
+            @Override
+            public boolean onClose() {
+                listAdapter.filterData("");
+                return false;
+            }
+        });
+
         search.setOnQueryTextListener(new android.widget.SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
+                listAdapter.filterData(query);
+
                 return false;
             }
 
             @Override
-            public boolean onQueryTextChange(String newText) {
+            public boolean onQueryTextChange(String query) {
+                listAdapter.filterData(query);
+
                 return false;
             }
         });

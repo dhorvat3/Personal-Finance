@@ -21,10 +21,14 @@ import java.util.ArrayList;
 public class MyListAdapter extends BaseExpandableListAdapter{
     private Context context;
     private ArrayList<HeaderInfo> deptList;
+    private ArrayList<HeaderInfo> originalList;
 
     public MyListAdapter(Context context, ArrayList<HeaderInfo> deptList) {
         this.context = context;
-        this.deptList = deptList;
+        this.deptList = new ArrayList<HeaderInfo>();
+        this.deptList.addAll(deptList);
+        this.originalList = new ArrayList<HeaderInfo>();
+        this.originalList.addAll(deptList);
     }
 
     @Override
@@ -99,5 +103,25 @@ public class MyListAdapter extends BaseExpandableListAdapter{
     @Override
     public boolean isChildSelectable(int groupPosition, int childPosition) {
         return true;
+    }
+    public void filterData(String query){
+        deptList.clear();
+        if (query.isEmpty()){
+            deptList.addAll(deptList);
+        }
+        else{
+
+            for (HeaderInfo headerInfo: originalList){
+                ArrayList<HeaderInfo> newList = new ArrayList<>();
+                    if (headerInfo.getName().contains(query)){
+                        newList.add(headerInfo);
+                    }
+                if (newList.size() > 0){
+                    deptList.add(headerInfo);
+                }
+            }
+
+        }
+        notifyDataSetChanged();
     }
 }
