@@ -217,6 +217,7 @@ public class Daybook extends BaseFragment implements FragmentInterface, DataInte
                 @Override
                 public void onClick(View v) {
                     //final Dialog dialog = new Dialog(getActivity());
+                    dialog = new Dialog(getActivity());
                     dialog.setTitle("Ažuriranje prihoda/rashoda");
                     dialog.setContentView(R.layout.income_expense_item_layout);
                     dialog.show();
