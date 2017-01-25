@@ -11,10 +11,16 @@
 
     </SearchView>
 
-    <ExpandableListView
-        android:layout_width="wrap_content"
+    <Spinner
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/search_view"
+        android:id="@+id/dateOrCat"
+        android:layout_below="@id/search_view"/>
+
+    <ExpandableListView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/dateOrCat"
         android:id="@+id/zapisi"
         android:fastScrollAlwaysVisible="true"
         android:dividerHeight="1dp"/>

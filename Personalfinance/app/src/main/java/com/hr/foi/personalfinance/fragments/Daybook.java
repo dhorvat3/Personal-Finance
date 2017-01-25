@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -70,6 +71,8 @@ public class Daybook extends BaseFragment implements FragmentInterface, DataInte
     private int sequence = 0;
     private String godina, mjesec, dan, dat;
     private android.widget.SearchView search;
+    private boolean dateOrCategorySpinnerSelection = false;
+    private LinkedHashMap<String, String> catIdName = new LinkedHashMap<String, String>();
 
     public static final Daybook newInstance(String name){
         Daybook f = new Daybook();
@@ -86,7 +89,35 @@ public class Daybook extends BaseFragment implements FragmentInterface, DataInte
         View view = inflater.inflate(R.layout.daybook_layout, container, false);
 
         search = (android.widget.SearchView) view.findViewById(R.id.search_view);
-        search.setQueryHint("Datum...");
+
+        final Spinner dateOrCategory = (Spinner) view.findViewById(R.id.dateOrCat);
+        ArrayAdapter<CharSequence> DoCadapter = ArrayAdapter.createFromResource(getActivity(),R.array.dateOrCat_array, android.R.layout.simple_spinner_item);
+        DoCadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        dateOrCategory.setAdapter(DoCadapter);
+
+        dateOrCategory.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String selectedValue = dateOrCategory.getSelectedItem().toString();
+                //System.out.println(selectedValue);
+                if (selectedValue.equals("Datum")){
+                    dateOrCategorySpinnerSelection = false;
+                    search.setQueryHint("Datum...");
+                }
+                else if(selectedValue.equals("Kategorije")){
+                    dateOrCategorySpinnerSelection = true;
+                    search.setQueryHint("Kategorije...");
+                }
+                dataBuilder.getRecords(userID());
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+
 
 
         search.setOnQueryTextFocusChangeListener(new View.OnFocusChangeListener() {
@@ -99,7 +130,9 @@ public class Daybook extends BaseFragment implements FragmentInterface, DataInte
         search.setOnCloseListener(new android.widget.SearchView.OnCloseListener() {
             @Override
             public boolean onClose() {
-                listAdapter.filterData("");
+                dataBuilder.getRecords(userID());
+                listAdapter.notifyDataSetChanged();
+                //listAdapter.filterData("");
                 return false;
             }
         });
@@ -139,6 +172,7 @@ public class Daybook extends BaseFragment implements FragmentInterface, DataInte
             catList = new ArrayList<>();
             for(Category_ item: categories.getCategory()){
                 catList.add(item);
+                catIdName.put(item.getId(), item.getTitle());
             }
 
             adapter = new ArrayAdapter<Category_>(getActivity(), android.R.layout.simple_spinner_dropdown_item, catList);
@@ -174,14 +208,23 @@ public class Daybook extends BaseFragment implements FragmentInterface, DataInte
                 for (Record_ item : record.getRecord()) {
                     records.add(item);
                 }
-
-                for (int i = 0; i < records.size(); i++) {
-                    sequence = i;
-                    godina = records.get(i).getDatum().substring(0, 4);
-                    mjesec = records.get(i).getDatum().substring(5, 7);
-                    dan = records.get(i).getDatum().substring(8, 10);
-                    dat = dan+"."+mjesec+"."+godina+".";
-                    addRecord(dat, records.get(i).getIznos()+" kn");
+                if (!dateOrCategorySpinnerSelection)   {
+                    for (int i = 0; i < records.size(); i++) {
+                        sequence = i;
+                        godina = records.get(i).getDatum().substring(0, 4);
+                        mjesec = records.get(i).getDatum().substring(5, 7);
+                        dan = records.get(i).getDatum().substring(8, 10);
+                        dat = dan+"."+mjesec+"."+godina+".";
+                        addRecord(dat, records.get(i).getIznos()+" kn");
+                    }
+                }
+                else {
+                    String catName = new String();
+                    for (int i = 0; i < records.size(); i++) {
+                        sequence = i;
+                        catName = catIdName.get(records.get(i).getCatgoryId());
+                        addRecord(catName, records.get(i).getIznos()+" kn");
+                    }
                 }
                 listAdapter = new MyListAdapter(getActivity(), deptList);
                 listView.setAdapter(listAdapter);
@@ -394,4 +437,5 @@ public class Daybook extends BaseFragment implements FragmentInterface, DataInte
         String status = preferences.getString("id", "");
         return  status;
     }
+
 }
