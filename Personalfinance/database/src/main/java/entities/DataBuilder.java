@@ -172,4 +172,40 @@ public class DataBuilder {
             }
         });
     }
+
+    public void newTask(Task_ task){
+        Call<Task_> retrofitCall = apiMethods.newTask(task);
+        retrofitCall.enqueue(new Callback<Task_>() {
+            @Override
+            public void onResponse(Response<Task_> response, Retrofit retrofit) {
+                call.buildData(response.body());
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                call.buildData(null);
+            }
+        });
+    }
+
+    public void getTasks(String userId){
+        Call<pojo.Task> retrofitCall = apiMethods.getTasks(userId);
+        retrofitCall.enqueue(new Callback<Task>() {
+            @Override
+            public void onResponse(Response<Task> response, Retrofit retrofit) {
+                if (response.body() != null) {
+                    data = response.body();
+                } else {
+                    data = null;
+                }
+                call.buildData(data);
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                data = null;
+                call.buildData(data);
+            }
+        });
+    }
 }

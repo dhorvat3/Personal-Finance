@@ -12,6 +12,7 @@ import com.hr.foi.personalfinance.fragments.Daybook;
 import com.hr.foi.personalfinance.fragments.Income_Expense;
 import com.hr.foi.personalfinance.fragments.Profile;
 import com.hr.foi.personalfinance.fragments.Statistics;
+import com.hr.foi.personalfinance.fragments.Tasks;
 import com.hr.foi.userinterface.MainMenu;
 
 public class MainActivity extends Activity {
@@ -26,6 +27,7 @@ public class MainActivity extends Activity {
 
         menu.initFrag(Income_Expense.newInstance("Prihodi/Rashodi"),
                 Category.newInstance("Kategorije"),
+                Tasks.newInstance("Lista zadataka"),
                 Statistics.newInstance("Statistika"),
                 Daybook.newInstance("Dnevnik"),
                 Profile.newInstance("Moj profil"));

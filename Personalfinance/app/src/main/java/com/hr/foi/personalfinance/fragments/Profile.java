@@ -55,7 +55,7 @@ public class Profile extends BaseFragment implements FragmentInterface {
         View view = inflater.inflate(R.layout.profile_layout, container, false);
         TextView profileFullName = (TextView) view.findViewById(R.id.profile_full_name);
         TextView profileEmail = (TextView) view.findViewById(R.id.profile_email);
-        Button logout = (Button) view.findViewById(R.id.logout);
+        ImageButton logout = (ImageButton) view.findViewById(R.id.logout);
 
         logout.setOnClickListener(new View.OnClickListener() {
             @Override

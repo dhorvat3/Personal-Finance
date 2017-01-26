@@ -12,13 +12,13 @@ import java.util.List;
 public class Task {
     @SerializedName("tasks")
     @Expose
-    private List<Task> tasks = null;
+    private List<Task_> tasks = null;
 
-    public List<Task> getTasks() {
+    public List<Task_> getTasks() {
         return tasks;
     }
 
-    public void setTasks(List<Task> tasks) {
+    public void setTasks(List<Task_> tasks) {
         this.tasks = tasks;
     }
 }

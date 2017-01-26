@@ -36,6 +36,17 @@
             android:layout_marginTop="-45dp">
 
             <ImageButton
+                android:id="@+id/logout"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginLeft="16dp"
+                android:layout_alignParentLeft="true"
+                android:src="@android:drawable/ic_lock_power_off"
+                android:tint="@color/profileEditIcon"
+                android:background="@null"
+                android:elevation="5dp" />
+
+            <ImageButton
                 android:id="@+id/profile_edit"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
@@ -72,12 +83,6 @@
                 android:layout_centerHorizontal="true"
                 android:textSize="14sp"
                 android:text="ime.prezime@primjer.hr" />
-            <Button
-                android:id="@+id/logout"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="Odjava"
-                android:layout_below="@+id/profile_email"/>
         </RelativeLayout>
 
     </RelativeLayout>

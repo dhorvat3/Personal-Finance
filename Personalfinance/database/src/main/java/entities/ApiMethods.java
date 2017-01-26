@@ -42,6 +42,12 @@ public interface ApiMethods {
     @POST("/edit_record.php")
     Call<pojo.Response> editRecord(@Body pojo.Record_ record);
 
+    @POST("/new_task.php")
+    Call<pojo.Task_> newTask(@Body Task_ task);
+
+    @GET("/tasks_by_user.php")
+    Call<pojo.Task> getTasks(@Query("id") String userId);
+
     Retrofit retrofit = new Retrofit.Builder()
             .baseUrl("http://finance2016.000webhostapp.com")
             .addConverterFactory(GsonConverterFactory.create())
