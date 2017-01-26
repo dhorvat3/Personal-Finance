@@ -160,6 +160,7 @@ public class Daybook extends BaseFragment implements FragmentInterface, DataInte
         super.onViewCreated(view, savedInstanceState);
 
         dataBuilder.getRecords(userID());
+        dataBuilder.getCategories(userID());
     }
 
 
@@ -170,29 +171,38 @@ public class Daybook extends BaseFragment implements FragmentInterface, DataInte
         if(data instanceof pojo.Category){
             pojo.Category categories = (pojo.Category) data;
             catList = new ArrayList<>();
+            Category_ noCat = new Category_();
+            noCat.setTitle("(NEMA)");
+            noCat.setId(null);
+
             for(Category_ item: categories.getCategory()){
                 catList.add(item);
                 catIdName.put(item.getId(), item.getTitle());
             }
 
-            adapter = new ArrayAdapter<Category_>(getActivity(), android.R.layout.simple_spinner_dropdown_item, catList);
-            spinner.setAdapter(adapter);
+            if(spinner != null) {
+                adapter = new ArrayAdapter<Category_>(getActivity(), android.R.layout.simple_spinner_dropdown_item, catList);
+                adapter.insert(noCat,0);
+                spinner.setAdapter(adapter);
 
-            System.out.println("kategorija ne radi: ");
-            if (myRecords.size() != 0){
-                //find selected cat
-                String catID = records.get(seqInt).getCatgoryId();
-                System.out.println("kategorija: "+ catID);
-                //Category_ myItem = null;
-                for(int i=0; i < adapter.getCount(); i++){
-                    Category_ item = adapter.getItem(i);
+                if (myRecords.size() != 0) {
+                    String catID = records.get(seqInt).getCatgoryId();
 
-                    if(item.getId().equals(catID)){
-                        myItem = item;
-                        break;
+                    if (catID != null) {
+                        for (int i = 1; i < adapter.getCount(); i++) {
+                            Category_ item = adapter.getItem(i);
+
+                            if (item.getId().equals(catID)) {
+                                myItem = item;
+                                break;
+                            }
+                        }
+                        spinner.setSelection(adapter.getPosition(myItem));
+                    }
+                    else{
+                        spinner.setSelection(0);
                     }
                 }
-                spinner.setSelection(adapter.getPosition(myItem));
             }
         }
         if(data instanceof Record) {
@@ -222,7 +232,12 @@ public class Daybook extends BaseFragment implements FragmentInterface, DataInte
                     String catName = new String();
                     for (int i = 0; i < records.size(); i++) {
                         sequence = i;
-                        catName = catIdName.get(records.get(i).getCatgoryId());
+                        if (records.get(i).getCatgoryId() == null){
+                            catName = "(NEMA)";
+                        }
+                        else {
+                            catName = catIdName.get(records.get(i).getCatgoryId());
+                        }
                         addRecord(catName, records.get(i).getIznos()+" kn");
                     }
                 }
@@ -311,38 +326,54 @@ public class Daybook extends BaseFragment implements FragmentInterface, DataInte
                     ok.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
+                            boolean valid = true;
+                            List<EditText> fieldsE = Arrays.asList(napomena, iznos, datum);
+
                             Record_ record = new Record_();
-                            Log.w("recordID", records.get(seqInt).getId());
-                            Log.w("recordDate", datum.getText().toString());
-                            record.setId(records.get(seqInt).getId());
-                            record.setAktivan("1");
 
-                            Category_ catId = (Category_) spinner.getSelectedItem();
-                            record.setCatgoryId(catId.getId());
+                            for (Iterator<EditText> i = fieldsE.iterator(); i.hasNext(); ) {
+                                EditText field = i.next();
 
-                           String dat1 = datum.getText().toString();
-                            dan = dat1.substring(0,2);
-                            mjesec = dat1.substring(3,5);
-                            godina = dat1.substring(6,10);
-                            dat = godina+"-"+mjesec+"-"+dan;
-
-                            Log.w("datum1", dat);
-                            Log.w("datum", datum.getText().toString());
-
-                            record.setDatum(dat+ " 00:00:00");
-                            record.setIznos(iznos.getText().toString());
-                            record.setNapomena(napomena.getText().toString());
-
-                            if(rashod.isChecked()){
-                                record.setVrsta("false");
-                            } else {
-                                record.setVrsta("true");
+                                if (field.getText().toString().isEmpty()) {
+                                    field.setError("Obavezno polje");
+                                    valid = false;
+                                }
                             }
+                            if (valid) {
+                                record.setId(records.get(seqInt).getId());
+                                record.setAktivan("1");
 
-                            dataBuilder.editRecord(record);
-                            listAdapter.notifyDataSetChanged();
-                            dataBuilder.getRecords(userID());
-                            dialog.cancel();
+                                Category_ catId = (Category_) spinner.getSelectedItem();
+
+                                if (catId.getId() == null) {
+                                    record.setCatgoryId(null);
+                                    System.out.println("null");
+                                } else {
+                                    record.setCatgoryId(catId.getId());
+                                    System.out.println(catId.getId());
+                                }
+
+                                String dat1 = datum.getText().toString();
+                                dan = dat1.substring(0, 2);
+                                mjesec = dat1.substring(3, 5);
+                                godina = dat1.substring(6, 10);
+                                dat = godina + "-" + mjesec + "-" + dan;
+
+                                record.setDatum(dat + " 00:00:00");
+                                record.setIznos(iznos.getText().toString());
+                                record.setNapomena(napomena.getText().toString());
+
+                                if (rashod.isChecked()) {
+                                    record.setVrsta("false");
+                                } else {
+                                    record.setVrsta("true");
+                                }
+
+                                dataBuilder.editRecord(record);
+                                listAdapter.notifyDataSetChanged();
+                                dataBuilder.getRecords(userID());
+                                dialog.cancel();
+                            }
                         }
                     });
 

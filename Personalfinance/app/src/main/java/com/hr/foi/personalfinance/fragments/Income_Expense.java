@@ -156,10 +156,15 @@ public class Income_Expense extends BaseFragment implements FragmentInterface, D
                             record.setNapomena(napomena.getText().toString());
                             record.setUserId(userID());
                             record.setAktivan("1");
-                            record.setCatgoryId(catId.getId());
+                            if(catId.getId() == null) {
+                                record.setCatgoryId(null);
+                            }
+                            else {
+                                record.setCatgoryId(catId.getId());
+                            }
                             record.setDatum(dateAndTime + " 00:00:00");
                             //record.setDatum("2001-12-01 00:00:00");
-                            System.out.println(record.getDatum());
+                            System.out.println(record.getCatgoryId());
                             record.setIznos(iznos.getText().toString());
 
                             dataBuilder.newRecord(record);
@@ -203,30 +208,38 @@ public class Income_Expense extends BaseFragment implements FragmentInterface, D
         if(data instanceof pojo.Category){
             pojo.Category categories = (pojo.Category) data;
             catList = new ArrayList<>();
+
+            Category_ noCat = new Category_();
+            noCat.setTitle("(NEMA)");
+            noCat.setId(null);
+
             for(Category_ item: categories.getCategory()){
                 catList.add(item);
             }
 
             adapter = new ArrayAdapter<Category_>(getActivity(), android.R.layout.simple_spinner_dropdown_item, catList);
+            adapter.insert(noCat,0);
             spinner.setAdapter(adapter);
 
-            System.out.println("kategorija ne radi: ");
             if (myRecords.size() != 0){
-                //find selected cat
                 String catID = records.get(seqInt).getCatgoryId();
-                System.out.println("kategorija: "+ catID);
-                //Category_ myItem = null;
-                for(int i=0; i < adapter.getCount(); i++){
-                    Category_ item = adapter.getItem(i);
+                if (catID != null) {
+                    for (int i = 1; i < adapter.getCount(); i++) {
+                        Category_ item = adapter.getItem(i);
 
-                    if(item.getId().equals(catID)){
-                        myItem = item;
-                        break;
+                        if (item.getId().equals(catID)) {
+                            myItem = item;
+                            break;
+                        }
                     }
+                    spinner.setSelection(adapter.getPosition(myItem));
                 }
-                spinner.setSelection(adapter.getPosition(myItem));
+                else{
+                    spinner.setSelection(0);
+                }
             }
         }
+
         if(data instanceof pojo.Record) {
             pojo.Record record = (pojo.Record) data;
             if (record != null) {
@@ -282,7 +295,7 @@ public class Income_Expense extends BaseFragment implements FragmentInterface, D
             update.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    //final Dialog dialog = new Dialog(getActivity());
+                    dialog = new Dialog(getActivity());
                     dialog.setTitle("Ažuriranje prihoda/rashoda");
                     dialog.setContentView(R.layout.income_expense_item_layout);
                     dialog.show();
@@ -333,38 +346,58 @@ public class Income_Expense extends BaseFragment implements FragmentInterface, D
                     ok.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
+
+                            boolean valid = true;
+                            List<EditText> fieldsE = Arrays.asList(napomena, iznos, datum);
+
                             Record_ record = new Record_();
-                            Log.w("recordID", records.get(seqInt).getId());
-                            Log.w("recordDate", datum.getText().toString());
-                            record.setId(records.get(seqInt).getId());
-                            record.setAktivan("1");
 
-                            Category_ catId = (Category_) spinner.getSelectedItem();
-                            record.setCatgoryId(catId.getId());
+                            for (Iterator<EditText> i = fieldsE.iterator(); i.hasNext(); ) {
+                                EditText field = i.next();
 
-                           String dat1 = datum.getText().toString();
-                            dan = dat1.substring(0,2);
-                            mjesec = dat1.substring(3,5);
-                            godina = dat1.substring(6,10);
-                            dat = godina+"-"+mjesec+"-"+dan;
-
-                            Log.w("datum1", dat);
-                            Log.w("datum", datum.getText().toString());
-
-                            record.setDatum(dat+ " 00:00:00");
-                            record.setIznos(iznos.getText().toString());
-                            record.setNapomena(napomena.getText().toString());
-
-                            if(rashod.isChecked()){
-                                record.setVrsta("false");
-                            } else {
-                                record.setVrsta("true");
+                                if (field.getText().toString().isEmpty()) {
+                                    field.setError("Obavezno polje");
+                                    valid = false;
+                                }
                             }
+                            if (valid) {
+                                Log.w("recordID", records.get(seqInt).getId());
+                                Log.w("recordDate", datum.getText().toString());
+                                record.setId(records.get(seqInt).getId());
+                                record.setAktivan("1");
 
-                            dataBuilder.editRecord(record);
-                            listAdapter.notifyDataSetChanged();
-                            dataBuilder.getRecords(userID());
-                            dialog.cancel();
+                                Category_ catId = (Category_) spinner.getSelectedItem();
+                                //record.setCatgoryId(catId.getId());
+                                if (catId.getId() == null) {
+                                    record.setCatgoryId(null);
+                                } else {
+                                    record.setCatgoryId(catId.getId());
+                                }
+
+                                String dat1 = datum.getText().toString();
+                                dan = dat1.substring(0, 2);
+                                mjesec = dat1.substring(3, 5);
+                                godina = dat1.substring(6, 10);
+                                dat = godina + "-" + mjesec + "-" + dan;
+
+                                Log.w("datum1", dat);
+                                Log.w("datum", datum.getText().toString());
+
+                                record.setDatum(dat + " 00:00:00");
+                                record.setIznos(iznos.getText().toString());
+                                record.setNapomena(napomena.getText().toString());
+
+                                if (rashod.isChecked()) {
+                                    record.setVrsta("false");
+                                } else {
+                                    record.setVrsta("true");
+                                }
+
+                                dataBuilder.editRecord(record);
+                                listAdapter.notifyDataSetChanged();
+                                dataBuilder.getRecords(userID());
+                                dialog.cancel();
+                            }
                         }
                     });
 
@@ -458,5 +491,9 @@ public class Income_Expense extends BaseFragment implements FragmentInterface, D
         preferences = getActivity().getSharedPreferences("login", 0);
         String status = preferences.getString("id", "");
         return  status;
+    }
+
+    private void IncomeExpense(){
+
     }
 }
