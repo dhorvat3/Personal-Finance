@@ -26,6 +26,17 @@ public class Task_ {
     @SerializedName("notice")
     @Expose
     private String notice;
+    @SerializedName("aktivan")
+    @Expose
+    private String aktivan;
+
+    public String getAktivan() {
+        return aktivan;
+    }
+
+    public void setAktivan(String aktivan) {
+        this.aktivan = aktivan;
+    }
 
     public String getId() {
         return id;

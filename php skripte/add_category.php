@@ -15,16 +15,26 @@ $db = new DB_CONNECT();
 $con = $db->connect();
 
 //Add new category
-$results = array();
-$sql = "INSERT INTO category VALUES (DEFAULT, '".$data['title']."', '".$data['description']."');";
-$results = mysqli_query($con, $sql);
+if(empty($data['title']) or empty($data['description']) or empty($data['user_id'])){
+	$response['response'] = "Empty field!";
+	$response['id'] = -2;
+}
+else{
+	$sql = "INSERT INTO category VALUES (DEFAULT, '".$data['title']."', '".$data['description']."');";
+	$results = mysqli_query($con, $sql);
+	
+	$cat_id = $con->insert_id;	
+	$sql_ = "INSERT INTO user_category VALUES (".$data['user_id'].", ".$cat_id.", 1);";
+	$results_ = mysqli_query($con, $sql_);
+	
+	if($results && $results_){
+		$response['response'] = "Success";
+		$response['id'] = 1;
+	} else {
+		$response['response'] = "SQL Error. Query: ".$sql;
+		$response['id'] = -1;
+	}
+}
 
-//Get id of inserted category
-$cat_id = $con->insert_id;
-
-//assign category to user
-$results = array();
-$sql = "INSERT INTO user_category VALUES (".$data['user_id'].", ".$cat_id.", 1);";
-$results = mysqli_query($con, $sql);
-
+echo json_encode($response);
 ?>

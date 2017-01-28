@@ -15,8 +15,14 @@ if(isset($_GET['username'])){
 	$username = "";
 }
 
+if(isset($_GET['pass'])){
+    $pass = $_GET['pass'];
+} else {
+    $pass = "";
+}
+
 $results = array();
-$sql = "SELECT * FROM users WHERE username = '".$username."';";
+$sql = "SELECT * FROM users WHERE username = '".$username."' AND password = '".$pass."';";
 $results = mysqli_query($con ,$sql);
 
 $response = mysqli_fetch_assoc($results);

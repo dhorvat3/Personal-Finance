@@ -16,7 +16,7 @@ if(isset($_GET['id'])){
 }
 
 $results = array();
-$sql = "SELECT * FROM tasks WHERE user_id = ".$id.";";
+$sql = "SELECT * FROM tasks WHERE user_id = ".$id." AND aktivan = 1;";
 $results = mysqli_query($con, $sql);
 
 while ($row = mysqli_fetch_assoc($results)) {

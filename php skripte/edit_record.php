@@ -15,7 +15,11 @@ if(empty($data['id'])){
 	$response['response'] = "Empty id";
 	$response['id'] = -2;
 } else {
-	$sql = "UPDATE revenues_expenses SET category_id = ".$data['category_id'].", vrsta = ".$data['vrsta'].", napomena = '".$data['napomena']."', datum = '".$data['datum']."', iznos = ".$data['iznos']." WHERE id = ".$data['id'].";";
+	if(empty($data['category_id'])){
+		$sql = "UPDATE revenues_expenses SET category_id = NULL, vrsta = ".$data['vrsta'].", napomena = '".$data['napomena']."', datum = '".$data['datum']."', iznos = ".$data['iznos']." WHERE id = ".$data['id'].";";
+	} else {
+		$sql = "UPDATE revenues_expenses SET category_id = ".$data['category_id'].", vrsta = ".$data['vrsta'].", napomena = '".$data['napomena']."', datum = '".$data['datum']."', iznos = ".$data['iznos']." WHERE id = ".$data['id'].";";
+	}
 	if(mysqli_query($con, $sql)){
 		$response['response'] = "Success!";
 		$response['id'] = 1;

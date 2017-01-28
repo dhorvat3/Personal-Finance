@@ -18,14 +18,24 @@ require_once __DIR__.'/db.php';
 $db = new DB_CONNECT();
 $con = $db->connect();
 
-if(empty($data['user_id']) or empty($data['category_id']) or empty($data['vrsta']) or empty($data['datum']) or empty($data['iznos'])){
+if(empty($data['user_id']) or empty($data['datum']) or empty($data['iznos'])){
 	$response['response'] = "Empty field!";
 	$response['id'] = -2;
 } else {
-	$sql = "INSERT INTO revenues_expenses VALUES (DEFAULT, ".$data['user_id'].", ".$data['category_id'].", ".$data['vrsta'].", '".$data['napomena'].", '".$data['datum']."', ".$data['iznos'].", 1);";
+	if(empty($data['category_id'])){
+		$sql = "INSERT INTO revenues_expenses VALUES (DEFAULT, ".$data['user_id'].", NULL, ".$data['vrsta'].", '".$data['napomena']."', '".$data['datum']."', ".$data['iznos'].", 1);";
+	} else {
+		$sql = "INSERT INTO revenues_expenses VALUES (DEFAULT, ".$data['user_id'].", ".$data['category_id'].", ".$data['vrsta'].", '".$data['napomena']."', '".$data['datum']."', ".$data['iznos'].", 1);";
+	}
 	$results = mysqli_query($con, $sql);
 	
-	$response['response'] = "Success!";
+if($results){
+$response['response'] = "Success!";
+} else {
+$response['response'] = $con->error;
+}
+
+	//$response['response'] = "Success!";
 	$response['id'] = 1;
 }
 

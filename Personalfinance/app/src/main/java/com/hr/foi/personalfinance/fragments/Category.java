@@ -34,7 +34,6 @@ import java.util.List;
 
 import entities.DataBuilder;
 import entities.DataInterface;
-import entities.User;
 import pojo.Category_;
 import pojo.Response;
 

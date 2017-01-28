@@ -4,6 +4,7 @@
 **/
 
 $response = array();
+$response['category'] = array();
 
 require_once __DIR__.'/db.php';
 $db = new DB_CONNECT();
@@ -27,7 +28,7 @@ while($row = mysqli_fetch_assoc($results)){
 	$cat_results = mysqli_query($con, $sql);
 	
 	while($cat_row = mysqli_fetch_assoc($cat_results)){
-		array_push($response, $cat_row);
+		array_push($response['category'], $cat_row);
 	}
 }
 

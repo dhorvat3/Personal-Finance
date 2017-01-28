@@ -209,6 +209,36 @@ public class DataBuilder {
         });
     }
 
+    public void editTask(pojo.Task_ task){
+        Call<pojo.Response> retrofitCall = apiMethods.editTask(task);
+        retrofitCall.enqueue(new Callback<pojo.Response>() {
+            @Override
+            public void onResponse(Response<pojo.Response> response, Retrofit retrofit) {
+                call.buildData(response.body());
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+
+            }
+        });
+    }
+
+    public void deleteTask(String id){
+        Call<pojo.Response> restrofitCall = apiMethods.deleteTask(id);
+        restrofitCall.enqueue(new Callback<pojo.Response>() {
+            @Override
+            public void onResponse(Response<pojo.Response> response, Retrofit retrofit) {
+                call.buildData(response.body());
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+
+            }
+        });
+    }
+
     public void editCategory(Category_ category){
         Call<pojo.Response> retrofitCall = apiMethods.editCategory(category);
         retrofitCall.enqueue(new Callback<pojo.Response>() {
