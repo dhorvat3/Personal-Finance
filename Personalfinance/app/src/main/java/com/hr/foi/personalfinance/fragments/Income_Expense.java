@@ -196,6 +196,7 @@ public class Income_Expense extends BaseFragment implements FragmentInterface, D
         String userId = userID();
 
         dataBuilder.getRecords(userId);
+        dataBuilder.getCategories(userId);
     }
 
 
@@ -210,30 +211,31 @@ public class Income_Expense extends BaseFragment implements FragmentInterface, D
             Category_ noCat = new Category_();
             noCat.setTitle("(NEMA)");
             noCat.setId(null);
+            catList.add(noCat);
 
             for(Category_ item: categories.getCategory()){
                 catList.add(item);
             }
+            if(spinner != null) {
+                adapter = new ArrayAdapter<Category_>(getActivity(), android.R.layout.simple_spinner_dropdown_item, catList);
+                spinner.setAdapter(adapter);
 
-            adapter = new ArrayAdapter<Category_>(getActivity(), android.R.layout.simple_spinner_dropdown_item, catList);
-            adapter.insert(noCat,0);
-            spinner.setAdapter(adapter);
+                if (myRecords.size() != 0){
+                    String catID = records.get(seqInt).getCatgoryId();
+                    if (catID != null) {
+                        for (int i = 1; i < adapter.getCount(); i++) {
+                            Category_ item = adapter.getItem(i);
 
-            if (myRecords.size() != 0){
-                String catID = records.get(seqInt).getCatgoryId();
-                if (catID != null) {
-                    for (int i = 1; i < adapter.getCount(); i++) {
-                        Category_ item = adapter.getItem(i);
-
-                        if (item.getId().equals(catID)) {
-                            myItem = item;
-                            break;
+                            if (item.getId().equals(catID)) {
+                                myItem = item;
+                                break;
+                            }
                         }
+                        spinner.setSelection(adapter.getPosition(myItem));
                     }
-                    spinner.setSelection(adapter.getPosition(myItem));
-                }
-                else{
-                    spinner.setSelection(0);
+                    else{
+                        spinner.setSelection(0);
+                    }
                 }
             }
         }

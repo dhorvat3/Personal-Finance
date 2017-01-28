@@ -115,15 +115,13 @@ public class Category extends BaseFragment implements FragmentInterface, DataInt
                             category.setDescription(description.getText().toString());
                             dataBuilder.newCategory(category);
 
+                            sequence++;
                             dataBuilder.getCategories(userID());
-                            int groupPosition = addCategory(name.getText().toString(), description.getText().toString());
-                            listAdapter.notifyDataSetChanged();
-                            listView.setSelectedGroup(groupPosition);
                         }
 
                         name.setText("");
                         description.setText("");
-                        dataBuilder.getCategories(userID());
+                        dialog.cancel();
                     }
                 });
 
