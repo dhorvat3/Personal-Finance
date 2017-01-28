@@ -13,8 +13,11 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.hr.foi.personalfinance.R;
 import com.hr.foi.personalfinance.adapter.MyListAdapter;
@@ -33,6 +36,7 @@ import entities.DataBuilder;
 import entities.DataInterface;
 import entities.User;
 import pojo.Category_;
+import pojo.Response;
 
 /**
  * Created by Filip on 23.12.2016..
@@ -48,6 +52,10 @@ public class Category extends BaseFragment implements FragmentInterface, DataInt
     private ArrayList<HeaderInfo> deptList = new ArrayList<HeaderInfo>();
     private MyListAdapter listAdapter;
     private SharedPreferences preferences;
+    private int seqInt;
+    private Dialog dialog;
+    private  ArrayList<Category_> categories;
+    private int sequence = 0;
 
 
     public static final Category newInstance(String name){
@@ -115,6 +123,7 @@ public class Category extends BaseFragment implements FragmentInterface, DataInt
 
                         name.setText("");
                         description.setText("");
+                        dataBuilder.getCategories(userID());
                     }
                 });
 
@@ -134,27 +143,147 @@ public class Category extends BaseFragment implements FragmentInterface, DataInt
 
     @Override
     public void buildData(Object data) {
-        pojo.Category category1 = (pojo.Category) data;
-        if (category1 != null) {
-           listView = (ExpandableListView) getActivity().findViewById(R.id.kategorije);
+        if(data instanceof pojo.Category) {
+            pojo.Category category1 = (pojo.Category) data;
+            if (category1 != null) {
+                listView = (ExpandableListView) getActivity().findViewById(R.id.kategorije);
 
-            ArrayList<Category_> categories = new ArrayList<Category_>();
+                categories = new ArrayList<Category_>();
 
-            myCategories.clear();
-            deptList.clear();
+                myCategories.clear();
+                deptList.clear();
 
 
-            for (Category_ item : category1.getCategory()){
-                categories.add(item);
+                for (Category_ item : category1.getCategory()) {
+                    categories.add(item);
+                }
+
+                for (int i = 0; i < categories.size(); i++) {
+                    sequence = i;
+                    addCategory(categories.get(i).getTitle(), categories.get(i).getDescription());
+                }
+                listAdapter = new MyListAdapter(getActivity(), deptList);
+                listView.setAdapter(listAdapter);
+                listView.setOnChildClickListener(myListItemClicked);
             }
-
-            for (int i=0; i<categories.size(); i++){
-                addCategory(categories.get(i).getTitle(), categories.get(i).getDescription());
+        }
+        if(data instanceof Response) {
+            Response response = (Response) data;
+            switch (response.getId()){
+                case "1":
+                    dataBuilder.getCategories(userID());
+                    Toast.makeText(getActivity(), "Uspješno", Toast.LENGTH_SHORT).show();
+                    break;
+                case "-1":
+                    Toast.makeText(getActivity(), "Pogreška", Toast.LENGTH_SHORT).show();
+                    break;
+                case "-2":
+                    Toast.makeText(getActivity(), "Prazno polje", Toast.LENGTH_SHORT).show();
+                    break;
             }
-            listAdapter = new MyListAdapter(getActivity(), deptList);
-            listView.setAdapter(listAdapter);
         }
     }
+
+    private ExpandableListView.OnChildClickListener myListItemClicked = new ExpandableListView.OnChildClickListener() {
+        @Override
+        public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
+            HeaderInfo headerInfo = deptList.get(groupPosition);
+            DetailInfo detailInfo =  headerInfo.getCategoryList().get(childPosition);
+
+            LinearLayout linearLayout =(LinearLayout)  getActivity().findViewById(R.id.update_delete_category);
+            linearLayout.setVisibility(View.VISIBLE);
+
+            ImageButton update = (ImageButton) linearLayout.findViewById(R.id.update);
+            ImageButton delete = (ImageButton) linearLayout.findViewById(R.id.delete);
+
+            parent.getExpandableListAdapter().getChild(groupPosition, childPosition);
+            final EditText seq = (EditText) v.findViewById(R.id.sequence);
+            seqInt=  Integer.parseInt(String.valueOf(seq.getText()));
+
+            update.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialog = new Dialog(getActivity());
+                    dialog.setTitle("Ažuriranje kategorija");
+                    dialog.setContentView(R.layout.category_item_layout);
+                    dialog.show();
+
+                    final EditText naslov = (EditText) dialog.findViewById(R.id.title);
+                    final EditText opis = (EditText) dialog.findViewById(R.id.description);
+
+                    naslov.setText(categories.get(seqInt).getTitle());
+                    opis.setText(categories.get(seqInt).getDescription());
+
+                    Button save = (Button) dialog.findViewById(R.id.save);
+                    Button close = (Button) dialog.findViewById(R.id.close);
+
+                    save.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            boolean valid = true;
+                            List<EditText> fieldsE = Arrays.asList(naslov, opis);
+
+                            Category_ category = new Category_();
+
+                            for (Iterator<EditText> i = fieldsE.iterator(); i.hasNext(); ) {
+                                EditText field = i.next();
+
+                                if (field.getText().toString().isEmpty()) {
+                                    field.setError("Obavezno polje");
+                                    valid = false;
+                                }
+                            }
+
+                            if (valid){
+                                category.setId(categories.get(seqInt).getId());
+                                category.setTitle(naslov.getText().toString());
+                                category.setDescription(opis.getText().toString());
+
+                                dataBuilder.editCategory(category);
+                                dialog.cancel();
+                            }
+                        }
+                    });
+                    close.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            dialog.cancel();
+                        }
+                    });
+                }
+            });
+
+            delete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    final Dialog dialog = new Dialog(getActivity());
+                    dialog.setTitle("Sigurno želite obrisati?");
+                    dialog.setContentView(R.layout.income_expense_delete_layout);
+                    dialog.show();
+                    System.out.println("delete: "+seqInt);
+
+                    Button ok = (Button) dialog.findViewById(R.id.ok);
+                    Button cancel = (Button) dialog.findViewById(R.id.cancel);
+                    ok.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            dataBuilder.deleteCategory(categories.get(seqInt).getId(),userID());
+                            dialog.cancel();
+                        }
+                    });
+
+                    cancel.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            dialog.cancel();
+                        }
+                    });
+                }
+            });
+
+            return false;
+        }
+    };
 
     private int addCategory(String name, String description){
         int groupPosition = 0;
@@ -171,6 +300,7 @@ public class Category extends BaseFragment implements FragmentInterface, DataInt
         ArrayList<DetailInfo> categoryList = headerInfo.getCategoryList();
 
         DetailInfo detailInfo = new DetailInfo();
+        detailInfo.setSequence(String.valueOf(sequence));
         detailInfo.setName(description);
         categoryList.add(detailInfo);
         headerInfo.setCategoryList(categoryList);

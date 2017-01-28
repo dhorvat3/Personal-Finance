@@ -133,7 +133,7 @@ public class DataBuilder {
         retrofitCall.enqueue(new Callback<pojo.Response>() {
             @Override
             public void onResponse(Response<pojo.Response> response, Retrofit retrofit) {
-
+                call.buildData(response.body());
             }
 
             @Override
@@ -163,7 +163,7 @@ public class DataBuilder {
         retrofitCall.enqueue(new Callback<pojo.Response>() {
             @Override
             public void onResponse(Response<pojo.Response> response, Retrofit retrofit) {
-
+                call.buildData(response.body());
             }
 
             @Override
@@ -205,6 +205,36 @@ public class DataBuilder {
             public void onFailure(Throwable t) {
                 data = null;
                 call.buildData(data);
+            }
+        });
+    }
+
+    public void editCategory(Category_ category){
+        Call<pojo.Response> retrofitCall = apiMethods.editCategory(category);
+        retrofitCall.enqueue(new Callback<pojo.Response>() {
+            @Override
+            public void onResponse(Response<pojo.Response> response, Retrofit retrofit) {
+                call.buildData(response.body());
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+
+            }
+        });
+    }
+
+    public void deleteCategory(String id, String user_id){
+        Call<pojo.Response> retrofitCall = apiMethods.deleteCategory(id, user_id);
+        retrofitCall.enqueue(new Callback<pojo.Response>() {
+            @Override
+            public void onResponse(Response<pojo.Response> response, Retrofit retrofit) {
+                call.buildData(response.body());
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+
             }
         });
     }

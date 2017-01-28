@@ -19,6 +19,7 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.hr.foi.personalfinance.R;
 import com.hr.foi.personalfinance.adapter.MyListAdapter;
@@ -171,10 +172,7 @@ public class Income_Expense extends BaseFragment implements FragmentInterface, D
 
                             sequence++;
                             int groupPosition = addRecord(record.getDatum(), record.getIznos());
-                            listAdapter.notifyDataSetChanged();
                             listView.setSelectedGroup(groupPosition);
-
-                            dataBuilder.getRecords(userID());
                             dialog.cancel();
                         }
                     }
@@ -271,7 +269,18 @@ public class Income_Expense extends BaseFragment implements FragmentInterface, D
         }
         if(data instanceof Response){
             Response response = (Response) data;
-            Log.w("response", response.getResponse());
+            switch (response.getId()){
+                case "1":
+                    dataBuilder.getRecords(userID());
+                    Toast.makeText(getActivity(), "Uspješno", Toast.LENGTH_SHORT).show();
+                    break;
+                case "-1":
+                    Toast.makeText(getActivity(), "Pogreška", Toast.LENGTH_SHORT).show();
+                    break;
+                case "-2":
+                    Toast.makeText(getActivity(), "Prazno polje", Toast.LENGTH_SHORT).show();
+                    break;
+            }
         }
     }
 
@@ -425,8 +434,6 @@ public class Income_Expense extends BaseFragment implements FragmentInterface, D
                         @Override
                         public void onClick(View v) {
                             dataBuilder.deleteRecord(records.get(seqInt).getId());
-                            listAdapter.notifyDataSetChanged();
-                            dataBuilder.getRecords(userID());
                             dialog.cancel();
                         }
                     });

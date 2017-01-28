@@ -16,7 +16,7 @@ if(isset($_GET['id'])){
 	$response['id'] = -2;
 }
 
-$sql = "DELETE FROM revenues_expenses WHERE id = ".$id.";";
+$sql = "UPDATE revenues_expenses SET aktivan=0 WHERE id = ".$id.";";
 $result = mysqli_query($con, $sql);
 
 if(!$result){
