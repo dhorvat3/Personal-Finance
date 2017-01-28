@@ -15,38 +15,98 @@
             android:layout_height="match_parent"
             android:weightSum="1">
 
-            <com.jjoe64.graphview.GraphView
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp">
+
+                <TextView
+                    android:layout_width="70dp"
+                    android:layout_height="30dp"
+                    android:textAlignment="center"
+                    android:textStyle="bold"
+                    android:textColor="@android:color/holo_blue_dark"
+                    android:textSize="20dp"
+                    android:layout_marginTop="5dp"
+                    android:text="Stanje: "/>
+
+                <TextView
+                    android:id="@+id/balance"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:layout_marginTop="5dp"
+                    android:text=""
+                    android:textStyle="bold"
+                    android:textColor="@android:color/holo_green_dark"
+                    android:textSize="20dp"/>
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="20dp"
+                android:layout_marginTop="10dp"
+                android:text="Prihodi"
+                android:textAlignment="center"
+                android:textColor="@android:color/white"
+                android:textStyle="bold"
+                android:background="@android:color/holo_blue_dark"/>
+
+            <lecho.lib.hellocharts.view.LineChartView
                 android:layout_width="match_parent"
                 android:layout_height="200dip"
                 android:layout_marginTop="20dp"
                 android:layout_marginBottom="20dp"
-                android:id="@+id/lineGraphPrihodi">
+                android:id="@+id/lineGraphPrihodi" />
 
-            </com.jjoe64.graphview.GraphView>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="20dp"
+                android:layout_marginTop="20dp"
+                android:text="Rashodi"
+                android:textAlignment="center"
+                android:textColor="@android:color/white"
+                android:textStyle="bold"
+                android:background="@android:color/holo_blue_dark"/>
 
-            <com.jjoe64.graphview.GraphView
+            <lecho.lib.hellocharts.view.LineChartView
                 android:layout_width="match_parent"
                 android:layout_height="200dip"
+                android:layout_marginTop="20dp"
                 android:layout_marginBottom="20dp"
-                android:id="@+id/lineGraphRashodi">
+                android:id="@+id/lineGraphRashodi" />
 
-            </com.jjoe64.graphview.GraphView>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="20dp"
+                android:layout_marginTop="20dp"
+                android:text="Kategorije"
+                android:textAlignment="center"
+                android:textColor="@android:color/white"
+                android:textStyle="bold"
+                android:background="@android:color/holo_blue_dark"/>
 
-            <com.jjoe64.graphview.GraphView
+            <lecho.lib.hellocharts.view.ColumnChartView
                 android:layout_width="match_parent"
                 android:layout_height="200dip"
+                android:layout_marginTop="20dp"
                 android:layout_marginBottom="20dp"
-                android:id="@+id/lineGraph2">
+                android:id="@+id/columnGraphKategorije" />
 
-            </com.jjoe64.graphview.GraphView>
-
-            <com.jjoe64.graphview.GraphView
+            <TextView
                 android:layout_width="match_parent"
-                android:layout_height="200dip"
-                android:layout_marginBottom="30dp"
-                android:id="@+id/barChart">
+                android:layout_height="20dp"
+                android:layout_marginTop="20dp"
+                android:text="Prihodi/rashodi"
+                android:textAlignment="center"
+                android:textColor="@android:color/white"
+                android:textStyle="bold"
+                android:background="@android:color/holo_blue_dark"/>
 
-            </com.jjoe64.graphview.GraphView>
+            <lecho.lib.hellocharts.view.PieChartView
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
+                android:id="@+id/pieGraphPR" />
 
         </LinearLayout>
     </ScrollView>
