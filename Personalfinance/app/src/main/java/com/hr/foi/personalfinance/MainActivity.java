@@ -27,7 +27,7 @@ public class MainActivity extends Activity {
 
         menu.initFrag(Income_Expense.newInstance("Prihodi/Rashodi"),
                 Category.newInstance("Kategorije"),
-                Tasks.newInstance("Lista zadataka"),
+                Tasks.newInstance("Lista obveza"),
                 Statistics.newInstance("Statistika"),
                 Daybook.newInstance("Dnevnik"),
                 Profile.newInstance("Moj profil"));

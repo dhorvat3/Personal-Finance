@@ -4,18 +4,19 @@ package com.hr.foi.personalfinance.fragments;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.ListAdapter;
+import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 
 import com.hr.foi.personalfinance.R;
+import com.hr.foi.personalfinance.adapter.TaskListAdapter;
 import com.hr.foi.userinterface.BaseFragment;
 import com.hr.foi.userinterface.FragmentInterface;
-
-import java.util.List;
 
 import entities.DataBuilder;
 import entities.DataInterface;
@@ -27,6 +28,7 @@ import pojo.Task_;
 public class Tasks extends BaseFragment implements FragmentInterface, DataInterface {
 
     private SharedPreferences prefs;
+    private ProgressBar progress;
     private DataBuilder dataBuilder = new DataBuilder(this);
     private Task_ task;
     private ListView taskListView;
@@ -45,11 +47,16 @@ public class Tasks extends BaseFragment implements FragmentInterface, DataInterf
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_tasks, container, false);
+        View view = inflater.inflate(R.layout.tasks_layout, container, false);
 
         prefs = getActivity().getSharedPreferences("login", 0);
 
+        progress = (ProgressBar) view.findViewById(R.id.loading);
+        progress.setVisibility(View.VISIBLE);
+
         taskListView = (ListView) view.findViewById(R.id.tasks_list_view);
+
+        registerForContextMenu(taskListView);
 
         return view;
     }
@@ -65,15 +72,32 @@ public class Tasks extends BaseFragment implements FragmentInterface, DataInterf
         pojo.Task tasksResponse = (pojo.Task) data;
 
         if (tasksResponse != null) {
-            List<Task_> tasks = tasksResponse.getTasks();
-            String[] listItems = new String[tasks.size()];
-
-            for (int i = 0; i < tasks.size(); i++) {
-                listItems[i] = tasks.get(i).getTitle();
-            }
-
-            ArrayAdapter adapter = new ArrayAdapter(getActivity(), android.R.layout.simple_list_item_1, listItems);
+            TaskListAdapter adapter = new TaskListAdapter(getActivity(), tasksResponse.getTasks());
             taskListView.setAdapter(adapter);
+
+            progress.setVisibility(View.GONE);
         }
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+
+        menu.add(0, 0, 0, "Uredi");
+        menu.add(0, 1, 1, "Obriši");
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+
+        switch (item.getItemId()) {
+            case 0:
+                break;
+            case 1:
+                break;
+        }
+
+        return super.onContextItemSelected(item);
     }
 }
