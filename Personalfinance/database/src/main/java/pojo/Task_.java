@@ -2,33 +2,57 @@ package pojo;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.raizlabs.android.dbflow.annotation.Column;
+import com.raizlabs.android.dbflow.annotation.PrimaryKey;
+import com.raizlabs.android.dbflow.annotation.Table;
+import com.raizlabs.android.dbflow.structure.BaseModel;
+
+import core.MainDatabase;
 
 /**
  * Created by dagy on 13.01.17..
  */
-
-public class Task_ {
+@Table(database = MainDatabase.class)
+public class Task_ extends BaseModel{
+    @PrimaryKey (autoincrement = true)
+    @Column
+    private int localId;
+    @Column
     @SerializedName("id")
     @Expose
     private String id;
+    @Column
     @SerializedName("user_id")
     @Expose
     private String userId;
+    @Column
     @SerializedName("title")
     @Expose
     private String title;
+    @Column
     @SerializedName("note")
     @Expose
     private String note;
+    @Column
     @SerializedName("date")
     @Expose
     private String date;
+    @Column
     @SerializedName("notice")
     @Expose
     private String notice;
+    @Column
     @SerializedName("aktivan")
     @Expose
     private String aktivan;
+
+    public int getLocalId() {
+        return localId;
+    }
+
+    public void setLocalId(int localId) {
+        this.localId = localId;
+    }
 
     public String getAktivan() {
         return aktivan;

@@ -15,10 +15,9 @@ import com.hr.foi.userinterface.FragmentInterface;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
-import entities.DataBuilder;
-import entities.DataInterface;
+import core.DataBuilder;
+import core.DataInterface;
 import lecho.lib.hellocharts.gesture.ContainerScrollType;
 import lecho.lib.hellocharts.gesture.ZoomType;
 import lecho.lib.hellocharts.model.Axis;

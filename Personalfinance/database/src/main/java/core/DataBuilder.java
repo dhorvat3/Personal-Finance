@@ -1,4 +1,4 @@
-package entities;
+package core;
 
 import pojo.*;
 import retrofit.Call;
@@ -14,9 +14,11 @@ public class DataBuilder {
     private ApiMethods apiMethods = ApiMethods.retrofit.create(ApiMethods.class);
     private DataInterface call;
     private Object data;
+    private DataProvider dataProvider;
 
     public DataBuilder(DataInterface caller) {
         call = caller;
+        dataProvider = new DataProvider();
     }
 
     public void login(String user, String pass){
@@ -26,6 +28,9 @@ public class DataBuilder {
             public void onResponse(Response<pojo.User> response, Retrofit retrofit) {
                 if(response.body() != null) {
                     data = response.body();
+                    pojo.User user = response.body();
+                    dataProvider.setUserId(user.getId());
+                    dataProvider.refrashDatabase();
                 } else {
                     data = null;
                 }

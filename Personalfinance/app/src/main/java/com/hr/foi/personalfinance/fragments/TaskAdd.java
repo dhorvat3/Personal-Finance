@@ -26,8 +26,8 @@ import java.util.Calendar;
 import java.util.Iterator;
 import java.util.List;
 
-import entities.DataBuilder;
-import entities.DataInterface;
+import core.DataBuilder;
+import core.DataInterface;
 import pojo.Response;
 import pojo.Task_;
 

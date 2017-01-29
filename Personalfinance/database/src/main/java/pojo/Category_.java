@@ -2,27 +2,42 @@ package pojo;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.raizlabs.android.dbflow.annotation.Column;
+import com.raizlabs.android.dbflow.annotation.PrimaryKey;
+import com.raizlabs.android.dbflow.annotation.Table;
+import com.raizlabs.android.dbflow.structure.BaseModel;
+
+import core.MainDatabase;
 
 /**
  * Created by Filip on 29.12.2016..
  */
-
-public class Category_ {
+@Table(database = MainDatabase.class)
+public class Category_ extends BaseModel{
+    @PrimaryKey (autoincrement = true)
+    @Column
+    private int localId;
+    @Column
     @SerializedName("id")
     @Expose
     private String id;
+    @Column
     @SerializedName("title")
     @Expose
     private String title;
+    @Column
     @SerializedName("description")
     @Expose
     private String description;
+    @Column
     @SerializedName("user_id")
     @Expose
     private String userId;
+    @Column
     @SerializedName("category_id")
     @Expose
     private String categoryId;
+    @Column
     @SerializedName("active")
     @Expose
     private String active;
@@ -37,6 +52,14 @@ public class Category_ {
         this.userId = userId;
         this.categoryId = categoryId;
         this.active = active;
+    }
+
+    public int getLocalId() {
+        return localId;
+    }
+
+    public void setLocalId(int localId) {
+        this.localId = localId;
     }
 
     //For spinner display items

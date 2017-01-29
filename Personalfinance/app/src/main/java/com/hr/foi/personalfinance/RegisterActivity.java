@@ -11,8 +11,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import entities.DataBuilder;
-import entities.DataInterface;
+import core.DataBuilder;
+import core.DataInterface;
 import pojo.User;
 
 /**

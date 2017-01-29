@@ -2,33 +2,50 @@ package pojo;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.raizlabs.android.dbflow.annotation.Column;
+import com.raizlabs.android.dbflow.annotation.PrimaryKey;
+import com.raizlabs.android.dbflow.annotation.Table;
+import com.raizlabs.android.dbflow.structure.BaseModel;
+
+import core.MainDatabase;
 
 /**
  * Created by Filip on 4.1.2017..
  */
-
-public class Record_ {
+@Table(database = MainDatabase.class)
+public class Record_ extends BaseModel{
+    @PrimaryKey (autoincrement = true)
+    @Column
+    private int localId;
+    @Column
     @SerializedName("id")
     @Expose
     private String id;
+    @Column
     @SerializedName("user_id")
     @Expose
     private String userId;
+    @Column
     @SerializedName("category_id")
     @Expose
     private String categoryId;
+    @Column
     @SerializedName("vrsta")
     @Expose
     private String vrsta;
+    @Column
     @SerializedName("napomena")
     @Expose
     private String napomena;
+    @Column
     @SerializedName("datum")
     @Expose
     private String datum;
+    @Column
     @SerializedName("iznos")
     @Expose
     private String iznos;
+    @Column
     @SerializedName("aktivan")
     @Expose
     private String aktivan;
@@ -45,6 +62,22 @@ public class Record_ {
         this.datum = datum;
         this.iznos = iznos;
         this.aktivan = aktivan;
+    }
+
+    public String getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(String categoryId) {
+        this.categoryId = categoryId;
+    }
+
+    public int getLocalId() {
+        return localId;
+    }
+
+    public void setLocalId(int localId) {
+        this.localId = localId;
     }
 
     public String getId() {

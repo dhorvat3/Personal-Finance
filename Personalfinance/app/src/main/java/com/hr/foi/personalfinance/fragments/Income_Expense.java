@@ -2,7 +2,6 @@ package com.hr.foi.personalfinance.fragments;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
-import android.app.TimePickerDialog;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -36,8 +35,8 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 
-import entities.DataBuilder;
-import entities.DataInterface;
+import core.DataBuilder;
+import core.DataInterface;
 import pojo.*;
 
 /**

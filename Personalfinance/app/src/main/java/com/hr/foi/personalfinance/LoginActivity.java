@@ -2,7 +2,6 @@ package com.hr.foi.personalfinance;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.icu.text.SymbolTable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -14,13 +13,9 @@ import android.widget.Toast;
 
 import com.raizlabs.android.dbflow.config.FlowConfig;
 import com.raizlabs.android.dbflow.config.FlowManager;
-import com.raizlabs.android.dbflow.sql.language.SQLite;
 
-import java.util.List;
-
-import entities.DataBuilder;
-import entities.DataInterface;
-import helper.MockData;
+import core.DataBuilder;
+import core.DataInterface;
 
 /**
  * Created by dagy on 06.11.16..

@@ -5,8 +5,6 @@ import android.app.Dialog;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.SearchView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +18,6 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.Spinner;
-import android.widget.TabHost;
 import android.widget.Toast;
 
 import com.hr.foi.personalfinance.R;
@@ -38,8 +35,8 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 
-import entities.DataBuilder;
-import entities.DataInterface;
+import core.DataBuilder;
+import core.DataInterface;
 import pojo.Category_;
 import pojo.Record;
 import pojo.Record_;

@@ -1,4 +1,4 @@
-package entities;
+package core;
 
 import pojo.*;
 import retrofit.Call;
