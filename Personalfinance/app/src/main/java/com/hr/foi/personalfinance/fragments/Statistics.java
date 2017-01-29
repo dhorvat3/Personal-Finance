@@ -40,50 +40,6 @@ import pojo.Record_;
  * Created by dominik on 21.12.16..
  */
 
-class CategoryC
-{
-    private String id;
-    private float prihodi;
-    private float rashodi;
-
-    public CategoryC(String id, float prihodi, float rashodi)
-    {
-        this.id = id;
-        this.prihodi = prihodi;
-        this.rashodi = rashodi;
-    }
-
-    public float getRashodi()
-    {
-        return rashodi;
-    }
-
-    public void setRashodi(float rashodi)
-    {
-        this.rashodi += rashodi;
-    }
-
-    public String getId()
-    {
-        return id;
-    }
-
-    public void setId(String id)
-    {
-        this.id = id;
-    }
-
-    public float getPrihodi()
-    {
-        return prihodi;
-    }
-
-    public void setPrihodi(float prihodi)
-    {
-        this.prihodi += prihodi;
-    }
-}
-
 public class Statistics extends BaseFragment implements FragmentInterface, DataInterface
 {
     private DataBuilder dataBuilder = new DataBuilder(this);
@@ -93,6 +49,51 @@ public class Statistics extends BaseFragment implements FragmentInterface, DataI
     private View view;
     private int blue = new Color().rgb(0, 77, 153);
     private int red = new Color().rgb(204, 0, 0);
+
+
+    class CategoryC
+    {
+        private String id;
+        private float prihodi;
+        private float rashodi;
+
+        public CategoryC(String id, float prihodi, float rashodi)
+        {
+            this.id = id;
+            this.prihodi = prihodi;
+            this.rashodi = rashodi;
+        }
+
+        public float getRashodi()
+        {
+            return rashodi;
+        }
+
+        public void setRashodi(float rashodi)
+        {
+            this.rashodi += rashodi;
+        }
+
+        public String getId()
+        {
+            return id;
+        }
+
+        public void setId(String id)
+        {
+            this.id = id;
+        }
+
+        public float getPrihodi()
+        {
+            return prihodi;
+        }
+
+        public void setPrihodi(float prihodi)
+        {
+            this.prihodi += prihodi;
+        }
+    }
 
     public static final Statistics newInstance(String name)
     {
@@ -290,6 +291,9 @@ public class Statistics extends BaseFragment implements FragmentInterface, DataI
         setLineChart(lineGraphRashodi, "0");
         setPieChart(pieGraphPR, textview);
         setColumnChart(columnGraphKategorije);
+
+        records = null;
+        categories = null;
     }
 
     /**
