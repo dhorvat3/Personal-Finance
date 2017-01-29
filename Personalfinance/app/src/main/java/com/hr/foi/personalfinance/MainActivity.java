@@ -56,6 +56,10 @@ public class MainActivity extends Activity {
 
     @Override
     public void onBackPressed(){
-        menu.homeFragment();
+        if (getFragmentManager().getBackStackEntryCount() > 0) {
+            getFragmentManager().popBackStack();
+        } else {
+            menu.homeFragment();
+        }
     }
 }
