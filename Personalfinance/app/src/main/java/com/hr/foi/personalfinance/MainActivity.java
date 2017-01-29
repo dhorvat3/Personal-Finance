@@ -3,6 +3,7 @@ package com.hr.foi.personalfinance;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -38,6 +39,19 @@ public class MainActivity extends Activity {
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         ft.replace(R.id.navdrawer, menu);
         ft.commit();
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+
+        if (intent != null) {
+            String redirect = intent.getStringExtra("redirect");
+
+            if (redirect != null && redirect.equals("TasksFragment")) {
+                getFragmentManager().beginTransaction().replace(R.id.container, new Tasks()).addToBackStack(null).commit();
+            }
+        }
     }
 
     @Override
