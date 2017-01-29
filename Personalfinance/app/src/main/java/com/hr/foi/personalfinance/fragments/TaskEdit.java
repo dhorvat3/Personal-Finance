@@ -1,13 +1,9 @@
 package com.hr.foi.personalfinance.fragments;
 
 
-import android.app.AlarmManager;
 import android.app.DatePickerDialog;
-import android.app.PendingIntent;
 import android.app.TimePickerDialog;
-import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.app.Fragment;
@@ -22,7 +18,6 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.hr.foi.personalfinance.R;
-import com.hr.foi.personalfinance.receivers.AlarmReceiver;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -40,7 +35,7 @@ import pojo.Task_;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class TaskAdd extends Fragment implements DataInterface {
+public class TaskEdit extends Fragment implements DataInterface {
 
     private SharedPreferences prefs;
     private DatePickerDialog datePickerDialog;
@@ -50,16 +45,12 @@ public class TaskAdd extends Fragment implements DataInterface {
     private SimpleDateFormat dateFormat;
     private SimpleDateFormat noticeFormat;
     private SimpleDateFormat outputFormat;
-    private EditText newTaskDate;
-    private EditText newTaskNotice;
-    private Calendar notificationCalendar = Calendar.getInstance();
-    private String notificationTitle;
-    private String notificationMessage;
-    private String notificationDate;
+    private EditText editTaskDate;
+    private EditText editTaskNotice;
     private DataBuilder dataBuilder = new DataBuilder(this);
     private Task_ task = new Task_();
 
-    public TaskAdd() {
+    public TaskEdit() {
         // Required empty public constructor
     }
 
@@ -73,7 +64,7 @@ public class TaskAdd extends Fragment implements DataInterface {
      */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        getActivity().getActionBar().setTitle("Nova obveza");
+        getActivity().getActionBar().setTitle("Uređivanje obveze");
 
         prefs = getActivity().getSharedPreferences("login", 0);
         displayDateFormat = new SimpleDateFormat("dd.MM.yyyy.");
@@ -82,23 +73,31 @@ public class TaskAdd extends Fragment implements DataInterface {
         noticeFormat = new SimpleDateFormat("'Obavijesti me 'dd.MM.yyyy.' u 'HH:mm");
         outputFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
-        View view = inflater.inflate(R.layout.task_add_layout, container, false);
+        View view = inflater.inflate(R.layout.task_edit_layout, container, false);
+        EditText taskTitle = (EditText) view.findViewById(R.id.edit_task_title);
+        EditText taskNote = (EditText) view.findViewById(R.id.edit_task_note);
+        EditText taskDate = (EditText) view.findViewById(R.id.edit_task_date);
+        EditText taskNotice = (EditText) view.findViewById(R.id.edit_task_notice);
+
+        taskTitle.setText(prefs.getString("edit-task-title", ""));
+        taskNote.setText(prefs.getString("edit-task-note", ""));
+        taskDate.setText(prefs.getString("edit-task-date", ""));
+        taskNotice.setText(prefs.getString("edit-task-notice", ""));
 
         return view;
     }
 
     /**
      * Used for setting values after view is created.
-     *
      * @param view
      * @param savedInstanceState
      */
     @Override
     public void onViewCreated(final View view, Bundle savedInstanceState) {
-        newTaskDate = (EditText) view.findViewById(R.id.new_task_date);
-        newTaskNotice = (EditText) view.findViewById(R.id.new_task_notice);
+        editTaskDate = (EditText) view.findViewById(R.id.edit_task_date);
+        editTaskNotice = (EditText) view.findViewById(R.id.edit_task_notice);
 
-        newTaskDate.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        editTaskDate.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (hasFocus) {
@@ -107,7 +106,7 @@ public class TaskAdd extends Fragment implements DataInterface {
             }
         });
 
-        newTaskNotice.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        editTaskNotice.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (hasFocus) {
@@ -116,8 +115,8 @@ public class TaskAdd extends Fragment implements DataInterface {
             }
         });
 
-        Button cancelButton = (Button) view.findViewById(R.id.new_task_cancel_button);
-        Button submitButton = (Button) view.findViewById(R.id.new_task_submit_button);
+        Button cancelButton = (Button) view.findViewById(R.id.edit_task_cancel_button);
+        Button submitButton = (Button) view.findViewById(R.id.edit_task_submit_button);
 
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -129,11 +128,11 @@ public class TaskAdd extends Fragment implements DataInterface {
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                EditText newTaskTitle = (EditText) view.findViewById(R.id.new_task_title);
-                EditText newTaskNote = (EditText) view.findViewById(R.id.new_task_note);
+                EditText editTaskTitle = (EditText) view.findViewById(R.id.edit_task_title);
+                EditText editTaskNote = (EditText) view.findViewById(R.id.edit_task_note);
                 boolean valid = true;
 
-                List<EditText> fields = Arrays.asList(newTaskTitle, newTaskNote, newTaskDate, newTaskNotice);
+                List<EditText> fields = Arrays.asList(editTaskTitle, editTaskNote, editTaskDate, editTaskNotice);
 
                 for (Iterator<EditText> i = fields.iterator(); i.hasNext();) {
                     EditText field = i.next();
@@ -146,26 +145,18 @@ public class TaskAdd extends Fragment implements DataInterface {
                 }
 
                 if (valid) {
-                    Date noticeDate = new Date();
-
-                    task.setUserId(prefs.getString("id", ""));
-                    task.setTitle(newTaskTitle.getText().toString());
-                    task.setNote(newTaskNote.getText().toString());
+                    task.setId(prefs.getString("edit-task-id", ""));
+                    task.setTitle(editTaskTitle.getText().toString());
+                    task.setNote(editTaskNote.getText().toString());
 
                     try {
-                        noticeDate = noticeFormat.parse(newTaskNotice.getText().toString() + ":00");
-
-                        task.setDate(outputFormat.format(dateFormat.parse(newTaskDate.getText().toString())) + ":00");
-                        task.setNotice(outputFormat.format(noticeDate));
+                        task.setDate(outputFormat.format(dateFormat.parse(editTaskDate.getText().toString())) + ":00");
+                        task.setNotice(outputFormat.format(noticeFormat.parse(editTaskNotice.getText().toString() + ":00")));
                     } catch (ParseException e) {
                         Log.w("date-parser", e.getMessage());
                     }
 
-                    notificationCalendar.setTime(noticeDate);
-                    notificationTitle = task.getTitle();
-                    notificationMessage = task.getNote();
-                    notificationDate = newTaskDate.getText().toString();
-                    dataBuilder.newTask(task);
+                    dataBuilder.editTask(task);
                 }
             }
         });
@@ -177,30 +168,27 @@ public class TaskAdd extends Fragment implements DataInterface {
     public void buildData(Object data) {
         Response response = (Response) data;
 
-        if (Integer.parseInt(response.getId()) > -1) {
-            Intent intent = new Intent(getActivity(), AlarmReceiver.class);
-            AlarmManager alarmManager = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
+        switch (response.getId()) {
+            case "1":
+                SharedPreferences.Editor editor = prefs.edit();
 
-            intent.putExtra("notificationTitle", notificationTitle);
-            intent.putExtra("notificationMessage", notificationMessage);
-            intent.putExtra("notificationDate", notificationDate);
+                editor.remove("edit-task-id");
+                editor.remove("edit-task-title");
+                editor.remove("edit-task-note");
+                editor.remove("edit-task-date");
+                editor.remove("edit-task-notice");
+                editor.commit();
 
-            PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity(), Integer.parseInt(response.getId()), intent, PendingIntent.FLAG_ONE_SHOT);
+                Toast.makeText(getActivity(), "Uspješna izmjena", Toast.LENGTH_SHORT).show();
 
-            alarmManager.set(AlarmManager.RTC_WAKEUP, notificationCalendar.getTimeInMillis(), pendingIntent);
-
-            Toast.makeText(getActivity(), "Uspješna pohrana", Toast.LENGTH_SHORT).show();
-
-            getFragmentManager().popBackStack();
-        } else {
-            switch (response.getId()) {
-                case "-1":
-                    Toast.makeText(getActivity(), "Pogreška", Toast.LENGTH_SHORT).show();
-                    break;
-                case "-2":
-                    Toast.makeText(getActivity(), "Prazno polje", Toast.LENGTH_SHORT).show();
-                    break;
-            }
+                getFragmentManager().popBackStack();
+                break;
+            case "-1":
+                Toast.makeText(getActivity(), "Pogreška", Toast.LENGTH_SHORT).show();
+                break;
+            case "-2":
+                Toast.makeText(getActivity(), "Prazno polje", Toast.LENGTH_SHORT).show();
+                break;
         }
     }
 
@@ -216,9 +204,9 @@ public class TaskAdd extends Fragment implements DataInterface {
                 String formattedDate = displayDateFormat.format(date.getTime());
 
                 if (field.equals("date")) {
-                    newTaskDate.setText(formattedDate);
+                    editTaskDate.setText(formattedDate);
                 } else if (field.equals("notice")) {
-                    newTaskNotice.setText("Obavijesti me " + formattedDate);
+                    editTaskNotice.setText("Obavijesti me " + formattedDate);
                 }
 
                 showTimePickerDialog(field);
@@ -229,9 +217,9 @@ public class TaskAdd extends Fragment implements DataInterface {
             @Override
             public void onCancel(DialogInterface dialog) {
                 if (field.equals("date")) {
-                    newTaskDate.setText("");
+                    editTaskDate.setText("");
                 } else if (field.equals("notice")) {
-                    newTaskNotice.setText("");
+                    editTaskNotice.setText("");
                 }
             }
         });
@@ -251,9 +239,9 @@ public class TaskAdd extends Fragment implements DataInterface {
                 String formattedTime = " " + displayTimeFormat.format(time.getTime());
 
                 if (field.equals("date")) {
-                    newTaskDate.append(formattedTime);
+                    editTaskDate.append(formattedTime);
                 } else if (field.equals("notice")) {
-                    newTaskNotice.append(" u" + formattedTime);
+                    editTaskNotice.append(" u" + formattedTime);
                 }
             }
         }, calendar.get(Calendar.HOUR), calendar.get(Calendar.MINUTE), true);
@@ -262,9 +250,9 @@ public class TaskAdd extends Fragment implements DataInterface {
             @Override
             public void onCancel(DialogInterface dialog) {
                 if (field.equals("date")) {
-                    newTaskDate.setText("");
+                    editTaskDate.setText("");
                 } else if (field.equals("notice")) {
-                    newTaskNotice.setText("");
+                    editTaskNotice.setText("");
                 }
             }
         });

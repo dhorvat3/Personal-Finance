@@ -2,10 +2,14 @@ package com.hr.foi.personalfinance.fragments;
 
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -22,6 +26,8 @@ import com.hr.foi.personalfinance.adapters.TaskListAdapter;
 import com.hr.foi.userinterface.BaseFragment;
 import com.hr.foi.userinterface.FragmentInterface;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import core.DataBuilder;
@@ -37,6 +43,7 @@ public class Tasks extends BaseFragment implements FragmentInterface, DataInterf
     private SharedPreferences prefs;
     private ProgressBar progress;
     private DataBuilder dataBuilder = new DataBuilder(this);
+    private SwipeRefreshLayout swipeContainer;
     private List<Task_> taskList;
     private Task_ task;
     private TaskListAdapter adapter;
@@ -60,12 +67,25 @@ public class Tasks extends BaseFragment implements FragmentInterface, DataInterf
         View view = inflater.inflate(R.layout.tasks_layout, container, false);
 
         prefs = getActivity().getSharedPreferences("login", 0);
-
+        swipeContainer = (SwipeRefreshLayout) view.findViewById(R.id.tasks_swipe_container);
         progress = (ProgressBar) view.findViewById(R.id.loading);
-        progress.setVisibility(View.VISIBLE);
-
         taskListView = (ListView) view.findViewById(R.id.tasks_list_view);
 
+        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                dataBuilder.getTasks(prefs.getString("id", ""));
+            }
+        });
+
+        swipeContainer.setColorSchemeColors(
+                ContextCompat.getColor(getActivity(), android.R.color.holo_blue_bright),
+                ContextCompat.getColor(getActivity(), android.R.color.holo_green_light),
+                ContextCompat.getColor(getActivity(), android.R.color.holo_orange_light),
+                ContextCompat.getColor(getActivity(), android.R.color.holo_red_light)
+        );
+
+        progress.setVisibility(View.VISIBLE);
         registerForContextMenu(taskListView);
 
         return view;
@@ -105,6 +125,7 @@ public class Tasks extends BaseFragment implements FragmentInterface, DataInterf
             if (tasks != null) {
                 adapter = new TaskListAdapter(getActivity(), taskList);
                 taskListView.setAdapter(adapter);
+                swipeContainer.setRefreshing(false);
 
                 progress.setVisibility(View.GONE);
             }
@@ -141,14 +162,42 @@ public class Tasks extends BaseFragment implements FragmentInterface, DataInterf
     @Override
     public boolean onContextItemSelected(MenuItem item) {
         final AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        final String itemId = String.valueOf(taskListView.getAdapter().getItemId(info.position));
+        String itemTitle = ((Task_) taskListView.getAdapter().getItem(info.position)).getTitle();
+        String itemNote = ((Task_) taskListView.getAdapter().getItem(info.position)).getNote();
+        String itemDate = ((Task_) taskListView.getAdapter().getItem(info.position)).getDate();
+        String itemNotice = ((Task_) taskListView.getAdapter().getItem(info.position)).getNotice();
 
         switch (item.getItemId()) {
             case 0:
+                SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy. HH:mm");
+                SimpleDateFormat noticeFormat = new SimpleDateFormat("'Obavijesti me 'dd.MM.yyyy.' u 'HH:mm");
+                SimpleDateFormat outputFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+                String editTaskDate = "";
+                String editTaskNotice = "";
+
+                try {
+                    editTaskDate = dateFormat.format(outputFormat.parse(itemDate.substring(0, itemDate.length() - 3)));
+                    editTaskNotice = noticeFormat.format(outputFormat.parse(itemNotice.substring(0, itemNotice.length() - 3)));
+                } catch (ParseException e) {
+                    Log.w("date-parser", e.getMessage());
+                }
+
+                SharedPreferences.Editor editor = prefs.edit();
+
+                editor.putString("edit-task-id", itemId);
+                editor.putString("edit-task-title", itemTitle);
+                editor.putString("edit-task-note", itemNote);
+                editor.putString("edit-task-date", editTaskDate);
+                editor.putString("edit-task-notice", editTaskNotice);
+                editor.commit();
+
+                int fragmentId = ((ViewGroup)(getView().getParent())).getId();
+
+                getFragmentManager().beginTransaction().replace(fragmentId, new TaskEdit()).addToBackStack(null).commit();
                 break;
             case 1:
                 final AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
-                final String itemId = String.valueOf(taskListView.getAdapter().getItemId(info.position));
-                String itemTitle = ((Task_) taskListView.getAdapter().getItem(info.position)).getTitle();
 
                 alert.setTitle("Brisanje: " + itemTitle);
                 alert.setMessage("Jeste li sigurni da želite obrisati obvezu?");

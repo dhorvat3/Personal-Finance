@@ -35,7 +35,6 @@ public class ProfileEdit extends Fragment implements DataInterface {
         // Required empty public constructor
     }
 
-
     /**
      * Used for setting values while creating view.
      *

@@ -2,6 +2,7 @@ package com.hr.foi.personalfinance.receivers;
 
 import android.app.Notification;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -22,6 +23,7 @@ public class AlarmReceiver extends BroadcastReceiver {
         String notificationTitle = intent.getExtras().getString("notificationTitle");
         String notificationMessage = intent.getExtras().getString("notificationMessage");
         String notificationDate = intent.getExtras().getString("notificationDate");
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         notificationBuilder.setSmallIcon(R.mipmap.ic_launcher);
         notificationBuilder.setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.mipmap.ic_launcher));
@@ -30,6 +32,7 @@ public class AlarmReceiver extends BroadcastReceiver {
         notificationBuilder.setStyle(new Notification.BigTextStyle().bigText(notificationMessage + newLine + newLine + notificationDate));
         notificationBuilder.setDefaults(Notification.DEFAULT_ALL);
         notificationBuilder.setPriority(Notification.PRIORITY_HIGH);
+        notificationBuilder.setContentIntent(pendingIntent);
 
         notificationManager.notify(0, notificationBuilder.build());
     }
