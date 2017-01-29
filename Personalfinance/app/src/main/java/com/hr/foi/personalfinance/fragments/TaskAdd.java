@@ -256,7 +256,7 @@ public class TaskAdd extends Fragment implements DataInterface {
                     newTaskNotice.append(" u" + formattedTime);
                 }
             }
-        }, calendar.get(Calendar.HOUR), calendar.get(Calendar.MINUTE), true);
+        }, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), true);
 
         timePickerDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
             @Override
