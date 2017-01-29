@@ -1,4 +1,4 @@
-package com.hr.foi.personalfinance.adapter;
+package com.hr.foi.personalfinance.adapters;
 
 import android.content.Context;
 import android.util.Log;

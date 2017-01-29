@@ -1,6 +1,8 @@
 package com.hr.foi.personalfinance.fragments;
 
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -10,13 +12,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.hr.foi.personalfinance.R;
-import com.hr.foi.personalfinance.adapter.TaskListAdapter;
+import com.hr.foi.personalfinance.adapters.TaskListAdapter;
 import com.hr.foi.userinterface.BaseFragment;
 import com.hr.foi.userinterface.FragmentInterface;
 
@@ -73,7 +75,7 @@ public class Tasks extends BaseFragment implements FragmentInterface, DataInterf
     public void onViewCreated(View view, Bundle savedInstanceState) {
         dataBuilder.getTasks(prefs.getString("id", ""));
 
-        Button addTaskButton = (Button) view.findViewById(R.id.add_task);
+        ImageButton addTaskButton = (ImageButton) view.findViewById(R.id.add_task);
 
         addTaskButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -138,16 +140,37 @@ public class Tasks extends BaseFragment implements FragmentInterface, DataInterf
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
-        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-
-        String itemId = String.valueOf(taskListView.getAdapter().getItemId(info.position));
+        final AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
 
         switch (item.getItemId()) {
             case 0:
                 break;
             case 1:
-                itemForDelete = info.position;
-                dataBuilder.deleteTask(itemId);
+                final AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
+                final String itemId = String.valueOf(taskListView.getAdapter().getItemId(info.position));
+                String itemTitle = ((Task_) taskListView.getAdapter().getItem(info.position)).getTitle();
+
+                alert.setTitle("Brisanje: " + itemTitle);
+                alert.setMessage("Jeste li sigurni da želite obrisati obvezu?");
+
+                alert.setNegativeButton("Ne", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+
+                alert.setPositiveButton("Da", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        itemForDelete = info.position;
+                        dataBuilder.deleteTask(itemId);
+
+                        dialog.dismiss();
+                    }
+                });
+
+                alert.show();
                 break;
         }
 

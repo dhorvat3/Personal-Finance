@@ -19,23 +19,26 @@
     </ListView>
 
     <RelativeLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tasks_list_view"
         android:background="@null"
-        android:layout_marginTop="-80dp">
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="10dp">
 
-        <Button
+        <ImageButton
             android:id="@+id/add_task"
             android:layout_width="60dp"
             android:layout_height="60dp"
-            android:layout_marginRight="20dp"
-            android:layout_alignParentRight="true"
+            android:layout_marginBottom="10dp"
+            android:padding="7dp"
             android:gravity="center_vertical|center_horizontal"
-            android:elevation="5dp"
             android:background="@drawable/round_button"
-            android:textColor="#fff"
-            android:textSize="18pt"
-            android:text="+" />
+            android:src="@android:drawable/ic_input_add"
+            android:scaleType="fitCenter"
+            android:adjustViewBounds="true"
+            android:tint="#fff"
+            android:elevation="5dp" />
     </RelativeLayout>
 </RelativeLayout>

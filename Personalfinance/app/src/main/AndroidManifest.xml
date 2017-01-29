@@ -24,6 +24,10 @@
             android:name=".RegisterActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait" />
+        <receiver android:name=".receivers.AlarmReceiver" />
     </application>
+    
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.VIBRATE" />
 
 </manifest>

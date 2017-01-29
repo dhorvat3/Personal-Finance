@@ -1,9 +1,13 @@
 package com.hr.foi.personalfinance.fragments;
 
 
+import android.app.AlarmManager;
 import android.app.DatePickerDialog;
+import android.app.PendingIntent;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.app.Fragment;
@@ -18,11 +22,13 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.hr.foi.personalfinance.R;
+import com.hr.foi.personalfinance.receivers.AlarmReceiver;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -46,6 +52,10 @@ public class TaskAdd extends Fragment implements DataInterface {
     private SimpleDateFormat outputFormat;
     private EditText newTaskDate;
     private EditText newTaskNotice;
+    private Calendar notificationCalendar = Calendar.getInstance();
+    private String notificationTitle;
+    private String notificationMessage;
+    private String notificationDate;
     private DataBuilder dataBuilder = new DataBuilder(this);
     private Task_ task = new Task_();
 
@@ -136,17 +146,25 @@ public class TaskAdd extends Fragment implements DataInterface {
                 }
 
                 if (valid) {
+                    Date noticeDate = new Date();
+
                     task.setUserId(prefs.getString("id", ""));
                     task.setTitle(newTaskTitle.getText().toString());
                     task.setNote(newTaskNote.getText().toString());
 
                     try {
+                        noticeDate = noticeFormat.parse(newTaskNotice.getText().toString() + ":00");
+
                         task.setDate(outputFormat.format(dateFormat.parse(newTaskDate.getText().toString())) + ":00");
-                        task.setNotice(outputFormat.format(noticeFormat.parse(newTaskNotice.getText().toString())) + ":00");
+                        task.setNotice(outputFormat.format(noticeDate));
                     } catch (ParseException e) {
                         Log.w("date-parser", e.getMessage());
                     }
 
+                    notificationCalendar.setTime(noticeDate);
+                    notificationTitle = task.getTitle();
+                    notificationMessage = task.getNote();
+                    notificationDate = newTaskDate.getText().toString();
                     dataBuilder.newTask(task);
                 }
             }
@@ -161,6 +179,17 @@ public class TaskAdd extends Fragment implements DataInterface {
 
         switch (response.getId()) {
             case "1":
+                Intent intent = new Intent(getActivity(), AlarmReceiver.class);
+                AlarmManager alarmManager = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
+
+                intent.putExtra("notificationTitle", notificationTitle);
+                intent.putExtra("notificationMessage", notificationMessage);
+                intent.putExtra("notificationDate", notificationDate);
+
+                PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity(), 0, intent, 0);
+
+                alarmManager.set(AlarmManager.RTC_WAKEUP, notificationCalendar.getTimeInMillis(), pendingIntent);
+
                 Toast.makeText(getActivity(), "Uspješna pohrana", Toast.LENGTH_SHORT).show();
 
                 getFragmentManager().popBackStack();

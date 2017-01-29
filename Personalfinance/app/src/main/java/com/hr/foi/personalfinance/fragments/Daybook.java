@@ -21,7 +21,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.hr.foi.personalfinance.R;
-import com.hr.foi.personalfinance.adapter.MyListAdapter;
+import com.hr.foi.personalfinance.adapters.MyListAdapter;
 import com.hr.foi.personalfinance.info.DetailInfo;
 import com.hr.foi.personalfinance.info.HeaderInfo;
 import com.hr.foi.userinterface.BaseFragment;
