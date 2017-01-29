@@ -13,14 +13,18 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.hr.foi.personalfinance.R;
 import com.hr.foi.personalfinance.adapter.TaskListAdapter;
 import com.hr.foi.userinterface.BaseFragment;
 import com.hr.foi.userinterface.FragmentInterface;
 
+import java.util.List;
+
 import entities.DataBuilder;
 import entities.DataInterface;
+import pojo.Response;
 import pojo.Task_;
 
 /**
@@ -31,8 +35,11 @@ public class Tasks extends BaseFragment implements FragmentInterface, DataInterf
     private SharedPreferences prefs;
     private ProgressBar progress;
     private DataBuilder dataBuilder = new DataBuilder(this);
+    private List<Task_> taskList;
     private Task_ task;
+    private TaskListAdapter adapter;
     private ListView taskListView;
+    private int itemForDelete = -1;
 
     public static final Tasks newInstance(String name){
         Tasks f = new Tasks();
@@ -82,21 +89,42 @@ public class Tasks extends BaseFragment implements FragmentInterface, DataInterf
 
     @Override
     public void onResume() {
-        progress.setVisibility(View.VISIBLE);
-        dataBuilder.getTasks(prefs.getString("id", ""));
+        getActivity().getActionBar().setTitle("Lista obveza");
 
         super.onResume();
     }
 
     @Override
     public void buildData(Object data) {
-        pojo.Task tasksResponse = (pojo.Task) data;
+        if (data.getClass().getSimpleName().equals("Task")) {
+            pojo.Task tasks = (pojo.Task) data;
+            taskList = tasks.getTasks();
 
-        if (tasksResponse != null) {
-            TaskListAdapter adapter = new TaskListAdapter(getActivity(), tasksResponse.getTasks());
-            taskListView.setAdapter(adapter);
+            if (tasks != null) {
+                adapter = new TaskListAdapter(getActivity(), taskList);
+                taskListView.setAdapter(adapter);
 
-            progress.setVisibility(View.GONE);
+                progress.setVisibility(View.GONE);
+            }
+        } else if (data.getClass().getSimpleName().equals("Response")) {
+            Response response = (Response) data;
+
+            switch (response.getId()) {
+                case "1":
+                    taskList.remove(itemForDelete);
+                    adapter.notifyDataSetChanged();
+
+                    Toast.makeText(getActivity(), "Uspješno obrisano", Toast.LENGTH_SHORT).show();
+                    break;
+                case "-1":
+                    Toast.makeText(getActivity(), "Pogreška", Toast.LENGTH_SHORT).show();
+                    break;
+                case "-2":
+                    Toast.makeText(getActivity(), "Prazno polje", Toast.LENGTH_SHORT).show();
+                    break;
+            }
+
+            itemForDelete = -1;
         }
     }
 
@@ -112,10 +140,14 @@ public class Tasks extends BaseFragment implements FragmentInterface, DataInterf
     public boolean onContextItemSelected(MenuItem item) {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
 
+        String itemId = String.valueOf(taskListView.getAdapter().getItemId(info.position));
+
         switch (item.getItemId()) {
             case 0:
                 break;
             case 1:
+                itemForDelete = info.position;
+                dataBuilder.deleteTask(itemId);
                 break;
         }
 

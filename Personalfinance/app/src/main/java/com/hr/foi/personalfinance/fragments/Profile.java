@@ -96,6 +96,8 @@ public class Profile extends BaseFragment implements FragmentInterface {
 
     @Override
     public void onResume() {
+        getActivity().getActionBar().setTitle("Moj profil");
+
         if (prefs.contains("profile-edited")) {
             TextView profileFullName = (TextView) getView().findViewById(R.id.profile_full_name);
             TextView profileEmail = (TextView) getView().findViewById(R.id.profile_email);
