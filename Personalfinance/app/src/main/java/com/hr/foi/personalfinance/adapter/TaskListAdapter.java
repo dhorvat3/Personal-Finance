@@ -59,8 +59,8 @@ public class TaskListAdapter extends BaseAdapter {
         Task_ task = (Task_) getItem(position);
 
         SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy. HH:mm:ss");
-        SimpleDateFormat noticeFormat = new SimpleDateFormat("dd.MM.yyyy. 'u' HH:mm:ss");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy. HH:mm");
+        SimpleDateFormat noticeFormat = new SimpleDateFormat("dd.MM.yyyy. 'u' HH:mm");
         String taskDate = "";
         String noticeDate = "";
 

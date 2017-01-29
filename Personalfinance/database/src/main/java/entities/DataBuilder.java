@@ -174,10 +174,10 @@ public class DataBuilder {
     }
 
     public void newTask(Task_ task){
-        Call<Task_> retrofitCall = apiMethods.newTask(task);
-        retrofitCall.enqueue(new Callback<Task_>() {
+        Call<pojo.Response> retrofitCall = apiMethods.newTask(task);
+        retrofitCall.enqueue(new Callback<pojo.Response>() {
             @Override
-            public void onResponse(Response<Task_> response, Retrofit retrofit) {
+            public void onResponse(Response<pojo.Response> response, Retrofit retrofit) {
                 call.buildData(response.body());
             }
 

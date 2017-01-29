@@ -28,7 +28,7 @@ import pojo.User;
 public class ProfileEdit extends Fragment implements DataInterface {
 
     private SharedPreferences prefs;
-    private DataBuilder dataBulder = new DataBuilder(this);
+    private DataBuilder dataBuilder = new DataBuilder(this);
     private User user = new User();
 
     public ProfileEdit() {
@@ -37,7 +37,7 @@ public class ProfileEdit extends Fragment implements DataInterface {
 
 
     /**
-     * Used for setting values after view is created.
+     * Used for setting values while creating view.
      *
      * @param inflater
      * @param container
@@ -51,12 +51,12 @@ public class ProfileEdit extends Fragment implements DataInterface {
         prefs = getActivity().getSharedPreferences("login", 0);
 
         View view = inflater.inflate(R.layout.profile_edit_layout, container, false);
-        EditText first_name = (EditText) view.findViewById(R.id.first_name);
-        EditText last_name = (EditText) view.findViewById(R.id.last_name);
+        EditText firstName = (EditText) view.findViewById(R.id.first_name);
+        EditText lastName = (EditText) view.findViewById(R.id.last_name);
         EditText email = (EditText) view.findViewById(R.id.email);
 
-        first_name.setText(prefs.getString("name", ""));
-        last_name.setText(prefs.getString("surname", ""));
+        firstName.setText(prefs.getString("name", ""));
+        lastName.setText(prefs.getString("surname", ""));
         email.setText(prefs.getString("email", ""));
 
         return view;
@@ -70,26 +70,26 @@ public class ProfileEdit extends Fragment implements DataInterface {
      */
     @Override
     public void onViewCreated(final View view, Bundle savedInstanceState) {
-        Button cancel_button = (Button) view.findViewById(R.id.cancel_button);
-        Button submit_button = (Button) view.findViewById(R.id.submit_button);
+        Button cancelButton = (Button) view.findViewById(R.id.profile_edit_cancel_button);
+        Button submitButton = (Button) view.findViewById(R.id.profile_edit_submit_button);
 
-        cancel_button.setOnClickListener(new View.OnClickListener() {
+        cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 getFragmentManager().popBackStack();
             }
         });
 
-        submit_button.setOnClickListener(new View.OnClickListener() {
+        submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                EditText first_name = (EditText) view.findViewById(R.id.first_name);
-                EditText last_name = (EditText) view.findViewById(R.id.last_name);
+                EditText firstName = (EditText) view.findViewById(R.id.first_name);
+                EditText lastName = (EditText) view.findViewById(R.id.last_name);
                 EditText email = (EditText) view.findViewById(R.id.email);
                 String password = ((EditText) view.findViewById(R.id.password)).getText().toString();
                 boolean valid = true;
 
-                List<EditText> fields = Arrays.asList(first_name, last_name, email);
+                List<EditText> fields = Arrays.asList(firstName, lastName, email);
 
                 for (Iterator<EditText> i = fields.iterator(); i.hasNext();) {
                     EditText field = i.next();
@@ -108,12 +108,12 @@ public class ProfileEdit extends Fragment implements DataInterface {
 
                     user.setId(prefs.getString("id", ""));
                     user.setUsername(prefs.getString("username", ""));
-                    user.setName(first_name.getText().toString());
-                    user.setSurname(last_name.getText().toString());
+                    user.setName(firstName.getText().toString());
+                    user.setSurname(lastName.getText().toString());
                     user.setEmail(email.getText().toString());
                     user.setPassword(password);
 
-                    dataBulder.editUser(user);
+                    dataBuilder.editUser(user);
                 }
             }
         });
@@ -150,5 +150,4 @@ public class ProfileEdit extends Fragment implements DataInterface {
                 break;
         }
     }
-
 }

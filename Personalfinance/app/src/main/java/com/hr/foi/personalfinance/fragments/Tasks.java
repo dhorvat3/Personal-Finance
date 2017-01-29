@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 
@@ -64,7 +65,27 @@ public class Tasks extends BaseFragment implements FragmentInterface, DataInterf
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         dataBuilder.getTasks(prefs.getString("id", ""));
+
+        Button addTaskButton = (Button) view.findViewById(R.id.add_task);
+
+        addTaskButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int fragmentId = ((ViewGroup)(getView().getParent())).getId();
+
+                getFragmentManager().beginTransaction().replace(fragmentId, new TaskAdd()).addToBackStack(null).commit();
+            }
+        });
+
         super.onViewCreated(view, savedInstanceState);
+    }
+
+    @Override
+    public void onResume() {
+        progress.setVisibility(View.VISIBLE);
+        dataBuilder.getTasks(prefs.getString("id", ""));
+
+        super.onResume();
     }
 
     @Override

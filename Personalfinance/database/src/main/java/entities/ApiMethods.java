@@ -43,7 +43,7 @@ public interface ApiMethods {
     Call<pojo.Response> editRecord(@Body pojo.Record_ record);
 
     @POST("/new_task.php")
-    Call<pojo.Task_> newTask(@Body Task_ task);
+    Call<pojo.Response> newTask(@Body pojo.Task_ task);
 
     @GET("/tasks_by_user.php")
     Call<pojo.Task> getTasks(@Query("id") String userId);
