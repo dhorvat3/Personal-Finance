@@ -40,23 +40,74 @@ import pojo.Record_;
  * Created by dominik on 21.12.16..
  */
 
+/**
+ * Klasa Statistics za vizualizaciju korisnickih zapisa. Sadrzi sve potrebne metode za dohvacanje, obradu i prikaz podataka.
+ * Za vizualizaciju koristi HelloCharts
+ * Vise na <a href="https://github.com/lecho/hellocharts-android">HelloCharts</a>
+ */
 public class Statistics extends BaseFragment implements FragmentInterface, DataInterface
 {
+    /**
+     * Klasa DataBuilder za dohvacanje podataka iz baze podataka
+     */
     private DataBuilder dataBuilder = new DataBuilder(this);
+
+    /**
+     * Klasa SharedPreferences za dohvaćanje korisnickog user_id atributa iz aktivne sesije
+     */
     private SharedPreferences preferences;
+
+    /**
+     * Lista tipa Record_ koja sadrzi sve podatke koji će biti prikazani na grafikonima
+     */
     private ArrayList<Record_> records = new ArrayList<Record_>();
+
+    /**
+     * Lista tipa Category_. Sadrzi kategorije aktivnog korisnika.
+     */
     private ArrayList<Category_> categories = new ArrayList<Category_>();
+
+    /**
+     * Klasa View sadrži sve komponente korisnickog sucelja
+     */
     private View view;
+
+    /**
+     * Definicija nijanse plave boje.
+     */
     private int blue = new Color().rgb(0, 77, 153);
+
+    /**
+     * Definicija nijanse crvene boje.
+     */
     private int red = new Color().rgb(204, 0, 0);
 
-
+    /**
+     * Pomocna klasa CategoryC potrebna prilikom pripreme podataka za vizualizaciju.
+     */
     class CategoryC
     {
+        /**
+         * Identifikator kategorije potreban za dohvacanje naziva kategorije
+         */
         private String id;
+
+        /**
+         * Suma prihoda za pojedinu kategoriju
+         */
         private float prihodi;
+
+        /**
+         * Suma rashoda za pojedinu kategoriju
+         */
         private float rashodi;
 
+        /**
+         * Konstruktor klase CategoryC
+         * @param id Identifikator kategorije
+         * @param prihodi Iznos prihoda pojedinog zapisa
+         * @param rashodi Iznos rashoda pojedinog zapisa
+         */
         public CategoryC(String id, float prihodi, float rashodi)
         {
             this.id = id;
@@ -64,37 +115,63 @@ public class Statistics extends BaseFragment implements FragmentInterface, DataI
             this.rashodi = rashodi;
         }
 
+        /**
+         * @return ukupan iznos rashoda za kategoriju
+         */
         public float getRashodi()
         {
             return rashodi;
         }
 
+        /**
+         * Zbraja iznos rashoda na postojecu sumu. Moguce je da postoji vise zapisa u istoj kategoriji pa je potrebno zbrojiti sve iznose.
+         * @param rashodi Iznos rashoda za jedan zapis
+         */
         public void setRashodi(float rashodi)
         {
             this.rashodi += rashodi;
         }
 
+        /**
+         * @return Identifikator kategorije
+         */
         public String getId()
         {
             return id;
         }
 
+        /**
+         * Postavlja identifikator kategorije
+         * @param id Identifikator kategorije
+         */
         public void setId(String id)
         {
             this.id = id;
         }
 
+        /**
+         * @return ukupan iznos prihoda za kategoriju
+         */
         public float getPrihodi()
         {
             return prihodi;
         }
 
+        /**
+         * Zbraja iznos prihoda na postojecu sumu. Moguce je da postoji vise zapisa u istoj kategoriji pa je potrebno zbrojiti sve iznose.
+         * @param prihodi Iznos prihoda za jedan zapis
+         */
         public void setPrihodi(float prihodi)
         {
             this.prihodi += prihodi;
         }
     }
 
+    /**
+     * Konstruktor fragmenta Statistics
+     * @param name Naziv fragmenta
+     * @return Fragment Statistics
+     */
     public static final Statistics newInstance(String name)
     {
         Statistics s = new Statistics();
@@ -103,6 +180,10 @@ public class Statistics extends BaseFragment implements FragmentInterface, DataI
         return s;
     }
 
+    /**
+     *
+     * @return
+     */
     @Override
     public BaseFragment getFragment() {
         return this;
@@ -124,10 +205,16 @@ public class Statistics extends BaseFragment implements FragmentInterface, DataI
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         view = inflater.inflate(R.layout.statistics_layout, container, false);
+
         dataBuilder.getCategories(userID());
         return view;
     }
 
+    /**
+     * Metoda priprema i postavlja podatke na LineChartView
+     * @param view Objekt tipa LineChartView
+     * @param type Objekt tipa String koji predstavlja vrstu zapisa (prihod/rashod)
+     */
     private void setLineChart(LineChartView view, String type)
     {
         LineChartData data = new LineChartData();
@@ -179,6 +266,10 @@ public class Statistics extends BaseFragment implements FragmentInterface, DataI
         view.setLineChartData(data);
     }
 
+    /**
+     * Metoda priprema i postavlja podatke na ColumnChartView
+     * @param view Objekt tipa ColumnChartView
+     */
     private void setColumnChart(ColumnChartView view)
     {
         ColumnChartData data;
@@ -234,6 +325,12 @@ public class Statistics extends BaseFragment implements FragmentInterface, DataI
         view.setColumnChartData(data);
     }
 
+    /**
+     * Metoda priprema i postavlja podatke na ColumnChartView
+     * Izracunava razliku prihoda i rashoda i postavlja stanje u textview
+     * @param view Objekt tipa PieChartView
+     * @param textview Objekt tipa TextView
+     */
     private void setPieChart(PieChartView view, TextView textview)
     {
         PieChartData data;
@@ -279,6 +376,12 @@ public class Statistics extends BaseFragment implements FragmentInterface, DataI
         view.setPieChartData(data);
     }
 
+    /**
+     * Metoda kojom se inicijaliziraju potrebni HelloCharts objekti
+     * Sadrzi pozive za svaki tip korištenog HelloCharts objekta
+     * Nakon postavljanja podataka, liste records i categories postavljaju se u null da se
+     * sprijeci daljnje dupliciranje podataka prilikom ponovnog pozivanja fragmenta
+     */
     private void setData()
     {
         LineChartView lineGraphPrihodi = (LineChartView) view.findViewById(R.id.lineGraphPrihodi);
@@ -310,6 +413,10 @@ public class Statistics extends BaseFragment implements FragmentInterface, DataI
         dataBuilder.getRecords(userID());
     }
 
+    /**
+     * Metoda za preuzimanje podatata iz database modula
+     * @param data Objekt rezultata (odgovora) web servisa
+     */
     @Override
     public void buildData(Object data)
     {
@@ -340,6 +447,10 @@ public class Statistics extends BaseFragment implements FragmentInterface, DataI
         }
     }
 
+    /**
+     * Pomocna metoda za dohvacanje korisnickog user_id atributa iz SharedPreferences
+     * @return Korisnicki identifikator
+     */
     private String userID()
     {
         preferences = getActivity().getSharedPreferences("login", 0);
