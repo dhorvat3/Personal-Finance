@@ -20,19 +20,49 @@ import java.util.ArrayList;
  * Created by dagy on 06.11.16..
  */
 
+/**
+ * Klasa MainMenu za meni u obliku navigacijskog drawer-a
+ */
 public class MainMenu extends BaseFragment {
+
+    /**
+     * Bočni klizeci drawer kao meni
+     */
     private DrawerLayout drawerLayout;
+
+    /**
+     * Lista za elemente drawer-a
+     */
     private ListView drawerList;
+
+    /**
+     *"Drawer hamburger"
+     */
     private DrawerArrowDrawable drawerArrow;
+
+    /**
+     * Povezuje DrawerLayout i ActionBar
+     */
     private ActionBarDrawerToggle drawerToggle;
 
+    /**
+     * Lista s nazivima fragmenata
+     */
     private ArrayList<String> fragmentNames = new ArrayList<String>();
+
+    /**
+     * Lista s fragmentima
+     */
     private ArrayList<FragmentInterface> fragments = new ArrayList<FragmentInterface>();
+
+    /**
+     * Oznaka aktivnog fragmenta
+     */
     private String currentFrag;
 
     /**
-     * Set names and fragment objects.
-     * @param params
+     * Postavlja ime fragmenta i dodaje fragment u meni
+     * @param params Naziv fragmenta
      */
     public void initFrag(FragmentInterface... params){
         for(FragmentInterface param : params){
@@ -41,6 +71,10 @@ public class MainMenu extends BaseFragment {
         }
     }
 
+    /**
+     * Dohvacanje elemenata
+     * @param savedInstance
+     */
     @Override
     public void onCreate(Bundle savedInstance){
         super.onCreate(savedInstance);
@@ -91,7 +125,7 @@ public class MainMenu extends BaseFragment {
     }
 
     /**
-     * Set first fragment as active.
+     * Postavlja prvi fragment kao aktivnog
      */
     public void homeFragment(){
         currentFrag = fragments.get(0).getFragment().getName();
@@ -99,6 +133,10 @@ public class MainMenu extends BaseFragment {
         switchFragment(fragments.get(0).getFragment(), false, currentFrag);
     }
 
+    /**
+     * @param item Element menija
+     * @return Element menija
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item){
         if(item.getItemId() == android.R.id.home){
@@ -119,7 +157,7 @@ public class MainMenu extends BaseFragment {
     }
 
     /**
-     * Refresh title.
+     * Osvjezava naslov
      */
     public void refreshName(){
         getActivity().getActionBar().setTitle(currentFrag);
