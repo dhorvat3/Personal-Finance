@@ -28,7 +28,7 @@ public interface ApiMethods {
     Call<pojo.Category> getCategories(@Query("id") String userId);
 
     @POST("/add_category.php")
-    Call<Category_> newCategory(@Body Category_ category);
+    Call<pojo.Response> newCategory(@Body pojo.Category_ category);
 
     @GET("/records_by_user.php/")
     Call<pojo.Record> getRecords(@Query("id") String userId);

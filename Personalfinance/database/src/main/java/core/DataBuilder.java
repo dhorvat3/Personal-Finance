@@ -98,16 +98,16 @@ public class DataBuilder {
     }
 
     public void newCategory(Category_ category){
-        Call<Category_> retrofitCall = apiMethods.newCategory(category);
-        retrofitCall.enqueue(new Callback<Category_>() {
+        Call<pojo.Response> retrofitCall = apiMethods.newCategory(category);
+        retrofitCall.enqueue(new Callback<pojo.Response>() {
             @Override
-            public void onResponse(Response<Category_> response, Retrofit retrofit) {
+            public void onResponse(Response<pojo.Response> response, Retrofit retrofit) {
                 call.buildData(response.body());
             }
 
             @Override
             public void onFailure(Throwable t) {
-                call.buildData(null);
+
             }
         });
     }

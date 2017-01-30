@@ -110,7 +110,6 @@ public class Category extends BaseFragment implements FragmentInterface, DataInt
                             dataBuilder.newCategory(category);
 
                             sequence++;
-                            dataBuilder.getCategories(userID());
                         }
 
                         name.setText("");

@@ -7,8 +7,10 @@
 * [title]
 * [description]
 **/
-$data = json_decode(file_get_contents('php://input'), true);
 $response = array();
+
+$data = json_decode(file_get_contents('php://input'), true);
+
 
 require_once __DIR__.'/db.php';
 $db = new DB_CONNECT();
