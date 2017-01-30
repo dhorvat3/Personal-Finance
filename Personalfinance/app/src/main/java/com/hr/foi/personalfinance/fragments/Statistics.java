@@ -60,12 +60,12 @@ public class Statistics extends BaseFragment implements FragmentInterface, DataI
     /**
      * Lista tipa Record_ koja sadrzi sve podatke koji će biti prikazani na grafikonima
      */
-    private ArrayList<Record_> records = new ArrayList<Record_>();
+    private ArrayList<Record_> records;
 
     /**
      * Lista tipa Category_. Sadrzi kategorije aktivnog korisnika.
      */
-    private ArrayList<Category_> categories = new ArrayList<Category_>();
+    private ArrayList<Category_> categories;
 
     /**
      * Klasa View sadrži sve komponente korisnickog sucelja
@@ -81,6 +81,12 @@ public class Statistics extends BaseFragment implements FragmentInterface, DataI
      * Definicija nijanse crvene boje.
      */
     private int red = new Color().rgb(204, 0, 0);
+
+    /**
+     * Pomocna varijabla broj kategorija potrebna zbog pogreske prilikom generiranje podataka
+     * za vizualizaciju
+     */
+    private int categoriesSize;
 
     /**
      * Pomocna klasa CategoryC potrebna prilikom pripreme podataka za vizualizaciju.
@@ -278,7 +284,7 @@ public class Statistics extends BaseFragment implements FragmentInterface, DataI
         axisX.setName("Kategorija");
         axisY.setName("Iznos");
 
-        int numColumns = categories.size();
+        int numColumns = categoriesSize;
 
         List<CategoryC> tempData = new ArrayList<CategoryC>();
         for(Category_ item : categories)
@@ -409,8 +415,6 @@ public class Statistics extends BaseFragment implements FragmentInterface, DataI
      */
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState){
         super.onViewCreated(view, savedInstanceState);
-
-        dataBuilder.getRecords(userID());
     }
 
     /**
@@ -423,6 +427,7 @@ public class Statistics extends BaseFragment implements FragmentInterface, DataI
         if(data instanceof pojo.Category)
         {
             pojo.Category category = (pojo.Category) data;
+            categories = new ArrayList<Category_>();
             if (category !=null)
             {
                 for (Category_ item : category.getCategory())
@@ -430,11 +435,15 @@ public class Statistics extends BaseFragment implements FragmentInterface, DataI
                     categories.add(item);
                 }
             }
+
+            categoriesSize = categories.size();
+            dataBuilder.getRecords(userID());
         }
 
         if(data instanceof pojo.Record)
         {
             pojo.Record record = (pojo.Record) data;
+            records = new ArrayList<Record_>();
             if (record !=null)
             {
                 for (Record_ item : record.getRecord())
@@ -448,7 +457,7 @@ public class Statistics extends BaseFragment implements FragmentInterface, DataI
     }
 
     /**
-     * Pomocna metoda za dohvacanje korisnickog user_id atributa iz SharedPreferences
+     * Metoda za dohvacanje korisnickog user_id atributa iz SharedPreferences
      * @return Korisnicki identifikator
      */
     private String userID()
