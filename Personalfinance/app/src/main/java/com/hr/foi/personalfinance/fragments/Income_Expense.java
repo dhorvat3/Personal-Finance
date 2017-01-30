@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -19,6 +20,7 @@ import android.widget.ExpandableListView;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -67,6 +69,8 @@ public class Income_Expense extends BaseFragment implements FragmentInterface, D
     private String dateAndTime;
     private int sequence = 0;
     private String godina, mjesec, dan, dat;
+    int mCurrentScrollState;
+    int mCurrentVisibleItemCount;
 
 
 
@@ -255,19 +259,44 @@ public class Income_Expense extends BaseFragment implements FragmentInterface, D
                     records.add(item);
                 }
 
+                String setRecordType = new String();
                 for (int i = 0; i < records.size(); i++) {
                     sequence = i;
                     godina = records.get(i).getDatum().substring(0, 4);
                     mjesec = records.get(i).getDatum().substring(5, 7);
                     dan = records.get(i).getDatum().substring(8, 10);
                     dat = dan+"."+mjesec+"."+godina+".";
-                    addRecord(dat, records.get(i).getIznos()+" kn");
+                    if (records.get(i).getVrsta().equals("0")){
+                        setRecordType = records.get(i).getIznos()+" kn";
+                    }
+                    else if (records.get(i).getVrsta().equals("1")){
+                        setRecordType ="-"+ records.get(i).getIznos()+" kn";
+                    }
+                    addRecord(dat, setRecordType);
+
                 }
                 listAdapter = new MyListAdapter(getActivity(), deptList);
                 listView.setAdapter(listAdapter);
 
 
                 listView.setOnChildClickListener(myListItemClicked);
+
+                listView.setOnScrollListener(new AbsListView.OnScrollListener() {
+                    @Override
+                    public void onScrollStateChanged(AbsListView view, int scrollState) {
+                        mCurrentScrollState = scrollState;
+                        if(mCurrentVisibleItemCount > 0 && mCurrentScrollState == SCROLL_STATE_IDLE){
+                            RelativeLayout.LayoutParams params2 = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+                            params2.addRule(RelativeLayout.ABOVE, R.id.update_delete);
+                            listView.setLayoutParams(params2);
+                        }
+                    }
+
+                    @Override
+                    public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                        mCurrentVisibleItemCount = visibleItemCount;
+                    }
+                });
             }
         }
         if(data instanceof Response){
@@ -291,16 +320,21 @@ public class Income_Expense extends BaseFragment implements FragmentInterface, D
 
         public boolean onChildClick(ExpandableListView parent, View v, final int groupPosition, final int childPosition, final long id) {
 
-            v.setBackgroundColor(Color.rgb(204,255,229));
-
             HeaderInfo headerInfo = deptList.get(groupPosition);
             DetailInfo detailInfo =  headerInfo.getCategoryList().get(childPosition);
 
             LinearLayout linearLayout =(LinearLayout)  getActivity().findViewById(R.id.update_delete);
             linearLayout.setVisibility(View.VISIBLE);
 
-            ImageButton update = (ImageButton) linearLayout.findViewById(R.id.update);
-            ImageButton delete = (ImageButton) linearLayout.findViewById(R.id.delete);
+            Button button = (Button) getActivity().findViewById(R.id.AddIncomeExpense);
+
+            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+            params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+            params.addRule(RelativeLayout.ABOVE, R.id.update_delete);
+            button.setLayoutParams(params);
+
+            Button update = (Button) linearLayout.findViewById(R.id.update);
+            Button delete = (Button) linearLayout.findViewById(R.id.delete);
 
             parent.getExpandableListAdapter().getChild(groupPosition, childPosition);
             final EditText seq = (EditText) v.findViewById(R.id.sequence);
@@ -505,7 +539,4 @@ public class Income_Expense extends BaseFragment implements FragmentInterface, D
         return  status;
     }
 
-    private void IncomeExpense(){
-
-    }
 }

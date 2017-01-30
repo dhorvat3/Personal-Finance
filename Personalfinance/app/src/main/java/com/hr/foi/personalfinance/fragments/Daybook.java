@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -17,6 +18,7 @@ import android.widget.ExpandableListView;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -71,6 +73,8 @@ public class Daybook extends BaseFragment implements FragmentInterface, DataInte
     private android.widget.SearchView search;
     private boolean dateOrCategorySpinnerSelection = false;
     private LinkedHashMap<String, String> catIdName = new LinkedHashMap<String, String>();
+    int mCurrentScrollState;
+    int mCurrentVisibleItemCount;
 
     public static final Daybook newInstance(String name){
         Daybook f = new Daybook();
@@ -244,6 +248,22 @@ public class Daybook extends BaseFragment implements FragmentInterface, DataInte
 
 
                 listView.setOnChildClickListener(myListItemClicked);
+                listView.setOnScrollListener(new AbsListView.OnScrollListener() {
+                    @Override
+                    public void onScrollStateChanged(AbsListView view, int scrollState) {
+                        mCurrentScrollState = scrollState;
+                        if(mCurrentVisibleItemCount > 0 && mCurrentScrollState == SCROLL_STATE_IDLE){
+                            RelativeLayout.LayoutParams params2 = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+                            params2.addRule(RelativeLayout.ABOVE, R.id.update_delete);
+                            listView.setLayoutParams(params2);
+                        }
+                    }
+
+                    @Override
+                    public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                        mCurrentVisibleItemCount = visibleItemCount;
+                    }
+                });
             }
         }
         if(data instanceof Response){
@@ -266,15 +286,15 @@ public class Daybook extends BaseFragment implements FragmentInterface, DataInte
     private ExpandableListView.OnChildClickListener myListItemClicked =  new ExpandableListView.OnChildClickListener() {
 
         public boolean onChildClick(ExpandableListView parent, View v, final int groupPosition, final int childPosition, final long id) {
-
+     
             HeaderInfo headerInfo = deptList.get(groupPosition);
             DetailInfo detailInfo =  headerInfo.getCategoryList().get(childPosition);
 
             LinearLayout linearLayout =(LinearLayout)  getActivity().findViewById(R.id.update_delete);
             linearLayout.setVisibility(View.VISIBLE);
 
-            ImageButton update = (ImageButton) linearLayout.findViewById(R.id.update);
-            ImageButton delete = (ImageButton) linearLayout.findViewById(R.id.delete);
+            Button update = (Button) linearLayout.findViewById(R.id.update);
+            Button delete = (Button) linearLayout.findViewById(R.id.delete);
 
             parent.getExpandableListAdapter().getChild(groupPosition, childPosition);
             final EditText seq = (EditText) v.findViewById(R.id.sequence);

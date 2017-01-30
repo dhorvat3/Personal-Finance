@@ -33,21 +33,23 @@
         android:visibility="invisible"
         android:id="@+id/update_delete">
 
-        <ImageButton
+        <Button
+            android:text="Ažuriraj"
             android:layout_width="wrap_content"
-            android:layout_height="80dp"
-            app:srcCompat="@android:drawable/ic_menu_edit"
+            android:layout_height="wrap_content"
             android:id="@+id/update"
             android:layout_weight="1"
-            tools:ignore="ContentDescription" />
+            tools:ignore="ButtonStyle,HardcodedText"
+            style="@style/Widget.AppCompat.Button.Colored" />
 
-        <ImageButton
+        <Button
+            android:text="Obriši"
             android:layout_width="wrap_content"
-            android:layout_height="80dp"
-            app:srcCompat="@android:drawable/ic_menu_delete"
+            android:layout_height="wrap_content"
             android:id="@+id/delete"
             android:layout_weight="1"
-            tools:ignore="ContentDescription" />
+            tools:ignore="ButtonStyle,HardcodedText"
+            style="@style/Widget.AppCompat.Button.Colored" />
     </LinearLayout>
 
 </RelativeLayout>

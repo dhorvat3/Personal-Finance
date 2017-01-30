@@ -7,11 +7,13 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.hr.foi.personalfinance.R;
@@ -50,6 +52,8 @@ public class Category extends BaseFragment implements FragmentInterface, DataInt
     private Dialog dialog;
     private  ArrayList<Category_> categories;
     private int sequence = 0;
+    int mCurrentScrollState;
+    int mCurrentVisibleItemCount;
 
 
     public static final Category newInstance(String name){
@@ -156,6 +160,23 @@ public class Category extends BaseFragment implements FragmentInterface, DataInt
                 listAdapter = new MyListAdapter(getActivity(), deptList);
                 listView.setAdapter(listAdapter);
                 listView.setOnChildClickListener(myListItemClicked);
+
+                listView.setOnScrollListener(new AbsListView.OnScrollListener() {
+                    @Override
+                    public void onScrollStateChanged(AbsListView view, int scrollState) {
+                        mCurrentScrollState = scrollState;
+                        if(mCurrentVisibleItemCount > 0 && mCurrentScrollState == SCROLL_STATE_IDLE){
+                            RelativeLayout.LayoutParams params2 = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+                            params2.addRule(RelativeLayout.ABOVE, R.id.update_delete);
+                            listView.setLayoutParams(params2);
+                        }
+                    }
+
+                    @Override
+                    public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                        mCurrentVisibleItemCount = visibleItemCount;
+                    }
+                });
             }
         }
         if(data instanceof Response) {
@@ -184,8 +205,8 @@ public class Category extends BaseFragment implements FragmentInterface, DataInt
             LinearLayout linearLayout =(LinearLayout)  getActivity().findViewById(R.id.update_delete_category);
             linearLayout.setVisibility(View.VISIBLE);
 
-            ImageButton update = (ImageButton) linearLayout.findViewById(R.id.update);
-            ImageButton delete = (ImageButton) linearLayout.findViewById(R.id.delete);
+            Button update = (Button) linearLayout.findViewById(R.id.update);
+            Button delete = (Button) linearLayout.findViewById(R.id.delete);
 
             parent.getExpandableListAdapter().getChild(groupPosition, childPosition);
             final EditText seq = (EditText) v.findViewById(R.id.sequence);
