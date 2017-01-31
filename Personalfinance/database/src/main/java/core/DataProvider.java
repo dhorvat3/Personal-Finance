@@ -33,16 +33,16 @@ public class DataProvider {
         this.userId = userId;
     }
 
-    public void refrashDatabase(){
+    public void refrashDatabase(DataBuilder dataBuilder){
 
         //empty local data
         Delete.table(Category.class);
         Delete.table(Record.class);
         Delete.table(Task.class);
         //get new data
-        fetchCategories(this.userId);
-        fetchRecords(this.userId);
-        fetchTasks(this.userId);
+        fetchCategories(this.userId, dataBuilder);
+        fetchRecords(this.userId, dataBuilder);
+        fetchTasks(this.userId, dataBuilder);
     }
 
     public void truncateDatabase(){
@@ -52,7 +52,7 @@ public class DataProvider {
         Delete.table(Task.class);
     }
 
-    public void fetchCategories(String userId){
+    public void fetchCategories(String userId, final DataBuilder dataBuilder){
         Call<Categories> retrofitCall = apiMethods.getCategories(userId);
         retrofitCall.enqueue(new Callback<Categories>() {
             @Override
@@ -63,6 +63,7 @@ public class DataProvider {
                     for(Category cat : category.getCategory()){
                         cat.save();
                     }
+                    dataBuilder.dataReady(1);
                 }
             }
 
@@ -97,7 +98,7 @@ public class DataProvider {
     }
 
 
-    public void fetchRecords(String userId){
+    public void fetchRecords(String userId, final DataBuilder dataBuilder){
         Call<Records> retrofitCall = apiMethods.getRecords(userId);
         retrofitCall.enqueue(new Callback<Records>() {
             @Override
@@ -107,7 +108,7 @@ public class DataProvider {
                     for(Record record : records.getRecord()){
                         record.save();
                     }
-                    Records record = new Records();
+                    dataBuilder.dataReady(3);
                 }
             }
 
@@ -142,7 +143,7 @@ public class DataProvider {
         rec.save();
     }
 
-    public void fetchTasks(String userId){
+    public void fetchTasks(String userId, final DataBuilder dataBuilder){
         Call<Tasks> retrofitCall = apiMethods.getTasks(userId);
         retrofitCall.enqueue(new Callback<Tasks>() {
             @Override
@@ -152,6 +153,7 @@ public class DataProvider {
                     for(Task task : tasks.getTasks()){
                         task.save();
                     }
+                    dataBuilder.dataReady(2);
                 }
             }
 

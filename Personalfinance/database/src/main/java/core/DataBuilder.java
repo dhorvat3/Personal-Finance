@@ -15,10 +15,29 @@ public class DataBuilder {
     private DataInterface call;
     private Object data;
     private DataProvider dataProvider;
+    private DataBuilder dataBuilder;
+    private boolean catReady = false, taskReady = false, recordReady = false;
 
     public DataBuilder(DataInterface caller) {
         call = caller;
         dataProvider = new DataProvider();
+        dataBuilder = this;
+    }
+
+    public void dataReady(int type){
+        if(type == 1){
+            catReady = true;
+        }
+        if(type == 2){
+            taskReady = true;
+        }
+        if(type == 3){
+            recordReady = true;
+        }
+
+        if(catReady && taskReady && recordReady){
+            call.buildData(data);
+        }
     }
 
     public void login(String user, String pass){
@@ -30,11 +49,11 @@ public class DataBuilder {
                     data = response.body();
                     pojo.User user = response.body();
                     dataProvider.setUserId(user.getId());
-                    dataProvider.refrashDatabase();
+                    dataProvider.refrashDatabase(dataBuilder);
                 } else {
                     data = null;
                 }
-                call.buildData(data);
+                //call.buildData(data);
             }
 
             @Override
