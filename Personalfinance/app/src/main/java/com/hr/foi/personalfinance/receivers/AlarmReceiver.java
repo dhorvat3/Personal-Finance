@@ -15,6 +15,10 @@ import com.hr.foi.personalfinance.R;
  * Created by Blaža on 29.1.2017..
  */
 
+/**
+ * Klasa za realizaciju notifikacija.
+ * Postavlja notifikaciju na poziv alarmManager-a
+ */
 public class AlarmReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {

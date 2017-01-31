@@ -19,8 +19,15 @@ import com.hr.foi.userinterface.FragmentInterface;
  * Created by dagy on 06.11.16..
  */
 
+/**
+ * Klasa za rad s korisnickim profilom.
+ * Azuriranje podataka i odjava sa sustava.
+ */
 public class Profile extends BaseFragment implements FragmentInterface {
 
+    /**
+     * Korisnicke postavke
+     */
     private SharedPreferences prefs;
 
     public static final Profile newInstance(String name){
@@ -36,11 +43,8 @@ public class Profile extends BaseFragment implements FragmentInterface {
     }
 
     /**
-     * Used for setting values before view is created.
-     *
-     * **
-     * ** Checking user login status.
-     * **
+     * Postavljanje podataka o korisniku
+     * Implementacija odjave sa sustava
      *
      * @param inflater
      * @param container
@@ -72,10 +76,7 @@ public class Profile extends BaseFragment implements FragmentInterface {
     }
 
     /**
-     * Used for setting values after view is created.
-     * **
-     * ** Setting listeners for ui elements.
-     * **
+     * Azuriranje korisnika
      * @param view
      * @param savedInstanceState
      */
@@ -94,6 +95,9 @@ public class Profile extends BaseFragment implements FragmentInterface {
         super.onViewCreated(view, savedInstanceState);
     }
 
+    /**
+     * Postavljanje podataka o korisniku
+     */
     @Override
     public void onResume() {
         getActivity().getActionBar().setTitle("Moj profil");

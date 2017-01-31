@@ -35,7 +35,7 @@ import pojo.Response;
 import pojo.Task;
 
 /**
- * A simple {@link Fragment} subclass.
+ * Klasa Tasks za realizaciju korisnickih obveza
  */
 public class Tasks extends BaseFragment implements FragmentInterface, DataInterface {
 
@@ -61,6 +61,13 @@ public class Tasks extends BaseFragment implements FragmentInterface, DataInterf
         return this;
     }
 
+    /**
+     * Dohvacanje GUI elemenata
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.tasks_layout, container, false);
@@ -90,6 +97,11 @@ public class Tasks extends BaseFragment implements FragmentInterface, DataInterf
         return view;
     }
 
+    /**
+     * Dohvacanje postojecih korisnickih obveza iz baze podataka
+     * @param view
+     * @param savedInstanceState
+     */
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         dataBuilder.getTasks(prefs.getString("id", ""));
@@ -115,6 +127,11 @@ public class Tasks extends BaseFragment implements FragmentInterface, DataInterf
         super.onResume();
     }
 
+    /**
+     * Obrada odogovora web servisa
+     * Ispis rezultata obrade u Toast
+     * @param data Odgovor web servisa
+     */
     @Override
     public void buildData(Object data) {
         if (data.getClass().getSimpleName().equals("Tasks")) {
@@ -158,6 +175,11 @@ public class Tasks extends BaseFragment implements FragmentInterface, DataInterf
         menu.add(0, 1, 1, "Obriši");
     }
 
+    /**
+     * Izmjena ili brisanje obveze
+     * @param item
+     * @return
+     */
     @Override
     public boolean onContextItemSelected(MenuItem item) {
         final AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();

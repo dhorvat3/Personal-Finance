@@ -4,6 +4,9 @@ package com.hr.foi.personalfinance.info;
  * Created by Filip on 4.1.2017..
  */
 
+/**
+ * Za Expandable List View kod izlistavanja kategorija
+ */
 public class DetailInfo {
     private String sequence = "";
     private String name = "";

@@ -32,7 +32,7 @@ import pojo.Response;
 import pojo.Task;
 
 /**
- * A simple {@link Fragment} subclass.
+ * Klasa TaskEdit za azuriranje postojece obveze
  */
 public class TaskEdit extends Fragment implements DataInterface {
 
@@ -54,7 +54,7 @@ public class TaskEdit extends Fragment implements DataInterface {
     }
 
     /**
-     * Used for setting values while creating view.
+     * Postavljanje trenutnih vrijednosti
      *
      * @param inflater
      * @param container
@@ -87,7 +87,8 @@ public class TaskEdit extends Fragment implements DataInterface {
     }
 
     /**
-     * Used for setting values after view is created.
+     * Pohranjivanje izmjena
+     * Upravljaci dogadjaja
      * @param view
      * @param savedInstanceState
      */
@@ -163,6 +164,11 @@ public class TaskEdit extends Fragment implements DataInterface {
         super.onViewCreated(view, savedInstanceState);
     }
 
+    /**
+     * Obrada odogovora web servisa
+     * Ispis rezultata u Toast
+     * @param data Odgovor web servisa
+     */
     @Override
     public void buildData(Object data) {
         Response response = (Response) data;
@@ -191,6 +197,10 @@ public class TaskEdit extends Fragment implements DataInterface {
         }
     }
 
+    /**
+     * Odabir datuma
+     * Format zapisa
+     */
     private void showDatePickerDialog(final String field) {
         Calendar calendar = Calendar.getInstance();
 
@@ -226,6 +236,10 @@ public class TaskEdit extends Fragment implements DataInterface {
         datePickerDialog.show();
     }
 
+    /**
+     * Odabir vremena
+     * Format zapisa
+     */
     private void showTimePickerDialog(final String field) {
         Calendar calendar = Calendar.getInstance();
 

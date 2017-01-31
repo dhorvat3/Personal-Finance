@@ -19,6 +19,9 @@ import pojo.User;
  * Created by Valentina on 28.12.2016..
  */
 
+/**
+ * Klasa RegisterActivity za realizaciju registracije na sustav
+ */
 public class RegisterActivity extends AppCompatActivity implements DataInterface {
     private EditText name;
     private EditText surname;
@@ -29,6 +32,10 @@ public class RegisterActivity extends AppCompatActivity implements DataInterface
     private User user;
     private DataBuilder dataBuilder = new DataBuilder(this);
 
+    /**
+     * Dohvacanje potrebnih elemenata i postavljanje upravljaca dogadjaja
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,6 +73,9 @@ public class RegisterActivity extends AppCompatActivity implements DataInterface
         }
     }
 
+    /**
+     * Upravljac dogadjaja za gumb register
+     */
     private void setListeners(){
         register.setOnClickListener(new View.OnClickListener() {
             @Override

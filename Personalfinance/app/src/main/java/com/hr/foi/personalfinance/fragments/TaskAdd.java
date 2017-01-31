@@ -38,25 +38,69 @@ import pojo.Response;
 import pojo.Task;
 
 /**
- * A simple {@link Fragment} subclass.
+ * Klasa TaskAdd za dodavanje nove korisnicke obveze
  */
 public class TaskAdd extends Fragment implements DataInterface {
 
+    /**
+     * Korisnicke opcije
+     */
     private SharedPreferences prefs;
+
+    /**
+     * Odabir datuma
+     */
     private DatePickerDialog datePickerDialog;
+
+    /**
+     * Odabir vremena
+     */
     private TimePickerDialog timePickerDialog;
+
+    /**
+     * Format datuma
+     */
     private SimpleDateFormat displayDateFormat;
+
+    /**
+     * Format vremena
+     */
     private SimpleDateFormat displayTimeFormat;
+
+    /**
+     * Format datuma
+     */
     private SimpleDateFormat dateFormat;
+
+    /**
+     * Format datuma
+     */
     private SimpleDateFormat noticeFormat;
+
+    /**
+     * Format datuma
+     */
     private SimpleDateFormat outputFormat;
+
     private EditText newTaskDate;
     private EditText newTaskNotice;
+
+    /**
+     * Kalendar za odabir datuma
+     */
     private Calendar notificationCalendar = Calendar.getInstance();
     private String notificationTitle;
     private String notificationMessage;
     private String notificationDate;
+
+    /**
+     * Za rad s bazom podataka
+     */
     private DataBuilder dataBuilder = new DataBuilder(this);
+
+    /**
+     * Nova obaveza
+     */
     private Task task = new Task();
 
     public TaskAdd() {
@@ -64,7 +108,7 @@ public class TaskAdd extends Fragment implements DataInterface {
     }
 
     /**
-     * Used for setting values while creating view.
+     * Formatiranje datuma i vremena
      *
      * @param inflater
      * @param container
@@ -88,7 +132,8 @@ public class TaskAdd extends Fragment implements DataInterface {
     }
 
     /**
-     * Used for setting values after view is created.
+     * Upravljaci dogadjaja za odabir datuma
+     * Dodavanje nove obaveze
      *
      * @param view
      * @param savedInstanceState
@@ -173,6 +218,11 @@ public class TaskAdd extends Fragment implements DataInterface {
         super.onViewCreated(view, savedInstanceState);
     }
 
+    /**
+     * Obrada odogovora web servisa
+     * Ispis rezultata obrade u Toast
+     * @param data Odgovor web servisa
+     */
     @Override
     public void buildData(Object data) {
         Response response = (Response) data;
@@ -204,6 +254,10 @@ public class TaskAdd extends Fragment implements DataInterface {
         }
     }
 
+    /**
+     * Odabir datuma
+     * Format zapisa
+     */
     private void showDatePickerDialog(final String field) {
         Calendar calendar = Calendar.getInstance();
 
@@ -239,6 +293,10 @@ public class TaskAdd extends Fragment implements DataInterface {
         datePickerDialog.show();
     }
 
+    /**
+     * Odabir vremena
+     * Format zapisa
+     */
     private void showTimePickerDialog(final String field) {
         Calendar calendar = Calendar.getInstance();
 

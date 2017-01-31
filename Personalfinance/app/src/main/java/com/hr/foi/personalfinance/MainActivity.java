@@ -16,10 +16,20 @@ import com.hr.foi.personalfinance.fragments.Statistics;
 import com.hr.foi.personalfinance.fragments.Tasks;
 import com.hr.foi.userinterface.MainMenu;
 
+/**
+ * Klasa MainActivity za realizaciju glavne aktivnosti
+ * */
 public class MainActivity extends Activity {
 
+    /**
+     * Meni (userInterface modul)
+     */
     private MainMenu menu = new MainMenu();
 
+    /**
+     * Postavljanje fragmenata u meni
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         ActionBar bar = getActionBar();
@@ -54,6 +64,9 @@ public class MainActivity extends Activity {
         }
     }
 
+    /**
+     * Povratak u pocetni fragment u navigaciji
+     */
     @Override
     public void onBackPressed(){
         if (getFragmentManager().getBackStackEntryCount() > 0) {

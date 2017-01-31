@@ -23,12 +23,23 @@ import pojo.Response;
 import pojo.User;
 
 /**
- * A simple {@link Fragment} subclass.
+ * Klasa ProfileEdit za azuriranje podataka o korisniku
  */
 public class ProfileEdit extends Fragment implements DataInterface {
 
+    /**
+     * Korisnicke opcije
+     */
     private SharedPreferences prefs;
+
+    /**
+     * Za rad s bazom podataka
+     */
     private DataBuilder dataBuilder = new DataBuilder(this);
+
+    /**
+     * Novi korisnik
+     */
     private User user = new User();
 
     public ProfileEdit() {
@@ -36,7 +47,7 @@ public class ProfileEdit extends Fragment implements DataInterface {
     }
 
     /**
-     * Used for setting values while creating view.
+     * Dohvacanje GUI elemenata
      *
      * @param inflater
      * @param container
@@ -62,7 +73,7 @@ public class ProfileEdit extends Fragment implements DataInterface {
     }
 
     /**
-     * Used for setting values after view is created.
+     * Postavljanje slusaca dogadjaja
      *
      * @param view
      * @param savedInstanceState
@@ -120,6 +131,11 @@ public class ProfileEdit extends Fragment implements DataInterface {
         super.onViewCreated(view, savedInstanceState);
     }
 
+    /**
+     * Obrada odogovora web servisa
+     * Ispis rezultata obrade u Toast
+     * @param data Odgovor web servisa
+     */
     @Override
     public void buildData(Object data) {
         Response response = (Response) data;

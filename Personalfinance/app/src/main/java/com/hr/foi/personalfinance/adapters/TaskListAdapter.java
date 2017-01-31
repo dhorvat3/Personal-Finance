@@ -20,6 +20,9 @@ import pojo.Task;
  * Created by Blaža on 28.1.2017..
  */
 
+/**
+ * Klasa TaskListAdapter za rad s korisnickim obvezama
+ */
 public class TaskListAdapter extends BaseAdapter {
 
     private Context context;
@@ -47,6 +50,13 @@ public class TaskListAdapter extends BaseAdapter {
         return Long.parseLong(tasks.get(position).getId());
     }
 
+    /**
+     * Dohvacanje GUI elemenata i popunjavanje liste obaveza
+     * @param position Indeks obaveze
+     * @param convertView
+     * @param parent
+     * @return
+     */
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View view = inflater.inflate(R.layout.task_item_layout, parent, false);

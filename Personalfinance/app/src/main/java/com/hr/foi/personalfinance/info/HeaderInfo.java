@@ -6,6 +6,9 @@ import java.util.ArrayList;
  * Created by Filip on 4.1.2017..
  */
 
+/**
+ * Za Expandable List View kod izlistavanja kategorija
+ */
 public class HeaderInfo {
     private String name;
     private ArrayList<DetailInfo> categoryList = new ArrayList<DetailInfo>();;

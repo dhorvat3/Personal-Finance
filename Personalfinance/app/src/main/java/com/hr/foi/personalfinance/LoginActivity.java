@@ -21,6 +21,9 @@ import core.DataInterface;
  * Created by dagy on 06.11.16..
  */
 
+/**
+ * Klasa LoginActivity za realizaciju prijave u sustav
+ */
 public class LoginActivity extends AppCompatActivity implements DataInterface{
     private Button loginButton, registerButton;
     private EditText korime, lozinka;
@@ -45,6 +48,9 @@ public class LoginActivity extends AppCompatActivity implements DataInterface{
         setListeners();
     }
 
+    /**
+     * Upravljaci dogadjaja za loginButton i registerButton gumbe
+     */
     private void setListeners(){
         loginButton.setOnClickListener(new View.OnClickListener() {
 
@@ -70,11 +76,16 @@ public class LoginActivity extends AppCompatActivity implements DataInterface{
         });
     }
 
+    /**
+     * Postavlja user_id atribut u SharedPreferences
+     * Sprema user_id u Log
+     * Pokrece novu aktivnost ovisno o uspjesnosti prijave
+     * @param data Odgovor web servisa
+     */
     @Override
     public void buildData(Object data) {
         pojo.User user = (pojo.User) data;
         if (user != null){
-            //put user id in shared preferences
             // SharedPreferences prefs = this.getPreferences(MODE_PRIVATE);
             //SharedPreferences prefs = this.getSharedPreferences("login", 0);
             //SharedPreferences.Editor editor = prefs.edit();
@@ -86,11 +97,9 @@ public class LoginActivity extends AppCompatActivity implements DataInterface{
             editor.putString("password", user.getPassword());
             editor.commit();
 
-            //Print to log user id from preferences
             String id = prefs.getString("id", "Ne radi!");
             Log.w("user-id-prefs" ,id);
 
-            //start new activity
             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
             startActivity(intent);
             Toast.makeText(getApplicationContext(), "Uspješna prijava.", Toast.LENGTH_SHORT).show();

@@ -37,24 +37,73 @@ import pojo.Response;
  * Created by Filip on 23.12.2016..
  */
 
+/**
+ * Klasa za rad s kategorijama. Sadrzi metode za kreiranje novih te azuriranje, brisanje, dohvacanje
+ * i prikaz postojecih kategorija.
+ */
 public class Category extends BaseFragment implements FragmentInterface, DataInterface{
+
+    /**
+     * ExpandableListView za prikaz kategorija
+     */
     private ExpandableListView listView;
+
+    /**
+     * Naziv kategorije
+     */
     private EditText name;
+
+    /**
+     * Opis kategorije
+     */
     private EditText description;
+
+    /**
+     * Za rad s bazom podataka
+     */
     private DataBuilder dataBuilder = new DataBuilder(this);
+
+    /**
+     * Jedna instanca kategorije za tip liste
+     */
     private pojo.Category category;
     private LinkedHashMap<String, HeaderInfo> myCategories = new LinkedHashMap<String, HeaderInfo>();
     private ArrayList<HeaderInfo> deptList = new ArrayList<HeaderInfo>();
     private MyListAdapter listAdapter;
+
+    /**
+     * Korisnicke opcije. Za dohvacanje user_id atributa
+     */
     private SharedPreferences preferences;
+
+    /**
+     * Redni broj u listi
+     */
     private int seqInt;
+
+    /**
+     * Za dodavanje nove kategorije
+     */
     private Dialog dialog;
+
+    /**
+     * Lista kategorija tipa Category
+     */
     private  ArrayList<pojo.Category> categories;
+
+    /**
+     * Brojac
+     */
     private int sequence = 0;
+
     int mCurrentScrollState;
     int mCurrentVisibleItemCount;
 
-
+    /**
+     * Konstruktor
+     * @param name Naziv
+     * @return Kategorija
+     */
     public static final Category newInstance(String name){
         Category f = new Category();
         f.setName(name);
@@ -65,6 +114,13 @@ public class Category extends BaseFragment implements FragmentInterface, DataInt
     @Override
     public BaseFragment getFragment() {   return this;    }
 
+    /**
+     * Upravljac dogadjaja za dodavanje nove kategorije
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return
+     */
     public View onCreateView (LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         View view = inflater.inflate(R.layout.category_layout, container, false);
 
@@ -127,6 +183,11 @@ public class Category extends BaseFragment implements FragmentInterface, DataInt
         return view;
     }
 
+    /**
+     * Dohvacanje liste kategorija iz baze podataka za aktivnog korisnika
+     * @param view
+     * @param savedInstanceState
+     */
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState){
         super.onViewCreated(view, savedInstanceState);
 
@@ -135,6 +196,10 @@ public class Category extends BaseFragment implements FragmentInterface, DataInt
         dataBuilder.getCategories(userId);
     }
 
+    /**
+     * Priprema i obrada podataka iz odgovora web servisa
+     * @param data Odgovor web servisa
+     */
     @Override
     public void buildData(Object data) {
         if(data instanceof Categories) {
@@ -200,6 +265,10 @@ public class Category extends BaseFragment implements FragmentInterface, DataInt
         }
     }
 
+    /**
+     * Upravljaci dogadjaja za brisanje i azuriranje kategorija
+     * Prikaz detalja o kategoriji
+     */
     private ExpandableListView.OnChildClickListener myListItemClicked = new ExpandableListView.OnChildClickListener() {
         @Override
         public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
@@ -306,6 +375,12 @@ public class Category extends BaseFragment implements FragmentInterface, DataInt
         }
     };
 
+    /**
+     * Dodavanje nove kategorije
+     * @param name Naziv kategorije
+     * @param description Opis kategorije
+     * @return Indeks kategorije
+     */
     private int addCategory(String name, String description){
         int groupPosition = 0;
 
@@ -330,6 +405,9 @@ public class Category extends BaseFragment implements FragmentInterface, DataInt
         return groupPosition;
     }
 
+    /**
+     * Dohvacanje user_id atributa iz SharedPreferences
+     */
     private String userID(){
         preferences = getActivity().getSharedPreferences("login", 0);
         String status = preferences.getString("id", "");

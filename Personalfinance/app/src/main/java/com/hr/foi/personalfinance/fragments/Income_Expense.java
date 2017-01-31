@@ -45,28 +45,116 @@ import pojo.Category;
  * Created by Filip on 22.12.2016..
  */
 
+/**
+ * Klasa Income_Expense za rad s popisom korisnickih zapisa iz DB
+ */
 public class Income_Expense extends BaseFragment implements FragmentInterface, DataInterface {
+
+    /**
+     * Jedan zapis tipa Record
+     */
     private Record record;
+
+    /**
+     * Za rad s bazom podataka
+     */
     private DataBuilder dataBuilder = new DataBuilder(this);
+
+    /**
+     * Korisnicke opcije
+     */
     private SharedPreferences preferences;
+
+    /**
+     * Za prikaz liste zapisa s detaljima
+     */
     private ExpandableListView listView;
+
+    /**
+     * Zapisi specificnog korisnika
+     */
     private LinkedHashMap<String, HeaderInfo> myRecords = new LinkedHashMap<String, HeaderInfo>();
+
+    /**
+     * Za prikaz na ExpandableListView
+     */
     private ArrayList<HeaderInfo> deptList = new ArrayList<HeaderInfo>();
+
+    /**
+     * Za prikaz na ExpandableListView
+     */
     private MyListAdapter listAdapter;
+
+    /**
+     * GUI elementi
+     */
     private EditText napomena, datum, iznos;
+
+    /**
+     * GUI elementi za odabir tipa
+     */
     private RadioButton prihod, rashod;
+
+    /**
+     * Lista zapisa tipa Record
+     */
     private ArrayList<Record> records;
+
+    /**
+     * Lista zapisa u odgovoru web servisa
+     */
     private ArrayList<Category> catList;
+
+    /**
+     * Za azuriranje i brisanje zapisa
+     */
     private Dialog dialog;
+
+    /**
+     * Za odabir kategorije
+     */
     private Spinner spinner;
+
+    /**
+     * Indeks za dohvacanje kategorije iz liste
+     */
     private int seqInt;
+
+    /**
+     * Instanca kategorije
+     */
     private Category myItem = null;
+
+    /**
+     * Priprema podataka za MyListAdapter
+     */
     private ArrayAdapter<Category> adapter;
+
+    /**
+     * Odabir datuma
+     */
     private DatePickerDialog datePickerDialog;
+
+    /**
+     * Razlicito formatiranje datuma za DB i aplikaciju
+     */
     private SimpleDateFormat userFormat, databaseFormat;
+
+    /**
+     * Pomocna varijabla
+     */
     private String dateAndTime;
+
+    /**
+     * Brojac
+     */
     private int sequence = 0;
+
+    /**
+     * Formiranje datuma
+     */
     private String godina, mjesec, dan, dat;
+
     int mCurrentScrollState;
     int mCurrentVisibleItemCount;
 
@@ -83,6 +171,13 @@ public class Income_Expense extends BaseFragment implements FragmentInterface, D
         return this;
     }
 
+    /**
+     * Dohvacanje GUI elemnata i postavljanje upravljaca dogadjaja na gumbe
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return
+     */
     public View onCreateView (LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         View view = inflater.inflate(R.layout.income_expense_layout, container, false);
 
@@ -193,6 +288,11 @@ public class Income_Expense extends BaseFragment implements FragmentInterface, D
         return view;
     }
 
+    /**
+     * Dohvacanje korisnickih zapisa i kategorija iz baze podataka
+     * @param view
+     * @param savedInstanceState
+     */
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState){
         super.onViewCreated(view, savedInstanceState);
 
@@ -203,7 +303,12 @@ public class Income_Expense extends BaseFragment implements FragmentInterface, D
     }
 
 
-
+    /**
+     * Obrada odogovora web servisa
+     * Dohvacanje kategorij za spinner
+     * Dohvacanje zapisa za listView
+     * @param data Odgovor web servisa
+     */
     @Override
     public void buildData(Object data) {
 
@@ -314,6 +419,11 @@ public class Income_Expense extends BaseFragment implements FragmentInterface, D
         }
     }
 
+    /**
+     * Upravljac dogadjaja za ExpandableListView
+     * Azuriranje zapisa i spremanje u DB
+     * Brisanje zapisa iz DB
+     */
     private ExpandableListView.OnChildClickListener myListItemClicked =  new ExpandableListView.OnChildClickListener() {
 
         public boolean onChildClick(ExpandableListView parent, View v, final int groupPosition, final int childPosition, final long id) {
@@ -485,7 +595,12 @@ public class Income_Expense extends BaseFragment implements FragmentInterface, D
         }
     };
 
-
+    /**
+     * Dodavanje novog zapisa u listu
+     * @param name Naziv
+     * @param description Opis
+     * @return Indeks grupe
+     */
     private int addRecord(String name, String description){
         int groupPosition = 0;
 
@@ -511,6 +626,10 @@ public class Income_Expense extends BaseFragment implements FragmentInterface, D
         return groupPosition;
     }
 
+    /**
+     * Odabir datuma
+     * Format zapisa
+     */
     private void datePickerSetter(){
         Calendar calendar = Calendar.getInstance();
         userFormat = new SimpleDateFormat("dd.MM.yyyy");
@@ -528,6 +647,10 @@ public class Income_Expense extends BaseFragment implements FragmentInterface, D
         }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
     }
 
+    /**
+     * Korisnicki user_id atribut iz SharedPreferences
+     * @return user_id
+     */
     private String userID(){
         preferences = getActivity().getSharedPreferences("login", 0);
         String status = preferences.getString("id", "");

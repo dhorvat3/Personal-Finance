@@ -45,31 +45,131 @@ import pojo.Category;
  * Created by Filip on 22.12.2016..
  */
 
+/**
+ * Klasa Daybook za realizaciju Dnevnika
+ */
 public class Daybook extends BaseFragment implements FragmentInterface, DataInterface {
+
+    /**
+     * Jedan zapis iz baze podataka
+     */
     private Record record;
+
+    /**
+     * Za rad s bazom podataka
+     */
     private DataBuilder dataBuilder = new DataBuilder(this);
+
+    /**
+     * Korisnicke opcije
+     */
     private SharedPreferences preferences;
+
+    /**
+     * Za prikaz liste dnevnika
+     */
     private ExpandableListView listView;
+
+    /**
+     * Zapisi pojedinog korisnika
+     */
     private LinkedHashMap<String, HeaderInfo> myRecords = new LinkedHashMap<String, HeaderInfo>();
+
+    /**
+     * Za prikaz na ExpandableListView
+     */
     private ArrayList<HeaderInfo> deptList = new ArrayList<HeaderInfo>();
+
+    /**
+     * Za rad s ExpandableListView
+     */
     private MyListAdapter listAdapter;
+
+    /**
+     * GUI elementi
+     */
     private EditText napomena, datum, iznos;
+
+    /**
+     * GUI elementi
+     */
     private RadioButton prihod, rashod;
+
+    /**
+     * Zapisi za ExpandableListView
+     */
     private ArrayList<Record> records;
+
+    /**
+     * Lista kategorija za korisnika
+     */
     private ArrayList<Category> catList;
+
+    /**
+     * Za azuriranje i brisanje zapisa
+     */
     private Dialog dialog;
+
+    /**
+     * Za odabir kategorije
+     */
     private Spinner spinner;
+
+    /**
+     * Indeks za dohvacanje kategorije iz liste
+     */
     private int seqInt;
+
+    /**
+     * Instanca kategorije
+     */
     private pojo.Category myItem = null;
+
+    /**
+     * Priprema podataka za MyListAdapter
+     */
     private ArrayAdapter<Category> adapter;
+
+    /**
+     * Odabir datuma
+     */
     private DatePickerDialog datePickerDialog;
+
+    /**
+     * Razlicito formatiranje datuma za DB i aplikaciju
+     */
     private SimpleDateFormat userFormat, databaseFormat;
+
+    /**
+     * Pomocna varijabla
+     */
     private String dateAndTime;
+
+    /**
+     * Brojac
+     */
     private int sequence = 0;
+
+    /**
+     * Formiranje datuma
+     */
     private String godina, mjesec, dan, dat;
+
+    /**
+     * Pretrazivanje zapisa po datumu
+     */
     private android.widget.SearchView search;
+
+    /**
+     * Pretrazivanje samo po datumu
+     */
     private boolean dateOrCategorySpinnerSelection = false;
+
+    /**
+     * Nazivi kategorija
+     */
     private LinkedHashMap<String, String> catIdName = new LinkedHashMap<String, String>();
+
     int mCurrentScrollState;
     int mCurrentVisibleItemCount;
 
@@ -84,6 +184,13 @@ public class Daybook extends BaseFragment implements FragmentInterface, DataInte
         return this;
     }
 
+    /**
+     * Dohvacanje GUI elemenata i postavljanje slusaca dogadjaja za pretrazivanje na spinneru
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return
+     */
     public View onCreateView (LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         View view = inflater.inflate(R.layout.daybook_layout, container, false);
 
@@ -155,6 +262,11 @@ public class Daybook extends BaseFragment implements FragmentInterface, DataInte
         return view;
     }
 
+    /**
+     * Dohvacanje korisnickih zapisa i kategorija iz baze podataka
+     * @param view
+     * @param savedInstanceState
+     */
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState){
         super.onViewCreated(view, savedInstanceState);
 
@@ -163,7 +275,12 @@ public class Daybook extends BaseFragment implements FragmentInterface, DataInte
     }
 
 
-
+    /**
+     * Obrada odogovora web servisa
+     * Dohvacanje kategorije za spinner
+     * Dohvacanje zapisa za listView
+     * @param data Odgovor web servisa
+     */
     @Override
     public void buildData(Object data) {
 
@@ -280,6 +397,11 @@ public class Daybook extends BaseFragment implements FragmentInterface, DataInte
         }
     }
 
+    /**
+     * Upravljac dogadjaja za ExpandableListView
+     * Azuriranje zapisa i spremanje u DB
+     * Brisanje zapisa iz DB
+     */
     private ExpandableListView.OnChildClickListener myListItemClicked =  new ExpandableListView.OnChildClickListener() {
 
         public boolean onChildClick(ExpandableListView parent, View v, final int groupPosition, final int childPosition, final long id) {
@@ -439,7 +561,12 @@ public class Daybook extends BaseFragment implements FragmentInterface, DataInte
         }
     };
 
-
+    /**
+     * Dodavanje novog zapisa u listu
+     * @param name Naziv
+     * @param description Opis
+     * @return Indeks grupe
+     */
     private int addRecord(String name, String description){
         int groupPosition = 0;
 
@@ -465,6 +592,10 @@ public class Daybook extends BaseFragment implements FragmentInterface, DataInte
         return groupPosition;
     }
 
+    /**
+     * Odabir datuma
+     * Format zapisa
+     */
     private void datePickerSetter(){
         Calendar calendar = Calendar.getInstance();
         userFormat = new SimpleDateFormat("dd.MM.yyyy");
@@ -482,6 +613,10 @@ public class Daybook extends BaseFragment implements FragmentInterface, DataInte
         }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
     }
 
+    /**
+     * Korisnicki user_id atribut iz SharedPreferences
+     * @return user_id
+     */
     private String userID(){
         preferences = getActivity().getSharedPreferences("login", 0);
         String status = preferences.getString("id", "");

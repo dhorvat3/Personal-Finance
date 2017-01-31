@@ -18,11 +18,31 @@ import java.util.ArrayList;
  * Created by Filip on 4.1.2017..
  */
 
+/**
+ * Klasa MyListAdapter za rad s ExpandableList
+ */
 public class MyListAdapter extends BaseExpandableListAdapter{
+
+    /**
+     * Sustavske informacije
+     */
     private Context context;
+
+    /**
+     * Za listu u ExpandableList
+     */
     private ArrayList<HeaderInfo> deptList;
+
+    /**
+     * Za listu u ExpandableList
+     */
     private ArrayList<HeaderInfo> originalList;
 
+    /**
+     * Konstruktor
+     * @param context Android context
+     * @param deptList Podaci o elementu
+     */
     public MyListAdapter(Context context, ArrayList<HeaderInfo> deptList) {
         this.context = context;
         this.deptList = new ArrayList<HeaderInfo>();
@@ -31,22 +51,42 @@ public class MyListAdapter extends BaseExpandableListAdapter{
         this.originalList.addAll(deptList);
     }
 
+    /**
+     * Vraca broj elemenata za prikazati u ExpandableList
+     * @return Broj elemenata
+     */
     @Override
     public int getGroupCount() {
         return deptList.size();
     }
 
+    /**
+     * Vraca broj kategorija
+     * @param groupPosition Indeks elementa u listi
+     * @return Broj kategorija
+     */
     @Override
     public int getChildrenCount(int groupPosition) {
         ArrayList<DetailInfo> categoryList = deptList.get(groupPosition).getCategoryList();
         return categoryList.size();
     }
 
+    /**
+     * Vraca element liste
+     * @param groupPosition Indeks elementa
+     * @return Grupa
+     */
     @Override
     public Object getGroup(int groupPosition) {
         return deptList.get(groupPosition);
     }
 
+    /**
+     * Dohvaca dijete za ExpandableList
+     * @param groupPosition Indeks grupe
+     * @param childPosition Indeks djeteta grupe
+     * @return Dijete
+     */
     @Override
     public Object getChild(int groupPosition, int childPosition) {
         ArrayList<DetailInfo> categoryList = deptList.get(groupPosition).getCategoryList();
@@ -68,6 +108,14 @@ public class MyListAdapter extends BaseExpandableListAdapter{
         return true;
     }
 
+    /**
+     * Dohvaca grupu
+     * @param groupPosition Indeks grupe
+     * @param isExpanded Je li grupa prosirena
+     * @param view Glavni pogled
+     * @param parent Roditelj djeteta
+     * @return Pogled grupe
+     */
     @Override
     public View getGroupView(int groupPosition, boolean isExpanded, View view, ViewGroup parent) {
         HeaderInfo headerInfo = (HeaderInfo) getGroup(groupPosition);
@@ -82,6 +130,15 @@ public class MyListAdapter extends BaseExpandableListAdapter{
         return view;
     }
 
+    /**
+     * Dohvaca dijete
+     * @param groupPosition Indeks grupe
+     * @param childPosition Indeks djeteta
+     * @param isLastChild Je li zadnji u listi
+     * @param view Glavni pogled
+     * @param parent Roditelj djeteta
+     * @return Pogled djeteta
+     */
     @Override
     public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View view, ViewGroup parent) {
 
@@ -104,6 +161,11 @@ public class MyListAdapter extends BaseExpandableListAdapter{
     public boolean isChildSelectable(int groupPosition, int childPosition) {
         return true;
     }
+
+    /**
+     * Filtriranje podataka prema uvjetu
+     * @param query Uvjet
+     */
     public void filterData(String query){
         deptList.clear();
         if (query.isEmpty()){
