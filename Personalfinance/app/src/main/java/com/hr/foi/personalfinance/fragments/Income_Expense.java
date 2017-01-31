@@ -369,10 +369,10 @@ public class Income_Expense extends BaseFragment implements FragmentInterface, D
                     mjesec = records.get(i).getDatum().substring(5, 7);
                     dan = records.get(i).getDatum().substring(8, 10);
                     dat = dan+"."+mjesec+"."+godina+".";
-                    if (records.get(i).getVrsta().equals("0")){
+                    if (records.get(i).getVrsta().equals("1")){
                         setRecordType = records.get(i).getIznos()+" kn";
                     }
-                    else if (records.get(i).getVrsta().equals("1")){
+                    else if (records.get(i).getVrsta().equals("0")){
                         setRecordType ="-"+ records.get(i).getIznos()+" kn";
                     }
                     addRecord(dat, setRecordType);

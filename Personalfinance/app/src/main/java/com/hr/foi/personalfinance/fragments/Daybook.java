@@ -334,6 +334,7 @@ public class Daybook extends BaseFragment implements FragmentInterface, DataInte
                 for (Record item : record.getRecord()) {
                     records.add(item);
                 }
+                String setRecordType = new String();
                 if (!dateOrCategorySpinnerSelection)   {
                     for (int i = 0; i < records.size(); i++) {
                         sequence = i;
@@ -341,7 +342,13 @@ public class Daybook extends BaseFragment implements FragmentInterface, DataInte
                         mjesec = records.get(i).getDatum().substring(5, 7);
                         dan = records.get(i).getDatum().substring(8, 10);
                         dat = dan+"."+mjesec+"."+godina+".";
-                        addRecord(dat, records.get(i).getIznos()+" kn");
+                        if (records.get(i).getVrsta().equals("1")){
+                            setRecordType = records.get(i).getIznos()+" kn";
+                        }
+                        else if (records.get(i).getVrsta().equals("0")){
+                            setRecordType ="-"+ records.get(i).getIznos()+" kn";
+                        }
+                        addRecord(dat, setRecordType);
                     }
                 }
                 else {
@@ -354,7 +361,13 @@ public class Daybook extends BaseFragment implements FragmentInterface, DataInte
                         else {
                             catName = catIdName.get(records.get(i).getCatgoryId());
                         }
-                        addRecord(catName, records.get(i).getIznos()+" kn");
+                        if (records.get(i).getVrsta().equals("1")){
+                            setRecordType = records.get(i).getIznos()+" kn";
+                        }
+                        else if (records.get(i).getVrsta().equals("0")){
+                            setRecordType ="-"+ records.get(i).getIznos()+" kn";
+                        }
+                        addRecord(catName, setRecordType);
                     }
                 }
                 listAdapter = new MyListAdapter(getActivity(), deptList);
