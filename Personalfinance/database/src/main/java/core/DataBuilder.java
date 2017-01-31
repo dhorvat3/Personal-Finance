@@ -75,6 +75,18 @@ public class DataBuilder {
     }
 
     /**
+     * Metoda za osvježavanje lokalne baze
+     * @param id
+     */
+    public void refrashDatabase(String id){
+        dataProvider.setUserId(id);
+        pojo.Response response = new pojo.Response();
+        response.setId("1");
+        data = response;
+        dataProvider.refrashDatabase(dataBuilder);
+    }
+
+    /**
      * Metoda za prijavu na sustav
      * @param user Korisnicko ime
      * @param pass Korisnicka lozinka

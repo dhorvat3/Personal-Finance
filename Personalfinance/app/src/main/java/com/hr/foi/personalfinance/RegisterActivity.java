@@ -60,6 +60,7 @@ public class RegisterActivity extends AppCompatActivity implements DataInterface
             Log.w("user-response", response.getId());
             SharedPreferences prefs = this.getSharedPreferences("login", 0);
             SharedPreferences.Editor editor = prefs.edit();
+            dataBuilder.refrashDatabase(user.getId());
             editor.putString("id", user.getId());
             editor.putString("username", user.getUsername());
             editor.putString("name", user.getName());

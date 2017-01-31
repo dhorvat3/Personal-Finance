@@ -190,6 +190,11 @@ public class DataProvider {
      * @param record Zapis
      */
     public void newRecord(Record record){
+        if(record.getVrsta() == "true"){
+            record.setVrsta("1");
+        } else {
+            record.setVrsta("0");
+        }
         record.save();
     }
 

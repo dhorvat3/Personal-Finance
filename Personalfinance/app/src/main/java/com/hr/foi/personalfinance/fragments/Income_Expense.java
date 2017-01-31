@@ -263,7 +263,7 @@ public class Income_Expense extends BaseFragment implements FragmentInterface, D
                             }
                             record.setDatum(dateAndTime + " 00:00:00");
                             //record.setDatum("2001-12-01 00:00:00");
-                            System.out.println(record.getCatgoryId());
+                            //System.out.println(record.getCatgoryId());
                             record.setIznos(iznos.getText().toString());
 
                             dataBuilder.newRecord(record);

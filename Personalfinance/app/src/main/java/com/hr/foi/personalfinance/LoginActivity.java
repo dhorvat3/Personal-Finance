@@ -16,6 +16,8 @@ import com.raizlabs.android.dbflow.config.FlowManager;
 
 import core.DataBuilder;
 import core.DataInterface;
+import pojo.Response;
+import pojo.User;
 
 /**
  * Created by dagy on 06.11.16..
@@ -64,8 +66,9 @@ public class LoginActivity extends AppCompatActivity implements DataInterface{
         });
         String id = prefs.getString("id", "");
         if(!id.equals("")){
-            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-            startActivity(intent);
+
+            dataBulder.refrashDatabase(id);
+
         }
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -84,28 +87,33 @@ public class LoginActivity extends AppCompatActivity implements DataInterface{
      */
     @Override
     public void buildData(Object data) {
-        pojo.User user = (pojo.User) data;
-        if (user != null){
-            // SharedPreferences prefs = this.getPreferences(MODE_PRIVATE);
-            //SharedPreferences prefs = this.getSharedPreferences("login", 0);
-            //SharedPreferences.Editor editor = prefs.edit();
-            editor.putString("id", user.getId());
-            editor.putString("username", user.getUsername());
-            editor.putString("name", user.getName());
-            editor.putString("surname", user.getSurname());
-            editor.putString("email", user.getEmail());
-            editor.putString("password", user.getPassword());
-            editor.commit();
+        if(data instanceof User) {
+            pojo.User user = (pojo.User) data;
+            if (user != null) {
+                // SharedPreferences prefs = this.getPreferences(MODE_PRIVATE);
+                //SharedPreferences prefs = this.getSharedPreferences("login", 0);
+                //SharedPreferences.Editor editor = prefs.edit();
+                editor.putString("id", user.getId());
+                editor.putString("username", user.getUsername());
+                editor.putString("name", user.getName());
+                editor.putString("surname", user.getSurname());
+                editor.putString("email", user.getEmail());
+                editor.putString("password", user.getPassword());
+                editor.commit();
 
-            String id = prefs.getString("id", "Ne radi!");
-            Log.w("user-id-prefs" ,id);
+                String id = prefs.getString("id", "Ne radi!");
+                Log.w("user-id-prefs", id);
 
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                startActivity(intent);
+                Toast.makeText(getApplicationContext(), "Uspješna prijava.", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(getApplicationContext(), "Neuspješna prijava.", Toast.LENGTH_SHORT).show();
+            }
+        } else {
+            Response response = (Response) data;
             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
             startActivity(intent);
-            Toast.makeText(getApplicationContext(), "Uspješna prijava.", Toast.LENGTH_SHORT).show();
-        }
-        else {
-            Toast.makeText(getApplicationContext(), "Neuspješna prijava.", Toast.LENGTH_SHORT).show();
         }
     }
 }
