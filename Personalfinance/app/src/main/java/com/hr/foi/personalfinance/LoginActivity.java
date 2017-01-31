@@ -2,7 +2,11 @@ package com.hr.foi.personalfinance;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.nfc.NdefMessage;
+import android.nfc.NdefRecord;
+import android.nfc.NfcAdapter;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -115,5 +119,29 @@ public class LoginActivity extends AppCompatActivity implements DataInterface{
             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
             startActivity(intent);
         }
+    }
+
+    @Override
+    protected void onResume(){
+        super.onResume();
+        Intent intent = getIntent();
+
+        String action = intent.getAction();
+
+        if(action.equals(NfcAdapter.ACTION_NDEF_DISCOVERED)){
+            Parcelable[] parceables = intent.getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES);
+            NdefMessage inNdefMessage = (NdefMessage) parceables[0];
+            NdefRecord[] inNdefRecords = inNdefMessage.getRecords();
+            NdefRecord record = inNdefRecords[0];
+            String inMsg = new String(record.getPayload());
+
+            Toast.makeText(this, inMsg, Toast.LENGTH_LONG);
+            Log.w("NFC Message: ", inMsg);
+        }
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent){
+        setIntent(intent);
     }
 }

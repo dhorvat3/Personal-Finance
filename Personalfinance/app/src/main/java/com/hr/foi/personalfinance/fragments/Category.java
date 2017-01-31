@@ -250,11 +250,12 @@ public class Category extends BaseFragment implements FragmentInterface, DataInt
         }
         if(data instanceof Response) {
             Response response = (Response) data;
+            if(Integer.parseInt(response.getId()) > 0){
+                dataBuilder.getCategories(userID());
+                Toast.makeText(getActivity(), "Uspješno", Toast.LENGTH_SHORT).show();
+            }
+
             switch (response.getId()){
-                case "1":
-                    dataBuilder.getCategories(userID());
-                    Toast.makeText(getActivity(), "Uspješno", Toast.LENGTH_SHORT).show();
-                    break;
                 case "-1":
                     Toast.makeText(getActivity(), "Pogreška", Toast.LENGTH_SHORT).show();
                     break;

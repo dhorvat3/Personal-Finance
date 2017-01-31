@@ -13,6 +13,7 @@ import com.hr.foi.personalfinance.fragments.Daybook;
 import com.hr.foi.personalfinance.fragments.Income_Expense;
 import com.hr.foi.personalfinance.fragments.Profile;
 import com.hr.foi.personalfinance.fragments.Statistics;
+import com.hr.foi.personalfinance.fragments.SyncDevices;
 import com.hr.foi.personalfinance.fragments.Tasks;
 import com.hr.foi.userinterface.MainMenu;
 
@@ -41,7 +42,8 @@ public class MainActivity extends Activity {
                 Tasks.newInstance("Lista obveza"),
                 Statistics.newInstance("Statistika"),
                 Daybook.newInstance("Dnevnik"),
-                Profile.newInstance("Moj profil"));
+                Profile.newInstance("Moj profil"),
+                SyncDevices.newInstance("Upari uređaj"));
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
