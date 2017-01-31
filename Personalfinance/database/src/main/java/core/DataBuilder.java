@@ -256,7 +256,7 @@ public class DataBuilder {
             public void onResponse(Response<pojo.Response> response, Retrofit retrofit) {
                 pojo.Response resp = response.body();
                 if(resp.getId().equals("1")){
-                    dataProvider.deleteCategory(id);
+                    dataProvider.deleteTask(id);
                 }
 
                 call.buildData(response.body());
