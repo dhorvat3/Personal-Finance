@@ -24,7 +24,7 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         tools:ignore="HardcodedText,RtlHardcoded"
-        style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog" />
+        style="@style/Widget.AppCompat.Button.Colored" />
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"

@@ -203,11 +203,16 @@ public class Category extends BaseFragment implements FragmentInterface, DataInt
     private ExpandableListView.OnChildClickListener myListItemClicked = new ExpandableListView.OnChildClickListener() {
         @Override
         public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
-            HeaderInfo headerInfo = deptList.get(groupPosition);
-            DetailInfo detailInfo =  headerInfo.getCategoryList().get(childPosition);
 
             LinearLayout linearLayout =(LinearLayout)  getActivity().findViewById(R.id.update_delete_category);
             linearLayout.setVisibility(View.VISIBLE);
+
+            Button button = (Button) getActivity().findViewById(R.id.addCategory);
+
+            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+            params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+            params.addRule(RelativeLayout.ABOVE, R.id.update_delete_category);
+            button.setLayoutParams(params);
 
             Button update = (Button) linearLayout.findViewById(R.id.update);
             Button delete = (Button) linearLayout.findViewById(R.id.delete);

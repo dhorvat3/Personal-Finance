@@ -318,9 +318,6 @@ public class Income_Expense extends BaseFragment implements FragmentInterface, D
 
         public boolean onChildClick(ExpandableListView parent, View v, final int groupPosition, final int childPosition, final long id) {
 
-            HeaderInfo headerInfo = deptList.get(groupPosition);
-            DetailInfo detailInfo =  headerInfo.getCategoryList().get(childPosition);
-
             LinearLayout linearLayout =(LinearLayout)  getActivity().findViewById(R.id.update_delete);
             linearLayout.setVisibility(View.VISIBLE);
 
