@@ -7,7 +7,9 @@ import pojo.Categories;
 import pojo.Category;
 import pojo.Category_Table;
 import pojo.Record;
+import pojo.Record_Table;
 import pojo.Records;
+import pojo.Task_Table;
 import pojo.Tasks;
 import pojo.Task;
 import retrofit.Call;
@@ -61,14 +63,6 @@ public class DataProvider {
                     for(Category cat : category.getCategory()){
                         cat.save();
                     }
-
-                    //TODO: remove in production
-                    Categories category_ = new Categories();
-                    category_.setCategory(SQLite.select().from(Category.class).queryList());
-                    for(Category cat : category_.getCategory()){
-                        System.out.println("Categories: " + cat.getId());
-                    }
-                } else {
                 }
             }
 
@@ -88,12 +82,6 @@ public class DataProvider {
     public void deleteCategory(String id){
         Category category = SQLite.select().from(Category.class).where(Category_Table.id.is(id)).querySingle();
         category.delete();
-        //TODO: remove in production
-        Categories category_ = new Categories();
-        category_.setCategory(SQLite.select().from(Category.class).queryList());
-        for(Category cat : category_.getCategory()){
-            System.out.println("Categories: " + cat.getId());
-        }
     }
 
     public void newCategory(Category category){
@@ -120,13 +108,6 @@ public class DataProvider {
                         record.save();
                     }
                     Records record = new Records();
-
-                    //TODO: remove in production
-                    record.setRecord(SQLite.select().from(Record.class).queryList());
-                    for(Record rec : record.getRecord()){
-                        System.out.println("Records: " + rec.getId());
-                    }
-                } else {
                 }
             }
 
@@ -134,6 +115,31 @@ public class DataProvider {
             public void onFailure(Throwable t) {
             }
         });
+    }
+
+    public Object getRecords(){
+        Records records = new Records();
+        records.setRecord(SQLite.select().from(Record.class).queryList());
+        return  records;
+    }
+
+    public void deleteRecord(String id){
+        Record record = SQLite.select().from(Record.class).where(Record_Table.id.is(id)).querySingle();
+        record.delete();
+    }
+
+    public void newRecord(Record record){
+        record.save();
+    }
+
+    public void editRecord(Record record){
+        Record rec = SQLite.select().from(Record.class).where(Record_Table.id.is(record.getId())).querySingle();
+        rec.setVrsta(record.getVrsta());
+        rec.setNapomena(record.getNapomena());
+        rec.setDatum(record.getDatum());
+        rec.setCategoryId(record.getCatgoryId());
+        rec.setIznos(record.getIznos());
+        rec.save();
     }
 
     public void fetchTasks(String userId){
@@ -146,13 +152,6 @@ public class DataProvider {
                     for(Task task : tasks.getTasks()){
                         task.save();
                     }
-                    //TODO: remove in production
-                    Tasks task = new Tasks();
-                    task.setTasks(SQLite.select().from(Task.class).queryList());
-                    for(Task task_ : task.getTasks()){
-                        System.out.println("Tasks: " + task_.getId());
-                    }
-                } else {
                 }
             }
 
@@ -160,6 +159,30 @@ public class DataProvider {
             public void onFailure(Throwable t) {
             }
         });
+    }
+
+    public Object getTasks(){
+        Tasks tasks = new Tasks();
+        tasks.setTasks(SQLite.select().from(Task.class).queryList());
+        return tasks;
+    }
+
+    public void deleteTask(String id){
+        Task task = SQLite.select().from(Task.class).where(Task_Table.id.is(id)).querySingle();
+        task.delete();
+    }
+
+    public void newTask(Task task){
+        task.save();
+    }
+
+    public void editTask(Task task){
+        Task tas = SQLite.select().from(Task.class).where(Task_Table.id.is(task.getId())).querySingle();
+        tas.setTitle(task.getTitle());
+        tas.setNote(task.getNote());
+        tas.setDate(task.getDate());
+        tas.setNotice(task.getNotice());
+        tas.save();
     }
 
 
