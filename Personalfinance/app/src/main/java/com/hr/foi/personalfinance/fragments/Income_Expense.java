@@ -3,12 +3,10 @@ package com.hr.foi.personalfinance.fragments;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
@@ -17,7 +15,6 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RelativeLayout;
@@ -42,13 +39,14 @@ import java.util.List;
 import core.DataBuilder;
 import core.DataInterface;
 import pojo.*;
+import pojo.Category;
 
 /**
  * Created by Filip on 22.12.2016..
  */
 
 public class Income_Expense extends BaseFragment implements FragmentInterface, DataInterface {
-    private Record_ record;
+    private Record record;
     private DataBuilder dataBuilder = new DataBuilder(this);
     private SharedPreferences preferences;
     private ExpandableListView listView;
@@ -57,13 +55,13 @@ public class Income_Expense extends BaseFragment implements FragmentInterface, D
     private MyListAdapter listAdapter;
     private EditText napomena, datum, iznos;
     private RadioButton prihod, rashod;
-    private ArrayList<Record_> records;
-    private ArrayList<pojo.Category_> catList;
+    private ArrayList<Record> records;
+    private ArrayList<Category> catList;
     private Dialog dialog;
     private Spinner spinner;
     private int seqInt;
-    private Category_ myItem = null;
-    private ArrayAdapter<Category_> adapter;
+    private Category myItem = null;
+    private ArrayAdapter<Category> adapter;
     private DatePickerDialog datePickerDialog;
     private SimpleDateFormat userFormat, databaseFormat;
     private String dateAndTime;
@@ -130,10 +128,10 @@ public class Income_Expense extends BaseFragment implements FragmentInterface, D
                         boolean valid = true;
                         List<EditText> fieldsE = Arrays.asList(napomena, iznos, datum);
 
-                        Category_ catId = (Category_) spinner.getSelectedItem();
+                        Category catId = (Category) spinner.getSelectedItem();
                         //Log.w("CatID", catId.getId());
 
-                        record = new Record_();
+                        record = new Record();
 
                         if (prihod.isChecked()){
                             System.out.println("prihod");
@@ -209,27 +207,27 @@ public class Income_Expense extends BaseFragment implements FragmentInterface, D
     @Override
     public void buildData(Object data) {
 
-        if(data instanceof pojo.Category){
-            pojo.Category categories = (pojo.Category) data;
+        if(data instanceof Categories){
+            Categories categories = (Categories) data;
             catList = new ArrayList<>();
 
-            Category_ noCat = new Category_();
+            Category noCat = new Category();
             noCat.setTitle("(NEMA)");
             noCat.setId(null);
             catList.add(noCat);
 
-            for(Category_ item: categories.getCategory()){
+            for(Category item: categories.getCategory()){
                 catList.add(item);
             }
             if(spinner != null) {
-                adapter = new ArrayAdapter<Category_>(getActivity(), android.R.layout.simple_spinner_dropdown_item, catList);
+                adapter = new ArrayAdapter<Category>(getActivity(), android.R.layout.simple_spinner_dropdown_item, catList);
                 spinner.setAdapter(adapter);
 
                 if (myRecords.size() != 0){
                     String catID = records.get(seqInt).getCatgoryId();
                     if (catID != null) {
                         for (int i = 1; i < adapter.getCount(); i++) {
-                            Category_ item = adapter.getItem(i);
+                            Category item = adapter.getItem(i);
 
                             if (item.getId().equals(catID)) {
                                 myItem = item;
@@ -245,17 +243,17 @@ public class Income_Expense extends BaseFragment implements FragmentInterface, D
             }
         }
 
-        if(data instanceof pojo.Record) {
-            pojo.Record record = (pojo.Record) data;
+        if(data instanceof Records) {
+            Records record = (Records) data;
             if (record != null) {
                 listView = (ExpandableListView) getActivity().findViewById(R.id.zapisi);
 
                 myRecords.clear();
                 deptList.clear();
 
-                records = new ArrayList<Record_>();
+                records = new ArrayList<Record>();
 
-                for (Record_ item : record.getRecord()) {
+                for (Record item : record.getRecord()) {
                     records.add(item);
                 }
 
@@ -398,7 +396,7 @@ public class Income_Expense extends BaseFragment implements FragmentInterface, D
                             boolean valid = true;
                             List<EditText> fieldsE = Arrays.asList(napomena, iznos, datum);
 
-                            Record_ record = new Record_();
+                            Record record = new Record();
 
                             for (Iterator<EditText> i = fieldsE.iterator(); i.hasNext(); ) {
                                 EditText field = i.next();
@@ -414,7 +412,7 @@ public class Income_Expense extends BaseFragment implements FragmentInterface, D
                                 record.setId(records.get(seqInt).getId());
                                 record.setAktivan("1");
 
-                                Category_ catId = (Category_) spinner.getSelectedItem();
+                                Category catId = (Category) spinner.getSelectedItem();
                                 //record.setCatgoryId(catId.getId());
                                 if (catId.getId() == null) {
                                     record.setCatgoryId(null);

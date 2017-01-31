@@ -14,7 +14,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
-import pojo.Task_;
+import pojo.Task;
 
 /**
  * Created by Blaža on 28.1.2017..
@@ -24,9 +24,9 @@ public class TaskListAdapter extends BaseAdapter {
 
     private Context context;
     private LayoutInflater inflater;
-    private List<Task_> tasks;
+    private List<Task> tasks;
 
-    public TaskListAdapter(Context c, List<Task_> t) {
+    public TaskListAdapter(Context c, List<Task> t) {
         context = c;
         tasks = t;
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -56,7 +56,7 @@ public class TaskListAdapter extends BaseAdapter {
         TextView note = (TextView) view.findViewById(R.id.task_item_layout_note);
         TextView notice = (TextView) view.findViewById(R.id.task_item_layout_notice);
 
-        Task_ task = (Task_) getItem(position);
+        Task task = (Task) getItem(position);
 
         SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy. HH:mm");

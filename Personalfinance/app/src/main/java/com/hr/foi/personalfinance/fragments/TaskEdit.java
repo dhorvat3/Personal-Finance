@@ -23,14 +23,13 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
 import core.DataBuilder;
 import core.DataInterface;
 import pojo.Response;
-import pojo.Task_;
+import pojo.Task;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -48,7 +47,7 @@ public class TaskEdit extends Fragment implements DataInterface {
     private EditText editTaskDate;
     private EditText editTaskNotice;
     private DataBuilder dataBuilder = new DataBuilder(this);
-    private Task_ task = new Task_();
+    private Task task = new Task();
 
     public TaskEdit() {
         // Required empty public constructor

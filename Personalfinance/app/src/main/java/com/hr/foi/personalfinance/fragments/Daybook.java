@@ -15,7 +15,6 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RelativeLayout;
@@ -39,17 +38,15 @@ import java.util.List;
 
 import core.DataBuilder;
 import core.DataInterface;
-import pojo.Category_;
-import pojo.Record;
-import pojo.Record_;
-import pojo.Response;
+import pojo.*;
+import pojo.Category;
 
 /**
  * Created by Filip on 22.12.2016..
  */
 
 public class Daybook extends BaseFragment implements FragmentInterface, DataInterface {
-    private Record_ record;
+    private Record record;
     private DataBuilder dataBuilder = new DataBuilder(this);
     private SharedPreferences preferences;
     private ExpandableListView listView;
@@ -58,13 +55,13 @@ public class Daybook extends BaseFragment implements FragmentInterface, DataInte
     private MyListAdapter listAdapter;
     private EditText napomena, datum, iznos;
     private RadioButton prihod, rashod;
-    private ArrayList<Record_> records;
-    private ArrayList<Category_> catList;
+    private ArrayList<Record> records;
+    private ArrayList<Category> catList;
     private Dialog dialog;
     private Spinner spinner;
     private int seqInt;
-    private Category_ myItem = null;
-    private ArrayAdapter<Category_> adapter;
+    private pojo.Category myItem = null;
+    private ArrayAdapter<Category> adapter;
     private DatePickerDialog datePickerDialog;
     private SimpleDateFormat userFormat, databaseFormat;
     private String dateAndTime;
@@ -170,20 +167,20 @@ public class Daybook extends BaseFragment implements FragmentInterface, DataInte
     @Override
     public void buildData(Object data) {
 
-        if(data instanceof pojo.Category){
-            pojo.Category categories = (pojo.Category) data;
+        if(data instanceof Categories){
+            Categories categories = (Categories) data;
             catList = new ArrayList<>();
-            Category_ noCat = new Category_();
+            Category noCat = new Category();
             noCat.setTitle("(NEMA)");
             noCat.setId(null);
 
-            for(Category_ item: categories.getCategory()){
+            for(Category item: categories.getCategory()){
                 catList.add(item);
                 catIdName.put(item.getId(), item.getTitle());
             }
 
             if(spinner != null) {
-                adapter = new ArrayAdapter<Category_>(getActivity(), android.R.layout.simple_spinner_dropdown_item, catList);
+                adapter = new ArrayAdapter<Category>(getActivity(), android.R.layout.simple_spinner_dropdown_item, catList);
                 adapter.insert(noCat,0);
                 spinner.setAdapter(adapter);
 
@@ -192,7 +189,7 @@ public class Daybook extends BaseFragment implements FragmentInterface, DataInte
 
                     if (catID != null) {
                         for (int i = 1; i < adapter.getCount(); i++) {
-                            Category_ item = adapter.getItem(i);
+                            Category item = adapter.getItem(i);
 
                             if (item.getId().equals(catID)) {
                                 myItem = item;
@@ -207,17 +204,17 @@ public class Daybook extends BaseFragment implements FragmentInterface, DataInte
                 }
             }
         }
-        if(data instanceof Record) {
-            Record record = (Record) data;
+        if(data instanceof Records) {
+            Records record = (Records) data;
             if (record != null) {
                 listView = (ExpandableListView) getActivity().findViewById(R.id.zapisi);
 
                 myRecords.clear();
                 deptList.clear();
 
-                records = new ArrayList<Record_>();
+                records = new ArrayList<Record>();
 
-                for (Record_ item : record.getRecord()) {
+                for (Record item : record.getRecord()) {
                     records.add(item);
                 }
                 if (!dateOrCategorySpinnerSelection)   {
@@ -358,7 +355,7 @@ public class Daybook extends BaseFragment implements FragmentInterface, DataInte
                             boolean valid = true;
                             List<EditText> fieldsE = Arrays.asList(napomena, iznos, datum);
 
-                            Record_ record = new Record_();
+                            Record record = new Record();
 
                             for (Iterator<EditText> i = fieldsE.iterator(); i.hasNext(); ) {
                                 EditText field = i.next();
@@ -372,7 +369,7 @@ public class Daybook extends BaseFragment implements FragmentInterface, DataInte
                                 record.setId(records.get(seqInt).getId());
                                 record.setAktivan("1");
 
-                                Category_ catId = (Category_) spinner.getSelectedItem();
+                                Category catId = (Category) spinner.getSelectedItem();
 
                                 if (catId.getId() == null) {
                                     record.setCatgoryId(null);

@@ -1,17 +1,15 @@
 package core;
 
-import android.content.SharedPreferences;
-import android.provider.ContactsContract;
-
 import com.raizlabs.android.dbflow.sql.language.Delete;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 
+import pojo.Categories;
 import pojo.Category;
-import pojo.Category_;
+import pojo.Category_Table;
 import pojo.Record;
-import pojo.Record_;
+import pojo.Records;
+import pojo.Tasks;
 import pojo.Task;
-import pojo.Task_;
 import retrofit.Call;
 import retrofit.Callback;
 import retrofit.Response;
@@ -36,9 +34,9 @@ public class DataProvider {
     public void refrashDatabase(){
 
         //empty local data
-        Delete.table(Category_.class);
-        Delete.table(Record_.class);
-        Delete.table(Task_.class);
+        Delete.table(Category.class);
+        Delete.table(Record.class);
+        Delete.table(Task.class);
         //get new data
         fetchCategories(this.userId);
         fetchRecords(this.userId);
@@ -47,28 +45,28 @@ public class DataProvider {
 
     public void truncateDatabase(){
         //empty local data
-        Delete.table(Category_.class);
-        Delete.table(Record_.class);
-        Delete.table(Task_.class);
+        Delete.table(Category.class);
+        Delete.table(Record.class);
+        Delete.table(Task.class);
     }
 
     public void fetchCategories(String userId){
-        Call<pojo.Category> retrofitCall = apiMethods.getCategories(userId);
-        retrofitCall.enqueue(new Callback<Category>() {
+        Call<Categories> retrofitCall = apiMethods.getCategories(userId);
+        retrofitCall.enqueue(new Callback<Categories>() {
             @Override
-            public void onResponse(Response<pojo.Category> response, Retrofit retrofit) {
+            public void onResponse(Response<Categories> response, Retrofit retrofit) {
                 if (response.body() != null) {
-                    pojo.Category category = response.body();
+                    Categories category = response.body();
 
-                    for(pojo.Category_ cat : category.getCategory()){
+                    for(Category cat : category.getCategory()){
                         cat.save();
                     }
 
                     //TODO: remove in production
-                    pojo.Category category_ = new Category();
-                    category_.setCategory(SQLite.select().from(pojo.Category_.class).queryList());
-                    for(Category_ cat : category_.getCategory()){
-                        System.out.println("Category: " + cat.getId());
+                    Categories category_ = new Categories();
+                    category_.setCategory(SQLite.select().from(Category.class).queryList());
+                    for(Category cat : category_.getCategory()){
+                        System.out.println("Categories: " + cat.getId());
                     }
                 } else {
                 }
@@ -78,25 +76,55 @@ public class DataProvider {
             public void onFailure(Throwable t) {
             }
         });
-
     }
 
+    public Object getCategories(){
+        Categories categories = new Categories();
+        categories.setCategory(SQLite.select().from(Category.class).queryList());
+
+        return categories;
+    }
+
+    public void deleteCategory(String id){
+        Category category = SQLite.select().from(Category.class).where(Category_Table.id.is(id)).querySingle();
+        category.delete();
+        //TODO: remove in production
+        Categories category_ = new Categories();
+        category_.setCategory(SQLite.select().from(Category.class).queryList());
+        for(Category cat : category_.getCategory()){
+            System.out.println("Categories: " + cat.getId());
+        }
+    }
+
+    public void newCategory(Category category){
+        category.save();
+    }
+
+    public void editCategory(Category category){
+        Category cat = SQLite.select().from(Category.class).where(Category_Table.id.is(category.getId())).querySingle();
+
+        cat.setDescription(category.getDescription());
+        cat.setTitle(category.getTitle());
+        cat.save();
+    }
+
+
     public void fetchRecords(String userId){
-        Call<Record> retrofitCall = apiMethods.getRecords(userId);
-        retrofitCall.enqueue(new Callback<Record>() {
+        Call<Records> retrofitCall = apiMethods.getRecords(userId);
+        retrofitCall.enqueue(new Callback<Records>() {
             @Override
-            public void onResponse(Response<Record> response, Retrofit retrofit) {
+            public void onResponse(Response<Records> response, Retrofit retrofit) {
                 if (response.body() != null) {
-                    pojo.Record records = response.body();
-                    for(pojo.Record_ record : records.getRecord()){
+                    Records records = response.body();
+                    for(Record record : records.getRecord()){
                         record.save();
                     }
-                    pojo.Record record = new Record();
+                    Records record = new Records();
 
                     //TODO: remove in production
-                    record.setRecord(SQLite.select().from(pojo.Record_.class).queryList());
-                    for(Record_ rec : record.getRecord()){
-                        System.out.println("Record: " + rec.getId());
+                    record.setRecord(SQLite.select().from(Record.class).queryList());
+                    for(Record rec : record.getRecord()){
+                        System.out.println("Records: " + rec.getId());
                     }
                 } else {
                 }
@@ -109,20 +137,20 @@ public class DataProvider {
     }
 
     public void fetchTasks(String userId){
-        Call<pojo.Task> retrofitCall = apiMethods.getTasks(userId);
-        retrofitCall.enqueue(new Callback<Task>() {
+        Call<Tasks> retrofitCall = apiMethods.getTasks(userId);
+        retrofitCall.enqueue(new Callback<Tasks>() {
             @Override
-            public void onResponse(Response<Task> response, Retrofit retrofit) {
+            public void onResponse(Response<Tasks> response, Retrofit retrofit) {
                 if (response.body() != null) {
-                    pojo.Task tasks = response.body();
-                    for(pojo.Task_ task : tasks.getTasks()){
+                    Tasks tasks = response.body();
+                    for(Task task : tasks.getTasks()){
                         task.save();
                     }
                     //TODO: remove in production
-                    pojo.Task task = new Task();
-                    task.setTasks(SQLite.select().from(pojo.Task_.class).queryList());
-                    for(Task_ task_ : task.getTasks()){
-                        System.out.println("Task: " + task_.getId());
+                    Tasks task = new Tasks();
+                    task.setTasks(SQLite.select().from(Task.class).queryList());
+                    for(Task task_ : task.getTasks()){
+                        System.out.println("Tasks: " + task_.getId());
                     }
                 } else {
                 }
@@ -133,6 +161,7 @@ public class DataProvider {
             }
         });
     }
+
 
     public String getUserId() {
         return userId;

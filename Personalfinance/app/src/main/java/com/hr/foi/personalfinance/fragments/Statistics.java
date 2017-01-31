@@ -33,8 +33,8 @@ import lecho.lib.hellocharts.model.SubcolumnValue;
 import lecho.lib.hellocharts.view.ColumnChartView;
 import lecho.lib.hellocharts.view.LineChartView;
 import lecho.lib.hellocharts.view.PieChartView;
-import pojo.Category_;
-import pojo.Record_;
+import pojo.*;
+import pojo.Category;
 
 /**
  * Created by dominik on 21.12.16..
@@ -58,14 +58,14 @@ public class Statistics extends BaseFragment implements FragmentInterface, DataI
     private SharedPreferences preferences;
 
     /**
-     * Lista tipa Record_ koja sadrzi sve podatke koji će biti prikazani na grafikonima
+     * Lista tipa Record koja sadrzi sve podatke koji će biti prikazani na grafikonima
      */
-    private ArrayList<Record_> records;
+    private ArrayList<Record> records;
 
     /**
-     * Lista tipa Category_. Sadrzi kategorije aktivnog korisnika.
+     * Lista tipa Category. Sadrzi kategorije aktivnog korisnika.
      */
-    private ArrayList<Category_> categories;
+    private ArrayList<Category> categories;
 
     /**
      * Klasa View sadrži sve komponente korisnickog sucelja
@@ -287,14 +287,14 @@ public class Statistics extends BaseFragment implements FragmentInterface, DataI
         int numColumns = categoriesSize;
 
         List<CategoryC> tempData = new ArrayList<CategoryC>();
-        for(Category_ item : categories)
+        for(Category item : categories)
         {
             tempData.add(new CategoryC(item.getId(), 0, 0));
         }
 
         for(CategoryC item: tempData)
         {
-            for(Record_ record : records)
+            for(Record record : records)
             {
                 if(record.getVrsta().equals("1"))
                     item.setPrihodi(Float.valueOf(record.getIznos()));
@@ -344,7 +344,7 @@ public class Statistics extends BaseFragment implements FragmentInterface, DataI
         float sumR = 0;
         float fillRatio = 0.9f;
 
-        for(Record_ item : records)
+        for(Record item : records)
         {
             if(item.getVrsta().equals("1"))
                 sumP += Float.valueOf(item.getIznos());
@@ -424,13 +424,13 @@ public class Statistics extends BaseFragment implements FragmentInterface, DataI
     @Override
     public void buildData(Object data)
     {
-        if(data instanceof pojo.Category)
+        if(data instanceof Categories)
         {
-            pojo.Category category = (pojo.Category) data;
-            categories = new ArrayList<Category_>();
+            Categories category = (Categories) data;
+            categories = new ArrayList<pojo.Category>();
             if (category !=null)
             {
-                for (Category_ item : category.getCategory())
+                for (Category item : category.getCategory())
                 {
                     categories.add(item);
                 }
@@ -440,13 +440,13 @@ public class Statistics extends BaseFragment implements FragmentInterface, DataI
             dataBuilder.getRecords(userID());
         }
 
-        if(data instanceof pojo.Record)
+        if(data instanceof Records)
         {
-            pojo.Record record = (pojo.Record) data;
-            records = new ArrayList<Record_>();
+            Records record = (Records) data;
+            records = new ArrayList<Record>();
             if (record !=null)
             {
-                for (Record_ item : record.getRecord())
+                for (Record item : record.getRecord())
                 {
                     records.add(item);
                 }

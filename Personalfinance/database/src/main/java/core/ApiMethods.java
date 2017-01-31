@@ -25,37 +25,37 @@ public interface ApiMethods {
     Call<pojo.Response> editUser(@Body pojo.User user);
 
     @GET("/category_by_user.php/")
-    Call<pojo.Category> getCategories(@Query("id") String userId);
+    Call<Categories> getCategories(@Query("id") String userId);
 
     @POST("/add_category.php")
-    Call<pojo.Response> newCategory(@Body pojo.Category_ category);
+    Call<pojo.Response> newCategory(@Body Category category);
 
     @GET("/records_by_user.php/")
-    Call<pojo.Record> getRecords(@Query("id") String userId);
+    Call<Records> getRecords(@Query("id") String userId);
 
     @POST("/new_record.php")
-    Call<pojo.Response> newRecord(@Body pojo.Record_ record);
+    Call<pojo.Response> newRecord(@Body Record record);
 
     @GET("/delete_record.php")
     Call<pojo.Response> deleteRecord(@Query("id") String recordId);
 
     @POST("/edit_record.php")
-    Call<pojo.Response> editRecord(@Body pojo.Record_ record);
+    Call<pojo.Response> editRecord(@Body Record record);
 
     @POST("/new_task.php")
-    Call<pojo.Response> newTask(@Body pojo.Task_ task);
+    Call<pojo.Response> newTask(@Body Task task);
 
     @GET("/tasks_by_user.php")
-    Call<pojo.Task> getTasks(@Query("id") String userId);
+    Call<Tasks> getTasks(@Query("id") String userId);
 
     @GET("/delete_task.php")
     Call<pojo.Response> deleteTask(@Query("id") String id);
 
     @POST("/edit_task.php")
-    Call<pojo.Response> editTask(@Body pojo.Task_ task);
+    Call<pojo.Response> editTask(@Body Task task);
 
     @POST("/edit_category.php")
-    Call<pojo.Response> editCategory(@Body pojo.Category_ category);
+    Call<pojo.Response> editCategory(@Body Category category);
 
     @GET("/delete_category.php")
     Call<pojo.Response> deleteCategory(@Query("id") String id ,@Query("user_id") String user_id);

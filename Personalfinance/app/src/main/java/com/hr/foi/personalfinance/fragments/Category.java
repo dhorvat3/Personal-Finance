@@ -11,7 +11,6 @@ import android.widget.AbsListView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
@@ -31,7 +30,7 @@ import java.util.List;
 
 import core.DataBuilder;
 import core.DataInterface;
-import pojo.Category_;
+import pojo.Categories;
 import pojo.Response;
 
 /**
@@ -43,14 +42,14 @@ public class Category extends BaseFragment implements FragmentInterface, DataInt
     private EditText name;
     private EditText description;
     private DataBuilder dataBuilder = new DataBuilder(this);
-    private Category_ category;
+    private pojo.Category category;
     private LinkedHashMap<String, HeaderInfo> myCategories = new LinkedHashMap<String, HeaderInfo>();
     private ArrayList<HeaderInfo> deptList = new ArrayList<HeaderInfo>();
     private MyListAdapter listAdapter;
     private SharedPreferences preferences;
     private int seqInt;
     private Dialog dialog;
-    private  ArrayList<Category_> categories;
+    private  ArrayList<pojo.Category> categories;
     private int sequence = 0;
     int mCurrentScrollState;
     int mCurrentVisibleItemCount;
@@ -107,7 +106,7 @@ public class Category extends BaseFragment implements FragmentInterface, DataInt
                             }
                         }
                         if (valid) {
-                            category = new Category_();
+                            category = new pojo.Category();
                             category.setUserId(userID());
                             category.setTitle(name.getText().toString());
                             category.setDescription(description.getText().toString());
@@ -138,18 +137,20 @@ public class Category extends BaseFragment implements FragmentInterface, DataInt
 
     @Override
     public void buildData(Object data) {
-        if(data instanceof pojo.Category) {
-            pojo.Category category1 = (pojo.Category) data;
+        if(data instanceof Categories) {
+            Categories category1 = (Categories) data;
             if (category1 != null) {
+
                 listView = (ExpandableListView) getActivity().findViewById(R.id.kategorije);
 
-                categories = new ArrayList<Category_>();
+
+                categories = new ArrayList<pojo.Category>();
 
                 myCategories.clear();
                 deptList.clear();
 
 
-                for (Category_ item : category1.getCategory()) {
+                for (pojo.Category item : category1.getCategory()) {
                     categories.add(item);
                 }
 
@@ -158,7 +159,10 @@ public class Category extends BaseFragment implements FragmentInterface, DataInt
                     addCategory(categories.get(i).getTitle(), categories.get(i).getDescription());
                 }
                 listAdapter = new MyListAdapter(getActivity(), deptList);
+
                 listView.setAdapter(listAdapter);
+                listAdapter.notifyDataSetChanged();
+                listView.invalidateViews();
                 listView.setOnChildClickListener(myListItemClicked);
 
                 listView.setOnScrollListener(new AbsListView.OnScrollListener() {
@@ -235,7 +239,7 @@ public class Category extends BaseFragment implements FragmentInterface, DataInt
                             boolean valid = true;
                             List<EditText> fieldsE = Arrays.asList(naslov, opis);
 
-                            Category_ category = new Category_();
+                            pojo.Category category = new pojo.Category();
 
                             for (Iterator<EditText> i = fieldsE.iterator(); i.hasNext(); ) {
                                 EditText field = i.next();

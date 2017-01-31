@@ -76,32 +76,26 @@ public class DataBuilder {
     }
 
     public void getCategories(String userId) {
-
-        Call<pojo.Category> retrofitCall = apiMethods.getCategories(userId);
-        retrofitCall.enqueue(new Callback<Category>() {
-            @Override
-            public void onResponse(Response<pojo.Category> response, Retrofit retrofit) {
-                if (response.body() != null) {
-                    data = response.body();
-                } else {
-                    data = null;
-                }
-                call.buildData(data);
-            }
-
-            @Override
-            public void onFailure(Throwable t) {
-                data = null;
-                call.buildData(data);
-            }
-        });
+        Object data = dataProvider.getCategories();
+        pojo.Response response = new pojo.Response();
+        if(data != null){
+            call.buildData(data);
+        } else {
+            response.setId("-1");
+            call.buildData(response);
+        }
     }
 
-    public void newCategory(Category_ category){
+    public void newCategory(final Category category){
         Call<pojo.Response> retrofitCall = apiMethods.newCategory(category);
         retrofitCall.enqueue(new Callback<pojo.Response>() {
             @Override
             public void onResponse(Response<pojo.Response> response, Retrofit retrofit) {
+                pojo.Response resp = response.body();
+                if(resp.getId().equals("1")){
+                    dataProvider.newCategory(category);
+                }
+
                 call.buildData(response.body());
             }
 
@@ -113,10 +107,10 @@ public class DataBuilder {
     }
 
     public void getRecords(String userId){
-        Call<pojo.Record> retrofitCall = apiMethods.getRecords(userId);
-        retrofitCall.enqueue(new Callback<Record>() {
+        Call<Records> retrofitCall = apiMethods.getRecords(userId);
+        retrofitCall.enqueue(new Callback<Records>() {
             @Override
-            public void onResponse(Response<Record> response, Retrofit retrofit) {
+            public void onResponse(Response<Records> response, Retrofit retrofit) {
                 if (response.body() != null) {
                     data = response.body();
                 } else {
@@ -133,7 +127,7 @@ public class DataBuilder {
         });
     }
 
-    public void newRecord(Record_ record){
+    public void newRecord(Record record){
         Call<pojo.Response> retrofitCall = apiMethods.newRecord(record);
         retrofitCall.enqueue(new Callback<pojo.Response>() {
             @Override
@@ -148,7 +142,7 @@ public class DataBuilder {
         });
     }
 
-    public void editRecord(Record_ record){
+    public void editRecord(Record record){
         Call<pojo.Response> retrofitCall = apiMethods.editRecord(record);
         retrofitCall.enqueue(new Callback<pojo.Response>() {
             @Override
@@ -178,7 +172,7 @@ public class DataBuilder {
         });
     }
 
-    public void newTask(Task_ task){
+    public void newTask(Task task){
         Call<pojo.Response> retrofitCall = apiMethods.newTask(task);
         retrofitCall.enqueue(new Callback<pojo.Response>() {
             @Override
@@ -194,10 +188,10 @@ public class DataBuilder {
     }
 
     public void getTasks(String userId){
-        Call<pojo.Task> retrofitCall = apiMethods.getTasks(userId);
-        retrofitCall.enqueue(new Callback<Task>() {
+        Call<Tasks> retrofitCall = apiMethods.getTasks(userId);
+        retrofitCall.enqueue(new Callback<Tasks>() {
             @Override
-            public void onResponse(Response<Task> response, Retrofit retrofit) {
+            public void onResponse(Response<Tasks> response, Retrofit retrofit) {
                 if (response.body() != null) {
                     data = response.body();
                 } else {
@@ -214,7 +208,7 @@ public class DataBuilder {
         });
     }
 
-    public void editTask(pojo.Task_ task){
+    public void editTask(Task task){
         Call<pojo.Response> retrofitCall = apiMethods.editTask(task);
         retrofitCall.enqueue(new Callback<pojo.Response>() {
             @Override
@@ -244,32 +238,48 @@ public class DataBuilder {
         });
     }
 
-    public void editCategory(Category_ category){
+    public void editCategory(final Category category){
         Call<pojo.Response> retrofitCall = apiMethods.editCategory(category);
         retrofitCall.enqueue(new Callback<pojo.Response>() {
             @Override
             public void onResponse(Response<pojo.Response> response, Retrofit retrofit) {
+                pojo.Response resp = response.body();
+
+                if(resp.getId().equals("1")){
+                    dataProvider.editCategory(category);
+                }
+
                 call.buildData(response.body());
             }
 
             @Override
             public void onFailure(Throwable t) {
-
+                pojo.Response response = new pojo.Response();
+                response.setId("-1");
+                call.buildData(response);
             }
         });
     }
 
-    public void deleteCategory(String id, String user_id){
+    public void deleteCategory(final String id, String user_id){
         Call<pojo.Response> retrofitCall = apiMethods.deleteCategory(id, user_id);
         retrofitCall.enqueue(new Callback<pojo.Response>() {
             @Override
             public void onResponse(Response<pojo.Response> response, Retrofit retrofit) {
+                pojo.Response resp = response.body();
+
+                if(resp.getId().equals("1")){
+                    dataProvider.deleteCategory(id);
+                }
+
                 call.buildData(response.body());
             }
 
             @Override
             public void onFailure(Throwable t) {
-
+                pojo.Response response = new pojo.Response();
+                response.setId("-1");
+                call.buildData(response);
             }
         });
     }

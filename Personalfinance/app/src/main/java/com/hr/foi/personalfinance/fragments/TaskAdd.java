@@ -35,7 +35,7 @@ import java.util.List;
 import core.DataBuilder;
 import core.DataInterface;
 import pojo.Response;
-import pojo.Task_;
+import pojo.Task;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -57,7 +57,7 @@ public class TaskAdd extends Fragment implements DataInterface {
     private String notificationMessage;
     private String notificationDate;
     private DataBuilder dataBuilder = new DataBuilder(this);
-    private Task_ task = new Task_();
+    private Task task = new Task();
 
     public TaskAdd() {
         // Required empty public constructor

@@ -32,7 +32,7 @@ import java.util.List;
 import core.DataBuilder;
 import core.DataInterface;
 import pojo.Response;
-import pojo.Task_;
+import pojo.Task;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -43,8 +43,8 @@ public class Tasks extends BaseFragment implements FragmentInterface, DataInterf
     private ProgressBar progress;
     private DataBuilder dataBuilder = new DataBuilder(this);
     private SwipeRefreshLayout swipeContainer;
-    private List<Task_> taskList;
-    private Task_ task;
+    private List<Task> taskList;
+    private Task task;
     private TaskListAdapter adapter;
     private ListView taskListView;
     private int itemForDelete = -1;
@@ -117,8 +117,8 @@ public class Tasks extends BaseFragment implements FragmentInterface, DataInterf
 
     @Override
     public void buildData(Object data) {
-        if (data.getClass().getSimpleName().equals("Task")) {
-            pojo.Task tasks = (pojo.Task) data;
+        if (data.getClass().getSimpleName().equals("Tasks")) {
+            pojo.Tasks tasks = (pojo.Tasks) data;
             taskList = tasks.getTasks();
 
             if (tasks != null) {
@@ -162,10 +162,10 @@ public class Tasks extends BaseFragment implements FragmentInterface, DataInterf
     public boolean onContextItemSelected(MenuItem item) {
         final AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
         final String itemId = String.valueOf(taskListView.getAdapter().getItemId(info.position));
-        String itemTitle = ((Task_) taskListView.getAdapter().getItem(info.position)).getTitle();
-        String itemNote = ((Task_) taskListView.getAdapter().getItem(info.position)).getNote();
-        String itemDate = ((Task_) taskListView.getAdapter().getItem(info.position)).getDate();
-        String itemNotice = ((Task_) taskListView.getAdapter().getItem(info.position)).getNotice();
+        String itemTitle = ((Task) taskListView.getAdapter().getItem(info.position)).getTitle();
+        String itemNote = ((Task) taskListView.getAdapter().getItem(info.position)).getNote();
+        String itemDate = ((Task) taskListView.getAdapter().getItem(info.position)).getDate();
+        String itemNotice = ((Task) taskListView.getAdapter().getItem(info.position)).getNotice();
 
         switch (item.getItemId()) {
             case 0:
