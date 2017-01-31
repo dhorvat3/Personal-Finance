@@ -178,7 +178,8 @@ public class DataBuilder {
             @Override
             public void onResponse(Response<pojo.Response> response, Retrofit retrofit) {
                 pojo.Response resp = response.body();
-                if(resp.getId().equals("1")){
+                if(Integer.parseInt(resp.getId()) > 0){
+                    category.setId(resp.getId());
                     dataProvider.newCategory(category);
                 }
 

@@ -94,9 +94,6 @@ public class LoginActivity extends AppCompatActivity implements DataInterface{
         if(data instanceof User) {
             pojo.User user = (pojo.User) data;
             if (user != null) {
-                // SharedPreferences prefs = this.getPreferences(MODE_PRIVATE);
-                //SharedPreferences prefs = this.getSharedPreferences("login", 0);
-                //SharedPreferences.Editor editor = prefs.edit();
                 editor.putString("id", user.getId());
                 editor.putString("username", user.getUsername());
                 editor.putString("name", user.getName());
@@ -121,27 +118,4 @@ public class LoginActivity extends AppCompatActivity implements DataInterface{
         }
     }
 
-    @Override
-    protected void onResume(){
-        super.onResume();
-        Intent intent = getIntent();
-
-        String action = intent.getAction();
-
-        if(action.equals(NfcAdapter.ACTION_NDEF_DISCOVERED)){
-            Parcelable[] parceables = intent.getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES);
-            NdefMessage inNdefMessage = (NdefMessage) parceables[0];
-            NdefRecord[] inNdefRecords = inNdefMessage.getRecords();
-            NdefRecord record = inNdefRecords[0];
-            String inMsg = new String(record.getPayload());
-
-            Toast.makeText(this, inMsg, Toast.LENGTH_LONG);
-            Log.w("NFC Message: ", inMsg);
-        }
-    }
-
-    @Override
-    protected void onNewIntent(Intent intent){
-        setIntent(intent);
-    }
 }
