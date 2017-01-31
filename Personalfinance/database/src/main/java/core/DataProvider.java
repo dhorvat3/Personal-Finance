@@ -182,8 +182,8 @@ public class DataProvider {
         Task tas = SQLite.select().from(Task.class).where(Task_Table.id.is(task.getId())).querySingle();
         tas.setTitle(task.getTitle());
         tas.setNote(task.getNote());
-        tas.setDate(task.getDate());
-        tas.setNotice(task.getNotice());
+        tas.setDate(task.getDate() + ":00");
+        tas.setNotice(task.getNotice() + ":00");
         tas.save();
     }
 
