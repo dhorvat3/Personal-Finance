@@ -285,6 +285,8 @@ public class Statistics extends BaseFragment implements FragmentInterface, DataI
         axisY.setName("Iznos");
 
         int numColumns = categoriesSize;
+        float nullCatP = 0;
+        float nullCatR = 0;
 
         List<CategoryC> tempData = new ArrayList<CategoryC>();
         for(Category item : categories)
@@ -292,15 +294,37 @@ public class Statistics extends BaseFragment implements FragmentInterface, DataI
             tempData.add(new CategoryC(item.getId(), 0, 0));
         }
 
+        for(Record record : records)
+        {
+            if(record.getCatgoryId() == null)
+            {
+                if(record.getVrsta().equals("1"))
+                    nullCatP += (Float.valueOf(record.getIznos()));
+                else
+                    nullCatR += (Float.valueOf(record.getIznos()));
+
+                records.remove(record);
+                numColumns++;
+            }
+        }
+
         for(CategoryC item: tempData)
         {
             for(Record record : records)
             {
-                if(record.getVrsta().equals("1"))
-                    item.setPrihodi(Float.valueOf(record.getIznos()));
-                else
-                    item.setRashodi(Float.valueOf(record.getIznos()));
+                if(record.getCatgoryId().equals(item.getId()))
+                {
+                    if(record.getVrsta().equals("1"))
+                        item.setPrihodi(Float.valueOf(record.getIznos()));
+                    else
+                        item.setRashodi(Float.valueOf(record.getIznos()));
+                }
             }
+        }
+
+        if(nullCatP > 0 || nullCatR > 0)
+        {
+            tempData.add(new CategoryC("-1", nullCatP, nullCatR));
         }
 
         List<Column> columns = new ArrayList<Column>();
@@ -313,7 +337,16 @@ public class Statistics extends BaseFragment implements FragmentInterface, DataI
             values.add(new SubcolumnValue(tempData.get(i).getPrihodi(), blue));
             values.add(new SubcolumnValue(tempData.get(i).getRashodi(), red));
 
-            xValues.add(new AxisValue(i, categories.get(i).getTitle().toCharArray()));
+
+            if(tempData.get(i).getId().equals("-1"))
+            {
+                xValues.add(new AxisValue(i, "NEMA".toCharArray()));
+            }
+            else
+            {
+                xValues.add(new AxisValue(i, categories.get(i).getTitle().toCharArray()));
+            }
+
             axisX.setValues(xValues);
 
             Column column = new Column(values);
@@ -332,7 +365,7 @@ public class Statistics extends BaseFragment implements FragmentInterface, DataI
     }
 
     /**
-     * Metoda priprema i postavlja podatke na ColumnChartView
+     * Metoda priprema i postavlja podatke na PieChartView
      * Izracunava razliku prihoda i rashoda i postavlja stanje u textview
      * @param view Objekt tipa PieChartView
      * @param textview Objekt tipa TextView
