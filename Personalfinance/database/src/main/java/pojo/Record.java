@@ -12,6 +12,10 @@ import core.MainDatabase;
 /**
  * Created by Filip on 4.1.2017..
  */
+
+/**
+ * Za pohranjianje odgovora web servisa
+ */
 @Table(database = MainDatabase.class)
 public class Record extends BaseModel{
     @PrimaryKey (autoincrement = true)

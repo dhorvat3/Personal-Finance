@@ -13,6 +13,10 @@ import retrofit.http.Query;
  * Created by Filip on 9.11.2016..
  */
 
+/**
+ * Sucenje sadrzi PHP skripte koje se pozivaju prilikom dohvacanja podataka iz baze podataka
+ * Retrofit objekt za uspostavljanje veze sa web servisom
+ */
 public interface ApiMethods {
     @GET("/user_by_name.php/")
     //void login(@Query("username") String username,  Callback<pojo.User> callback);

@@ -9,6 +9,9 @@ import java.util.List;
  * Created by dagy on 13.01.17..
  */
 
+/**
+ * Za pohranjianje odgovora web servisa
+ */
 public class Tasks {
     @SerializedName("tasks")
     @Expose

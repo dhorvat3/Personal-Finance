@@ -12,6 +12,10 @@ import core.MainDatabase;
 /**
  * Created by dagy on 13.01.17..
  */
+
+/**
+ * Za pohranjianje odgovora web servisa
+ */
 @Table(database = MainDatabase.class)
 public class Task extends BaseModel{
     @PrimaryKey (autoincrement = true)

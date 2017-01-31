@@ -10,6 +10,9 @@ import java.util.List;
  * Created by Filip on 3.1.2017..
  */
 
+/**
+ * Za pohranjianje odgovora web servisa
+ */
 public class Categories {
     @SerializedName("category")
     @Expose

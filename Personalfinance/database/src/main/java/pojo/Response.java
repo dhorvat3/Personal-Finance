@@ -7,6 +7,9 @@ import com.google.gson.annotations.SerializedName;
  * Created by Valentina on 28.12.2016..
  */
 
+/**
+ * Za pohranjianje odgovora web servisa
+ */
 public class Response {
     @SerializedName("response")
     @Expose

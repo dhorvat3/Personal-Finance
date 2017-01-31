@@ -5,8 +5,8 @@ import com.raizlabs.android.dbflow.annotation.Database;
 /**
  * Created by dagy on 27.01.17..
  *
- * Class for defining main database object
- * Used to setup database name and version.
+ * Za definiranje objekta baze podataka
+ * Sadrzi naziv i verziju
  */
 @Database(name = MainDatabase.NAME, version = MainDatabase.VERSION)
 public class MainDatabase {

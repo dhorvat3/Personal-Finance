@@ -10,6 +10,9 @@ import java.util.List;
  * Created by Filip on 4.1.2017..
  */
 
+/**
+ * Za pohranjianje odgovora web servisa
+ */
 public class Records {
     @SerializedName("record")
     @Expose
