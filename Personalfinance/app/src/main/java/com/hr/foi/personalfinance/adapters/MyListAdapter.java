@@ -61,9 +61,9 @@ public class MyListAdapter extends BaseExpandableListAdapter{
     }
 
     /**
-     * Vraca broj kategorija
+     * Vraca broj elemenata liste
      * @param groupPosition Indeks elementa u listi
-     * @return Broj kategorija
+     * @return Broj elemenata liste
      */
     @Override
     public int getChildrenCount(int groupPosition) {

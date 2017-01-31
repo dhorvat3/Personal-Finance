@@ -7,7 +7,7 @@ import java.util.ArrayList;
  */
 
 /**
- * Za Expandable List View kod izlistavanja kategorija
+ * Za Expandable List View kod izlistavanja elemenata liste
  */
 public class HeaderInfo {
     private String name;

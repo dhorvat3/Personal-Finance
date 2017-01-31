@@ -5,7 +5,7 @@ package com.hr.foi.personalfinance.info;
  */
 
 /**
- * Za Expandable List View kod izlistavanja kategorija
+ * Za Expandable List View kod izlistavanja elemenata liste
  */
 public class DetailInfo {
     private String sequence = "";
