@@ -175,6 +175,8 @@ public class DataProvider {
     }
 
     public void newTask(Task task){
+        task.setDate(task.getDate() + ":00");
+        task.setNotice(task.getNotice() + ":00");
         task.save();
     }
 
