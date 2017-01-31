@@ -287,6 +287,8 @@ public class Statistics extends BaseFragment implements FragmentInterface, DataI
         int numColumns = categoriesSize;
         float nullCatP = 0;
         float nullCatR = 0;
+        ArrayList<Record> nullRecords = new ArrayList<Record>();
+        boolean hasNull = false;
 
         List<CategoryC> tempData = new ArrayList<CategoryC>();
         for(Category item : categories)
@@ -303,9 +305,19 @@ public class Statistics extends BaseFragment implements FragmentInterface, DataI
                 else
                     nullCatR += (Float.valueOf(record.getIznos()));
 
-                records.remove(record);
-                numColumns++;
+                hasNull = true;
+
+                nullRecords.add(record);
             }
+        }
+
+        if(hasNull)
+        {
+            for(int i = 0; i < nullRecords.size(); i++)
+            {
+                records.remove(nullRecords.get(i));
+            }
+            numColumns++;
         }
 
         for(CategoryC item: tempData)
