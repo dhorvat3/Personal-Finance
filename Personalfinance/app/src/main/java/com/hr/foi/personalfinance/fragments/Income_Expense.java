@@ -472,7 +472,11 @@ public class Income_Expense extends BaseFragment implements FragmentInterface, D
                     napomena.setText(records.get(seqInt).getNapomena());
                     datum.setText(dat);
                     iznos.setText(records.get(seqInt).getIznos());
-                    vrsta = Integer.parseInt(records.get(seqInt).getVrsta());
+                    String vrstaS = records.get(seqInt).getVrsta();
+                    if (vrstaS.equals(false)){
+                        vrsta = 0;
+                    }
+                    else vrsta =1;
 
                     datePickerSetter();
 
@@ -547,8 +551,6 @@ public class Income_Expense extends BaseFragment implements FragmentInterface, D
                                 }
 
                                 dataBuilder.editRecord(record);
-                                listAdapter.notifyDataSetChanged();
-                                dataBuilder.getRecords(userID());
                                 dialog.cancel();
                             }
                         }
