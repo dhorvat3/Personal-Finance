@@ -30,4 +30,6 @@ dependencies {
     testCompile 'junit:junit:4.12'
 
     compile 'com.ikimuhendis:ldrawer:0.1'
+
+    androidTestCompile 'com.jayway.android.robotium:robotium:5.6.3'
 }
