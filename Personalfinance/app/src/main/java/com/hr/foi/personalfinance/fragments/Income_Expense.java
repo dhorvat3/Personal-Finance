@@ -27,6 +27,7 @@ import com.hr.foi.personalfinance.info.DetailInfo;
 import com.hr.foi.personalfinance.info.HeaderInfo;
 import com.hr.foi.userinterface.BaseFragment;
 import com.hr.foi.userinterface.FragmentInterface;
+import com.raizlabs.android.dbflow.sql.language.Condition;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -454,7 +455,7 @@ public class Income_Expense extends BaseFragment implements FragmentInterface, D
                     dialog.setContentView(R.layout.income_expense_item_layout);
                     dialog.show();
 
-                    int vrsta;
+
 
                     spinner = (Spinner) dialog.findViewById(R.id.sp_kategorija);
                     dataBuilder.getCategories(userID());
@@ -473,11 +474,7 @@ public class Income_Expense extends BaseFragment implements FragmentInterface, D
                     napomena.setText(records.get(seqInt).getNapomena());
                     datum.setText(dat);
                     iznos.setText(records.get(seqInt).getIznos());
-                    String vrstaS = records.get(seqInt).getVrsta();
-                    if (vrstaS.equals(false)){
-                        vrsta = 0;
-                    }
-                    else vrsta =1;
+                    int vrsta = Integer.parseInt( records.get(seqInt).getVrsta());
 
                     datePickerSetter();
 
@@ -496,7 +493,6 @@ public class Income_Expense extends BaseFragment implements FragmentInterface, D
                     else if(vrsta == 1){
                         prihod.setChecked(true);
                     }
-                    System.out.println("edit record: "+seqInt);
 
 
                     Button ok = (Button) dialog.findViewById(R.id.ok);
