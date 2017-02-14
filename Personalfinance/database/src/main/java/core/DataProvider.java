@@ -3,6 +3,9 @@ package core;
 import com.raizlabs.android.dbflow.sql.language.Delete;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
 import pojo.Categories;
 import pojo.Category;
 import pojo.Category_Table;
@@ -16,6 +19,7 @@ import retrofit.Call;
 import retrofit.Callback;
 import retrofit.Response;
 import retrofit.Retrofit;
+import sync.DataSyncer;
 
 /**
  * Created by dagy on 29.01.17..
@@ -36,6 +40,7 @@ public class DataProvider {
      * Korisnicki user_id atribut
      */
     private String userId;
+    private DataSyncer dataSyncer = new DataSyncer();
 
     public DataProvider(){
 
@@ -61,6 +66,7 @@ public class DataProvider {
         Delete.table(Record.class);
         Delete.table(Task.class);
 
+        //dataSyncer.syncData("1", "2017-02-13 02:54:14", 1);
         fetchCategories(this.userId, dataBuilder);
         fetchRecords(this.userId, dataBuilder);
         fetchTasks(this.userId, dataBuilder);
@@ -89,6 +95,7 @@ public class DataProvider {
                     Categories category = response.body();
 
                     for(Category cat : category.getCategory()){
+                        cat.setActive("1");
                         cat.save();
                     }
                     dataBuilder.dataReady(1);
@@ -107,7 +114,7 @@ public class DataProvider {
      */
     public Object getCategories(){
         Categories categories = new Categories();
-        categories.setCategory(SQLite.select().from(Category.class).queryList());
+        categories.setCategory(SQLite.select().from(Category.class).where(Category_Table.active.is("1")).queryList());
 
         return categories;
     }
@@ -117,16 +124,23 @@ public class DataProvider {
      * @param id Korisnicki user_id atribut
      */
     public void deleteCategory(String id){
-        Category category = SQLite.select().from(Category.class).where(Category_Table.id.is(id)).querySingle();
-        category.delete();
+        Category category = SQLite.select().from(Category.class).where(Category_Table.localId.is(Integer.parseInt(id))).querySingle();
+        //category.delete();
+        category.setActive("0");
+        category.setLastEdited(getCurrentDateAndTime());
     }
 
     /**
      * Dodaj kategoriju
      * @param category Kategorija
      */
-    public void newCategory(Category category){
+    public String newCategory(Category category){
+        category.setLastEdited(getCurrentDateAndTime());
+        category.setActive("1");
         category.save();
+
+        String catId = String.valueOf(category.getLocalId());
+        return  catId;
     }
 
     /**
@@ -134,10 +148,13 @@ public class DataProvider {
      * @param category Kategorija
      */
     public void editCategory(Category category){
-        Category cat = SQLite.select().from(Category.class).where(Category_Table.id.is(category.getId())).querySingle();
+        Category cat = SQLite.select().from(Category.class).where(Category_Table.localId.is(category.getLocalId())).querySingle();
 
         cat.setDescription(category.getDescription());
         cat.setTitle(category.getTitle());
+        cat.setEdited(1);
+        cat.setLastEdited(getCurrentDateAndTime());
+
         cat.save();
     }
 
@@ -172,8 +189,8 @@ public class DataProvider {
      */
     public Object getRecords(){
         Records records = new Records();
-        records.setRecord(SQLite.select().from(Record.class).queryList());
-        return  records;
+        records.setRecord(SQLite.select().from(Record.class).where(Record_Table.aktivan.is("1")).queryList());
+        return records;
     }
 
     /**
@@ -181,8 +198,11 @@ public class DataProvider {
      * @param id Korisnicki user_id atribut
      */
     public void deleteRecord(String id){
-        Record record = SQLite.select().from(Record.class).where(Record_Table.id.is(id)).querySingle();
-        record.delete();
+        Record record = SQLite.select().from(Record.class).where(Record_Table.localId.is(Integer.parseInt(id))).querySingle();
+        System.out.println("Delete record id: "+record.getLocalId());
+        record.setLastEdited(getCurrentDateAndTime());
+        //record.delete();
+        record.setAktivan("0");
     }
 
     /**
@@ -190,11 +210,13 @@ public class DataProvider {
      * @param record Zapis
      */
     public void newRecord(Record record){
-        if(record.getVrsta() == "true"){
+        /*if(record.getVrsta() == "true"){
             record.setVrsta("1");
         } else {
             record.setVrsta("0");
-        }
+        }*/
+        record.setLastEdited(getCurrentDateAndTime());
+        record.setAktivan("1");
         record.save();
     }
 
@@ -203,12 +225,15 @@ public class DataProvider {
      * @param record Zapis
      */
     public void editRecord(Record record){
-        Record rec = SQLite.select().from(Record.class).where(Record_Table.id.is(record.getId())).querySingle();
+        Record rec = SQLite.select().from(Record.class).where(Record_Table.localId.is(record.getLocalId())).querySingle();
         rec.setVrsta(record.getVrsta());
         rec.setNapomena(record.getNapomena());
         rec.setDatum(record.getDatum());
         rec.setCategoryId(record.getCatgoryId());
         rec.setIznos(record.getIznos());
+        rec.setAktivan("1");
+        rec.setEdited(1);
+        rec.setLastEdited(getCurrentDateAndTime());
         rec.save();
     }
 
@@ -243,7 +268,7 @@ public class DataProvider {
      */
     public Object getTasks(){
         Tasks tasks = new Tasks();
-        tasks.setTasks(SQLite.select().from(Task.class).queryList());
+        tasks.setTasks(SQLite.select().from(Task.class).where(Task_Table.aktivan.is("1")).queryList());
         return tasks;
     }
 
@@ -252,18 +277,26 @@ public class DataProvider {
      * @param id Korisnicki user_id atribut
      */
     public void deleteTask(String id){
-        Task task = SQLite.select().from(Task.class).where(Task_Table.id.is(id)).querySingle();
-        task.delete();
+        Task task = SQLite.select().from(Task.class).where(Task_Table.localId.is(Integer.parseInt(id))).querySingle();
+        //task.delete();
+        task.setLastEdited(getCurrentDateAndTime());
+        task.setAktivan("0");
     }
 
     /**
      * Dodaj obvezu
      * @param task Obveza
+     * @return Lokalni id obveze
      */
-    public void newTask(Task task){
+    public String newTask(Task task){
         task.setDate(task.getDate() + ":00");
         task.setNotice(task.getNotice() + ":00");
+        task.setAktivan("1");
+        task.setLastEdited(getCurrentDateAndTime());
         task.save();
+
+        String taskId = String.valueOf(task.getLocalId());
+        return taskId;
     }
 
     /**
@@ -271,11 +304,13 @@ public class DataProvider {
      * @param task Obveza
      */
     public void editTask(Task task){
-        Task tas = SQLite.select().from(Task.class).where(Task_Table.id.is(task.getId())).querySingle();
+        Task tas = SQLite.select().from(Task.class).where(Task_Table.localId.is(task.getLocalId())).querySingle();
         tas.setTitle(task.getTitle());
         tas.setNote(task.getNote());
         tas.setDate(task.getDate() + ":00");
         tas.setNotice(task.getNotice() + ":00");
+        tas.setEdited(1);
+        tas.setLastEdited(getCurrentDateAndTime());
         tas.save();
     }
 
@@ -293,5 +328,18 @@ public class DataProvider {
      */
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    /**
+     * Vraća trenutno vrijeme
+     * @return Trenutno vrijeme
+     */
+    public String getCurrentDateAndTime(){
+        Calendar c = Calendar.getInstance();
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+        String date = df.format(c.getTime());
+
+        return date;
     }
 }

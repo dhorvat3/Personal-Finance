@@ -70,9 +70,8 @@ public class LoginActivity extends AppCompatActivity implements DataInterface{
         });
         String id = prefs.getString("id", "");
         if(!id.equals("")){
-
-            dataBulder.refrashDatabase(id);
-
+            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+            startActivity(intent);
         }
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override

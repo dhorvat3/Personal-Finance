@@ -64,6 +64,15 @@ public interface ApiMethods {
     @GET("/delete_category.php")
     Call<pojo.Response> deleteCategory(@Query("id") String id ,@Query("user_id") String user_id);
 
+    @GET("/getEditedCategories.php")
+    Call<pojo.Categories> getEditedCategories(@Query("id") String id, @Query("lastEdited") String lastEdited);
+
+    @GET("/getEditedRecords.php")
+    Call<pojo.Records> getEditedRecords(@Query("id") String id, @Query("lastEdited") String lastEdited);
+
+    @GET("/getEditedTasks.php")
+    Call<pojo.Tasks> getEditedTasks(@Query("id") String id, @Query("lastEdited") String lastEdited);
+
 
     Retrofit retrofit = new Retrofit.Builder()
             .baseUrl("http://finance2016.000webhostapp.com")

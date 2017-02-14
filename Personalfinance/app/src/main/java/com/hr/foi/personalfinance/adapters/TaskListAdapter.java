@@ -47,7 +47,7 @@ public class TaskListAdapter extends BaseAdapter {
 
     @Override
     public long getItemId(int position) {
-        return Long.parseLong(tasks.get(position).getId());
+        return Long.parseLong(String.valueOf(tasks.get(position).getLocalId()));
     }
 
     /**

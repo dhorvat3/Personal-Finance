@@ -326,7 +326,7 @@ public class Category extends BaseFragment implements FragmentInterface, DataInt
                             }
 
                             if (valid){
-                                category.setId(categories.get(seqInt).getId());
+                                category.setLocalId(categories.get(seqInt).getLocalId());
                                 category.setTitle(naslov.getText().toString());
                                 category.setDescription(opis.getText().toString());
 
@@ -358,7 +358,7 @@ public class Category extends BaseFragment implements FragmentInterface, DataInt
                     ok.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            dataBuilder.deleteCategory(categories.get(seqInt).getId(),userID());
+                            dataBuilder.deleteCategory(String.valueOf(categories.get(seqInt).getLocalId()),userID());
                             dialog.cancel();
                         }
                     });

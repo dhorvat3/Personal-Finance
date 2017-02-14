@@ -230,12 +230,12 @@ public class Income_Expense extends BaseFragment implements FragmentInterface, D
 
                         if (prihod.isChecked()){
                             System.out.println("prihod");
-                            record.setVrsta("true");
+                            record.setVrsta("1");
                             prihod.setError(null);
                         }
                         else if(rashod.isChecked()){
                             System.out.println("rashod");
-                            record.setVrsta("false");
+                            record.setVrsta("0");
                             prihod.setError(null);
                         }
                         else {
@@ -379,6 +379,7 @@ public class Income_Expense extends BaseFragment implements FragmentInterface, D
 
                 }
                 listAdapter = new MyListAdapter(getActivity(), deptList);
+                listView.invalidateViews();
                 listView.setAdapter(listAdapter);
 
 
@@ -518,9 +519,9 @@ public class Income_Expense extends BaseFragment implements FragmentInterface, D
                                 }
                             }
                             if (valid) {
-                                Log.w("recordID", records.get(seqInt).getId());
+                                Log.w("recordID", String.valueOf(records.get(seqInt).getLocalId()));
                                 Log.w("recordDate", datum.getText().toString());
-                                record.setId(records.get(seqInt).getId());
+                                record.setLocalId(records.get(seqInt).getLocalId());
                                 record.setAktivan("1");
 
                                 Category catId = (Category) spinner.getSelectedItem();
@@ -545,9 +546,9 @@ public class Income_Expense extends BaseFragment implements FragmentInterface, D
                                 record.setNapomena(napomena.getText().toString());
 
                                 if (rashod.isChecked()) {
-                                    record.setVrsta("false");
+                                    record.setVrsta("0");
                                 } else {
-                                    record.setVrsta("true");
+                                    record.setVrsta("1");
                                 }
 
                                 dataBuilder.editRecord(record);
@@ -579,7 +580,7 @@ public class Income_Expense extends BaseFragment implements FragmentInterface, D
                     ok.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            dataBuilder.deleteRecord(records.get(seqInt).getId());
+                            dataBuilder.deleteRecord(String.valueOf(records.get(seqInt).getLocalId()));
                             dialog.cancel();
                         }
                     });

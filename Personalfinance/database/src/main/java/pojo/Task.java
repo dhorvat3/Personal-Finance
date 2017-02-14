@@ -51,6 +51,10 @@ public class Task extends BaseModel{
     private String aktivan;
     @Column(defaultValue = "0")
     private int edited;
+    @Column
+    @SerializedName("lastEdited")
+    @Expose
+    private String lastEdited;
 
     public Task() {
     }
@@ -125,5 +129,13 @@ public class Task extends BaseModel{
 
     public void setEdited(int edited) {
         this.edited = edited;
+    }
+
+    public String getLastEdited() {
+        return lastEdited;
+    }
+
+    public void setLastEdited(String lastEdited) {
+        this.lastEdited = lastEdited;
     }
 }

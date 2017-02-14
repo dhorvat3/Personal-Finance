@@ -42,7 +42,7 @@ public class DataBuilder {
     /**
      * Kontrolne zastavice
      */
-    private boolean catReady = false, taskReady = false, recordReady = false;
+    private boolean catReady = true, taskReady = false, recordReady = false;
 
     /**
      * Konstruktor
@@ -173,24 +173,42 @@ public class DataBuilder {
      * @param category Objekt tipa Category
      */
     public void newCategory(final Category category){
-        Call<pojo.Response> retrofitCall = apiMethods.newCategory(category);
-        retrofitCall.enqueue(new Callback<pojo.Response>() {
-            @Override
-            public void onResponse(Response<pojo.Response> response, Retrofit retrofit) {
-                pojo.Response resp = response.body();
-                if(Integer.parseInt(resp.getId()) > 0){
-                    category.setId(resp.getId());
-                    dataProvider.newCategory(category);
-                }
+        String id = dataProvider.newCategory(category);
 
-                call.buildData(response.body());
-            }
+        pojo.Response response = new pojo.Response();
+        response.setResponse("Success");
+        response.setId(id);
 
-            @Override
-            public void onFailure(Throwable t) {
+        call.buildData(response);
+    }
 
-            }
-        });
+    /**
+     * Metoda za azuriranje korisnickih kategorija
+     * @param category Objekt tipa Category
+     */
+    public void editCategory(final Category category){
+        dataProvider.editCategory(category);
+
+        pojo.Response response = new pojo.Response();
+        response.setResponse("Success");
+        response.setId("1");
+
+        call.buildData(response);
+    }
+
+    /**
+     * Metoda za brisanje korisnickih kategorija
+     * @param id id kategorije
+     * @param user_id Korisnicki user_id atribut
+     */
+    public void deleteCategory(final String id, String user_id){
+        dataProvider.deleteCategory(id);
+
+        pojo.Response response = new pojo.Response();
+        response.setResponse("Success");
+        response.setId("1");
+
+        call.buildData(response);
     }
 
     /**
@@ -212,98 +230,56 @@ public class DataBuilder {
      * Metoda za dodavanje novog zapisa
      * @param record Objekt tipa Record
      */
-    public void newRecord(final Record record){
-        Call<pojo.Response> retrofitCall = apiMethods.newRecord(record);
-        retrofitCall.enqueue(new Callback<pojo.Response>() {
-            @Override
-            public void onResponse(Response<pojo.Response> response, Retrofit retrofit) {
-                pojo.Response resp = response.body();
-                if(resp.getId().equals("1")){
-                    dataProvider.newRecord(record);
-                }
+    public void newRecord(Record record){
+        dataProvider.newRecord(record);
 
-                call.buildData(response.body());
-            }
+        pojo.Response response = new pojo.Response();
+        response.setResponse("Success");
+        response.setId("1");
 
-            @Override
-            public void onFailure(Throwable t) {
-
-            }
-        });
+        call.buildData(response);
     }
 
     /**
      * Metoda za azuriranje korisnickih zapisa
      * @param record Objekt tipa Record
      */
-    public void editRecord(final Record record){
-        Call<pojo.Response> retrofitCall = apiMethods.editRecord(record);
-        retrofitCall.enqueue(new Callback<pojo.Response>() {
-            @Override
-            public void onResponse(Response<pojo.Response> response, Retrofit retrofit) {
-                pojo.Response resp = response.body();
-                if(resp.getId().equals("1")){
-                    dataProvider.editRecord(record);
-                }
+    public void editRecord(Record record){
+        dataProvider.editRecord(record);
 
-                call.buildData(response.body());
-            }
+        pojo.Response response = new pojo.Response();
+        response.setResponse("Success");
+        response.setId("1");
 
-            @Override
-            public void onFailure(Throwable t) {
-
-            }
-        });
+        call.buildData(response);
     }
 
     /**
      * Metoda za brisanje korisnickih zapisa
      * @param id id zapisa
      */
-    public void deleteRecord(final String id){
-        Call<pojo.Response> retrofitCall = apiMethods.deleteRecord(id);
-        retrofitCall.enqueue(new Callback<pojo.Response>() {
-            @Override
-            public void onResponse(Response<pojo.Response> response, Retrofit retrofit) {
-                pojo.Response resp = response.body();
-                if(resp.getId().equals("1")){
-                    dataProvider.deleteRecord(id);
-                }
+    public void deleteRecord(String id){
+        dataProvider.deleteRecord(id);
 
-                call.buildData(response.body());
-            }
+        pojo.Response response = new pojo.Response();
+        response.setResponse("Success");
+        response.setId("1");
 
-            @Override
-            public void onFailure(Throwable t) {
-
-            }
-        });
+        call.buildData(response);
     }
 
     /**
      * Metoda za dodavanje nove obveze
      * @param task Objekt tipa Task
      */
-    public void newTask(final Task task){
-        Call<pojo.Response> retrofitCall = apiMethods.newTask(task);
-        retrofitCall.enqueue(new Callback<pojo.Response>() {
-            @Override
-            public void onResponse(Response<pojo.Response> response, Retrofit retrofit) {
-                pojo.Response resp = response.body();
-                int id = Integer.parseInt(resp.getId());
+    public void newTask(Task task){
+        String id = dataProvider.newTask(task);
 
-                if(id > 0){
-                    dataProvider.newTask(task);
-                }
+        pojo.Response response = new pojo.Response();
+        response.setResponse("Success");
+        response.setId(id);
 
-                call.buildData(response.body());
-            }
-
-            @Override
-            public void onFailure(Throwable t) {
-                call.buildData(null);
-            }
-        });
+        call.buildData(response);
     }
 
     /**
@@ -325,24 +301,14 @@ public class DataBuilder {
      * Metoda za azuriranje korisnickih obveza
      * @param task Objekt tipa Task
      */
-    public void editTask(final Task task){
-        Call<pojo.Response> retrofitCall = apiMethods.editTask(task);
-        retrofitCall.enqueue(new Callback<pojo.Response>() {
-            @Override
-            public void onResponse(Response<pojo.Response> response, Retrofit retrofit) {
-                pojo.Response resp = response.body();
-                if(resp.getId().equals("1")){
-                    dataProvider.editTask(task);
-                }
+    public void editTask(Task task){
+        dataProvider.editTask(task);
 
-                call.buildData(response.body());
-            }
+        pojo.Response response = new pojo.Response();
+        response.setResponse("Success");
+        response.setId("1");
 
-            @Override
-            public void onFailure(Throwable t) {
-
-            }
-        });
+        call.buildData(response);
     }
 
     /**
@@ -365,61 +331,6 @@ public class DataBuilder {
             @Override
             public void onFailure(Throwable t) {
 
-            }
-        });
-    }
-
-    /**
-     * Metoda za azuriranje korisnickih kategorija
-     * @param category Objekt tipa Category
-     */
-    public void editCategory(final Category category){
-        Call<pojo.Response> retrofitCall = apiMethods.editCategory(category);
-        retrofitCall.enqueue(new Callback<pojo.Response>() {
-            @Override
-            public void onResponse(Response<pojo.Response> response, Retrofit retrofit) {
-                pojo.Response resp = response.body();
-
-                if(resp.getId().equals("1")){
-                    dataProvider.editCategory(category);
-                }
-
-                call.buildData(response.body());
-            }
-
-            @Override
-            public void onFailure(Throwable t) {
-                pojo.Response response = new pojo.Response();
-                response.setId("-1");
-                call.buildData(response);
-            }
-        });
-    }
-
-    /**
-     * Metoda za brisanje korisnickih kategorija
-     * @param id id kategorije
-     * @param user_id Korisnicki user_id atribut
-     */
-    public void deleteCategory(final String id, String user_id){
-        Call<pojo.Response> retrofitCall = apiMethods.deleteCategory(id, user_id);
-        retrofitCall.enqueue(new Callback<pojo.Response>() {
-            @Override
-            public void onResponse(Response<pojo.Response> response, Retrofit retrofit) {
-                pojo.Response resp = response.body();
-
-                if(resp.getId().equals("1")){
-                    dataProvider.deleteCategory(id);
-                }
-
-                call.buildData(response.body());
-            }
-
-            @Override
-            public void onFailure(Throwable t) {
-                pojo.Response response = new pojo.Response();
-                response.setId("-1");
-                call.buildData(response);
             }
         });
     }

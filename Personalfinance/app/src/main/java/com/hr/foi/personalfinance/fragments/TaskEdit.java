@@ -145,7 +145,7 @@ public class TaskEdit extends Fragment implements DataInterface {
                 }
 
                 if (valid) {
-                    task.setId(prefs.getString("edit-task-id", ""));
+                    task.setLocalId(Integer.parseInt(prefs.getString("edit-task-id", "")));
                     task.setTitle(editTaskTitle.getText().toString());
                     task.setNote(editTaskNote.getText().toString());
 

@@ -47,6 +47,10 @@ public class Category extends BaseModel{
     private String active;
     @Column(defaultValue = "0")
     private int edited;
+    @Column
+    @SerializedName("lastEdited")
+    @Expose
+    private String lastEdited;
 
     public Category() {
     }
@@ -128,5 +132,13 @@ public class Category extends BaseModel{
 
     public void setEdited(int edited) {
         this.edited = edited;
+    }
+
+    public String getLastEdited() {
+        return lastEdited;
+    }
+
+    public void setLastEdited(String lastEdited) {
+        this.lastEdited = lastEdited;
     }
 }
