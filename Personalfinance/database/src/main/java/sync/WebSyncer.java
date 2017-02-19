@@ -1,5 +1,6 @@
 package sync;
 
+import android.content.Context;
 import android.database.Cursor;
 import android.util.Log;
 
@@ -27,11 +28,13 @@ import retrofit.Retrofit;
 
 public class WebSyncer implements SyncInterface {
     private String id;
+    private Context context;
     private ApiMethods apiMethods = ApiMethods.retrofit.create(ApiMethods.class);
 
     @Override
-    public boolean syncData(String id) {
+    public boolean syncData(Context context, String id) {
         this.id = id;
+        this.context = context;
 
         pullCategories();
         pullRecords();

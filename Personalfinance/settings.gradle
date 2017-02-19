@@ -1,1 +1,1 @@
-include ':app', ':userInterface', ':database'
+include ':app', ':userInterface', ':database', ':btutillib'

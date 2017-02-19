@@ -4,7 +4,11 @@
 
     <application android:allowBackup="true" android:label="@string/app_name"
         android:supportsRtl="true">
-
+        <activity
+            android:name="sync.BTSyncer"
+            android:theme="@android:style/Theme.Dialog"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

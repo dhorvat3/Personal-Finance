@@ -1,5 +1,9 @@
 package sync;
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
+
 import com.raizlabs.android.dbflow.sql.language.Method;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 import com.raizlabs.android.dbflow.sql.language.Select;
@@ -11,7 +15,7 @@ import com.raizlabs.android.dbflow.sql.language.Select;
 public class DataSyncer {
     private SyncInterface syncer;
 
-    public boolean syncData(String id, int type){
+    public boolean syncData(Context context, String id, int type){
         if(type == 1){
             syncer = new WebSyncer();
         }
@@ -19,7 +23,7 @@ public class DataSyncer {
             syncer = new BTSyncer();
         }
 
-        syncer.syncData(id);
+        syncer.syncData(context, id);
 
         return true;
     }

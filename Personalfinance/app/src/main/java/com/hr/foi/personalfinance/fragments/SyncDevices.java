@@ -43,14 +43,22 @@ public class SyncDevices extends BaseFragment implements FragmentInterface {
     public View onCreateView (LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         View view = inflater.inflate(R.layout.sync_layout, container, false);
 
-        Button button = (Button) view.findViewById(R.id.webSync);
+        Button webSync = (Button) view.findViewById(R.id.webSync);
+        Button bluetoothSync = (Button) view.findViewById(R.id.bluetoothSync);
         prefs = getActivity().getSharedPreferences("login", 0);
 
 
-        button.setOnClickListener(new View.OnClickListener() {
+        webSync.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dataSyncer.syncData(prefs.getString("id", ""), 1);
+                dataSyncer.syncData(getActivity(), prefs.getString("id", ""), 1);
+            }
+        });
+
+        bluetoothSync.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dataSyncer.syncData(getActivity(), prefs.getString("id", ""), 2);
             }
         });
 
